@@ -179,7 +179,7 @@ export default function Technology() {
                     }
                   }}
                   whileHover={{ scale: 1.02 }}
-                  className="bg-card-bg border border-border-color p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 h-[210px] flex flex-col justify-between group cursor-pointer"
+                  className="bg-card-bg border-2 border-accent-emerald p-6 rounded-2xl shadow-offset-sm hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300 h-[210px] flex flex-col justify-between group cursor-pointer"
                 >
                   <div className="flex justify-between items-start">
                     <div className="w-10 h-10 rounded-xl bg-page-bg-sec flex items-center justify-center text-accent-green group-hover:bg-gold-accent/15 group-hover:text-gold-accent transition-colors duration-300">

@@ -14,18 +14,18 @@ export default function TrustBar() {
   const marqueeItems = [...servicesList, ...servicesList];
 
   return (
-    <section className="py-12 bg-page-bg-sec border-y border-border-color overflow-hidden select-none transition-theme">
+    <section className="py-12 bg-page-bg-sec border-y-2 border-accent-emerald overflow-hidden select-none transition-theme">
       <div className="max-w-6xl w-full mx-auto px-6 mb-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
-        <h3 className="text-xs font-sans font-semibold tracking-widest text-accent-green uppercase transition-theme">
+        <h3 className="text-xs font-sans font-bold tracking-widest text-accent-emerald uppercase transition-theme">
           Agency Competencies
         </h3>
-        <p className="text-sm font-sans font-light text-text-secondary transition-theme">
+        <p className="text-sm font-sans font-medium text-text-secondary transition-theme">
           Trusted growth partner for ambitious startups, local businesses, and growing brands.
         </p>
       </div>
 
       {/* Marquee Row */}
-      <div className="relative w-full flex items-center overflow-hidden py-3 bg-page-bg/40 border-y border-border-color/20 transition-theme">
+      <div className="relative w-full flex items-center overflow-hidden py-3 bg-page-bg/40 border-y-2 border-accent-emerald/20 transition-theme">
         <div className="animate-marquee flex gap-12 items-center">
           {marqueeItems.map((item, idx) => (
             <div 

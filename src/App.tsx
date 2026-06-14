@@ -1,56 +1,43 @@
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import TrustBar from './components/TrustBar';
-import Services from './components/Services';
-import WhyKiwiClicks from './components/WhyKiwiClicks';
-import FeaturedWork from './components/FeaturedWork';
-import Process from './components/Process';
-import Results from './components/Results';
-import Technology from './components/Technology';
-import Testimonials from './components/Testimonials';
-import Contact from './components/Contact';
+import HomePage from './pages/HomePage';
+import BlogPage from './pages/BlogPage';
+import BlogArticlePage from './pages/BlogArticlePage';
+import TeamPage from './pages/TeamPage';
+import FAQPage from './pages/FAQPage';
+import ServiceSEOPage from './pages/ServiceSEOPage';
+import ServiceSocialPage from './pages/ServiceSocialPage';
+import ServiceWebDevPage from './pages/ServiceWebDevPage';
+import ServiceAIPage from './pages/ServiceAIPage';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 export default function App() {
   return (
     <div className="relative min-h-screen bg-page-bg text-text-primary overflow-x-hidden transition-theme">
-      {/* Brand Customized Cursor Trailing */}
       <CustomCursor />
-      
-      {/* Dynamic Header Navigation */}
+      <ScrollToTop />
       <Navbar />
-
-      {/* 10-Section Agency Architecture */}
       <main className="relative z-10 w-full">
-        {/* Section 1: Hero */}
-        <Hero />
-
-        {/* Section 2: Trust Marquee */}
-        <TrustBar />
-
-        {/* Section 3: Services Grid */}
-        <Services />
-
-        {/* Section 4: Behavioral Strategy Flow */}
-        <WhyKiwiClicks />
-
-        {/* Section 5: Featured Work Case Studies */}
-        <FeaturedWork />
-
-        {/* Section 6: Process Milestones */}
-        <Process />
-
-        {/* Section 7: Counters Stats */}
-        <Results />
-
-        {/* Section 8: Tech Stack Floating Grid */}
-        <Technology />
-
-        {/* Section 9: Testimonial Carousel */}
-        <Testimonials />
-
-        {/* Section 10: Connection Form & Footer */}
-        <Contact />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogArticlePage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/seo-local-seo" element={<ServiceSEOPage />} />
+          <Route path="/social-media-marketing" element={<ServiceSocialPage />} />
+          <Route path="/web-development" element={<ServiceWebDevPage />} />
+          <Route path="/ai-automation" element={<ServiceAIPage />} />
+        </Routes>
       </main>
     </div>
   );

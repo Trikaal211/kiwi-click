@@ -9,6 +9,8 @@ interface StatItem {
   suffix: string;
   icon: any;
   desc: string;
+  shadowClass: string;
+  borderColor: string;
 }
 
 function Counter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
@@ -38,7 +40,9 @@ export default function Results() {
       value: 200,
       suffix: '+',
       icon: Target,
-      desc: 'Paid search & social campaigns optimized for continuous conversion efficiency.'
+      desc: 'Paid search & social campaigns optimized for continuous conversion efficiency.',
+      shadowClass: 'shadow-offset-sm',
+      borderColor: 'border-accent-emerald'
     },
     {
       id: 2,
@@ -46,7 +50,9 @@ export default function Results() {
       value: 50,
       suffix: '+',
       icon: Laptop,
-      desc: 'High-converting custom React and Next.js digital properties deployed.'
+      desc: 'High-converting custom React and Next.js digital properties deployed.',
+      shadowClass: 'shadow-offset-orange',
+      borderColor: 'border-accent-orange'
     },
     {
       id: 3,
@@ -54,7 +60,9 @@ export default function Results() {
       value: 100,
       suffix: '+',
       icon: Users,
-      desc: 'From high-growth local brands in Delhi to venture-backed startups.'
+      desc: 'From high-growth local brands in Delhi to venture-backed startups.',
+      shadowClass: 'shadow-offset-green',
+      borderColor: 'border-accent-green'
     },
     {
       id: 4,
@@ -62,19 +70,21 @@ export default function Results() {
       value: 4,
       suffix: 'X',
       icon: TrendingUp,
-      desc: 'Net returns on advertising investments designed and executed.'
+      desc: 'Net returns on advertising investments designed and executed.',
+      shadowClass: 'shadow-offset-sm',
+      borderColor: 'border-accent-emerald'
     }
   ];
 
   return (
     <section 
       id="results" 
-      className="relative py-24 md:py-36 px-6 md:px-12 bg-page-bg text-text-primary transition-theme"
+      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg text-text-primary transition-theme"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10">
         
         {/* Header */}
-        <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-4 transition-theme">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-4 transition-theme">
           <div>
             <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
               05 // TRACK RECORD
@@ -84,7 +94,7 @@ export default function Results() {
             </h2>
           </div>
           <div className="max-w-md text-left">
-            <p className="text-sm font-sans font-light text-text-secondary leading-relaxed transition-theme">
+            <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed transition-theme">
               Impressions are cheap. Conversions matter. We hold our campaigns accountable to direct commercial growth and net revenue metrics.
             </p>
           </div>
@@ -98,10 +108,10 @@ export default function Results() {
             return (
               <div 
                 key={s.id}
-                className="bg-card-bg border border-border-color rounded-3xl p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[260px] group"
+                className={`bg-card-bg border-2 ${s.borderColor} rounded-3xl p-8 ${s.shadowClass} hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300 flex flex-col justify-between min-h-[260px] group`}
               >
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-page-bg-sec flex items-center justify-center text-accent-green group-hover:bg-gold-accent/15 group-hover:text-gold-accent transition-colors duration-300 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-page-bg-sec border border-border-color/20 flex items-center justify-center text-accent-emerald group-hover:bg-accent-orange/15 group-hover:text-accent-orange transition-colors duration-300 mb-6">
                     <Icon size={18} className="transition-theme" />
                   </div>
                   
@@ -109,12 +119,12 @@ export default function Results() {
                     <Counter value={s.value} suffix={s.suffix} />
                   </span>
                   
-                  <h3 className="text-sm font-sans font-bold tracking-widest uppercase text-accent-green mt-3 group-hover:text-gold-accent transition-colors duration-300">
+                  <h3 className="text-sm font-sans font-bold tracking-widest uppercase text-accent-emerald mt-3 group-hover:text-accent-orange transition-colors duration-300">
                     {s.label}
                   </h3>
                 </div>
 
-                <p className="text-[11px] font-sans font-light text-text-secondary/60 leading-relaxed mt-4 transition-theme">
+                <p className="text-[11px] font-sans font-medium text-text-secondary/60 leading-relaxed mt-4 transition-theme">
                   {s.desc}
                 </p>
               </div>

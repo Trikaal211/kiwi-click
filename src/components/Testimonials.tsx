@@ -70,12 +70,12 @@ export default function Testimonials() {
   return (
     <section 
       id="testimonials" 
-      className="relative py-24 md:py-36 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
+      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10">
         
         {/* Header */}
-        <div className="flex justify-between items-start border-b border-border-color pb-6 mb-16 transition-theme">
+        <div className="flex justify-between items-start border-b border-border-color pb-6 mb-10 transition-theme">
           <div>
             <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
               07 // CLIENT RESULTS
@@ -90,16 +90,19 @@ export default function Testimonials() {
           </span>
         </div>
 
-        {/* Transitioning Testimonial Grid */}
-        <div className="min-h-[400px] flex flex-col justify-center">
+        {/* Neobrutalist Sliding Board Card */}
+        <div className="min-h-[420px] bg-card-bg border-4 border-accent-emerald rounded-3xl p-6 md:p-10 shadow-offset relative overflow-hidden transition-theme">
+          {/* Subtle dots layout on whiteboard */}
+          <div className="absolute inset-0 pointer-events-none opacity-5 select-none" style={{ backgroundImage: 'radial-gradient(var(--accent-emerald) 1.5px, transparent 1.5px)', backgroundSize: '20px 20px' }} />
+
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center text-left"
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.45 }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center text-left relative z-10"
             >
               
               {/* Left Column: Quote Details */}
@@ -109,10 +112,10 @@ export default function Testimonials() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex gap-1">
                     {[...Array(current.rating)].map((_, i) => (
-                      <Star key={i} size={15} className="fill-gold-accent text-gold-accent" />
+                      <Star key={i} size={15} className="fill-accent-orange text-accent-orange" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-sans font-extrabold tracking-widest text-text-secondary/40 border border-border-color/60 px-3 py-1 rounded-md transition-theme">
+                  <span className="text-[10px] font-sans font-extrabold tracking-widest text-text-primary border-2 border-accent-emerald bg-page-bg px-3 py-1 rounded-md transition-theme">
                     {current.logo}
                   </span>
                 </div>
@@ -121,7 +124,7 @@ export default function Testimonials() {
                   <Quote size={40} className="fill-current" />
                 </div>
                 
-                <blockquote className="font-serif italic text-2xl md:text-3xl text-text-primary leading-relaxed font-light transition-theme">
+                <blockquote className="font-serif italic text-xl md:text-2xl text-text-primary leading-relaxed font-medium transition-theme">
                   “{current.quote}”
                 </blockquote>
 
@@ -132,19 +135,19 @@ export default function Testimonials() {
                       src={current.avatar} 
                       alt={current.author} 
                       loading="lazy"
-                      className="w-12 h-12 rounded-full object-cover border border-border-color/85 shadow-sm transition-theme"
+                      className="w-12 h-12 rounded-full object-cover border-2 border-accent-emerald shadow-sm transition-theme"
                     />
                     <div>
                       <p className="font-sans font-bold text-sm text-text-primary leading-none transition-theme">
                         {current.author}
                       </p>
-                      <p className="text-[11px] font-sans text-text-secondary/60 uppercase tracking-wider mt-1.5 transition-theme">
+                      <p className="text-[11px] font-sans text-text-secondary uppercase tracking-wider mt-1.5 transition-theme">
                         {current.role} — {current.company}
                       </p>
                     </div>
                   </div>
                   
-                  <span className="text-[10px] font-sans font-semibold text-accent-green uppercase bg-accent-green/10 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 w-max transition-theme">
+                  <span className="text-[10px] font-sans font-semibold text-accent-green uppercase bg-accent-green/10 border border-accent-green/20 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 w-max transition-theme">
                     <Check size={11} />
                     Project Focus: {current.deliverable}
                   </span>
@@ -153,7 +156,7 @@ export default function Testimonials() {
 
               {/* Right Column: Video Testimonial Placeholder Card */}
               <div className="lg:col-span-5 flex justify-center">
-                <div className="relative w-full max-w-sm aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-border-color/80 bg-page-bg-sec group cursor-pointer transition-theme">
+                <div className="relative w-full max-w-sm aspect-[4/3] rounded-3xl overflow-hidden shadow-offset-sm border-2 border-accent-emerald bg-page-bg-sec group cursor-pointer transition-theme">
                   <img 
                     src={current.videoThumbnail} 
                     alt={`Video feedback of ${current.author}`} 
@@ -166,9 +169,9 @@ export default function Testimonials() {
 
                   {/* Pulsing Play Button */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 rounded-full bg-accent-green text-page-bg flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-500 relative">
+                    <div className="w-14 h-14 rounded-full bg-accent-orange text-white flex items-center justify-center shadow-2xl border-2 border-accent-emerald transform group-hover:scale-110 transition-transform duration-500 relative">
                       <Play size={18} className="fill-current translate-x-0.5" />
-                      <span className="absolute inset-0 rounded-full border border-accent-green animate-ping opacity-60 pointer-events-none" />
+                      <span className="absolute inset-0 rounded-full border border-accent-orange animate-ping opacity-60 pointer-events-none" />
                     </div>
                   </div>
 
@@ -179,10 +182,10 @@ export default function Testimonials() {
 
                   {/* Bottom Text Indicator */}
                   <div className="absolute bottom-4 left-4 right-4 text-white text-left">
-                    <p className="text-[10px] font-sans font-bold uppercase tracking-wider leading-none text-white/90 drop-shadow">
+                    <p className="text-[10px] font-sans font-bold uppercase tracking-wider leading-none text-white/95 drop-shadow">
                       Watch Interview Case Study
                     </p>
-                    <p className="text-[9px] font-sans text-white/60 mt-1 drop-shadow">
+                    <p className="text-[9px] font-sans text-white/70 mt-1 drop-shadow">
                       {current.author} shares the story
                     </p>
                   </div>
@@ -198,14 +201,14 @@ export default function Testimonials() {
           <div className="flex gap-4">
             <button
               onClick={handlePrev}
-              className="p-3 rounded-full border border-border-color hover:bg-hover-highlight text-text-primary transition-all duration-300 cursor-pointer"
+              className="p-3 rounded-xl border-2 border-accent-emerald bg-card-bg text-text-primary hover:bg-accent-orange hover:text-white transition-all shadow-offset-sm cursor-pointer"
               aria-label="Previous testimonial"
             >
               <ChevronLeft size={16} />
             </button>
             <button
               onClick={handleNext}
-              className="p-3 rounded-full border border-border-color hover:bg-hover-highlight text-text-primary transition-all duration-300 cursor-pointer"
+              className="p-3 rounded-xl border-2 border-accent-emerald bg-card-bg text-text-primary hover:bg-accent-orange hover:text-white transition-all shadow-offset-sm cursor-pointer"
               aria-label="Next testimonial"
             >
               <ChevronRight size={16} />

@@ -3,29 +3,35 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --page-bg: #F8F6F2;
-  --page-bg-sec: #F1EFEA;
+  --page-bg: #F4F6F5;
+  --page-bg-sec: #EBF0EE;
   --card-bg: #FFFFFF;
-  --text-primary: #111827;
+  --text-primary: #1F2937;
   --text-secondary: #4B5563;
-  --border-color: #E5E7EB;
-  --accent-green: #2F7D32;
-  --accent-hover: #256B2A;
+  --border-color: #1B4D3E;
+  --accent-green: #4A9C3A;
+  --accent-hover: #3E8230;
+  --accent-emerald: #1B4D3E;
+  --accent-orange: #FF8A3D;
   --gold-accent: #C9A54D;
-  --hover-highlight: #E5E2DA;
+  --hover-highlight: #EBF0EE;
+  --font-handwriting: "Caveat", cursive;
 }
 
 .dark {
-  --page-bg: #0B0D0C;
-  --page-bg-sec: #141716;
-  --card-bg: #121414;
-  --text-primary: #F7F4EE;
-  --text-secondary: #A0A0A0;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --accent-green: #6E8F6A;
-  --accent-hover: #5D7E59;
+  --page-bg: #0C1411;
+  --page-bg-sec: #152A22;
+  --card-bg: #13241F;
+  --text-primary: #ECF2F0;
+  --text-secondary: #9CA3AF;
+  --border-color: rgba(107, 192, 89, 0.2);
+  --accent-green: #6BC059;
+  --accent-hover: #5AAB49;
+  --accent-emerald: #6BC059;
+  --accent-orange: #FF9D5C;
   --gold-accent: #C9A54D;
-  --hover-highlight: rgba(255, 255, 255, 0.06);
+  --hover-highlight: rgba(107, 192, 89, 0.08);
+  --font-handwriting: "Caveat", cursive;
 }
 
 @theme {
@@ -37,25 +43,44 @@
   --color-border-color: var(--border-color);
   --color-accent-green: var(--accent-green);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-accent-orange: var(--accent-orange);
   --color-gold-accent: var(--gold-accent);
   --color-hover-highlight: var(--hover-highlight);
   
   --font-serif: "Cormorant Garamond", "Instrument Serif", Georgia, ui-serif, serif;
   --font-sans: Inter, Satoshi, "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-handwriting: var(--font-handwriting);
+}
+
+@utility shadow-offset {
+  box-shadow: 4px 4px 0px 0px var(--accent-emerald);
+}
+
+@utility shadow-offset-orange {
+  box-shadow: 4px 4px 0px 0px var(--accent-orange);
+}
+
+@utility shadow-offset-green {
+  box-shadow: 4px 4px 0px 0px var(--accent-green);
+}
+
+@utility shadow-offset-sm {
+  box-shadow: 2px 2px 0px 0px var(--accent-emerald);
 }
 
 @utility glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(229, 231, 235, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid var(--border-color);
 }
 
 @utility dark-glass {
-  background: rgba(11, 13, 12, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(110, 143, 106, 0.15);
+  background: rgba(19, 36, 31, 0.9);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 2px solid var(--border-color);
 }
 
 @utility no-scrollbar {

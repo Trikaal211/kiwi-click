@@ -31,6 +31,7 @@ export default function Process() {
       focus: 'Data gathering & base alignment'
     },
     {
+      id: 2, // Dummy id to represent index
       phase: '02',
       title: 'Strategize',
       icon: FileText,
@@ -43,7 +44,7 @@ export default function Process() {
         'Google & Meta campaign structure map'
       ],
       focus: 'Architecting the funnel blueprint'
-    },
+    } as any,
     {
       phase: '03',
       title: 'Execute',
@@ -77,12 +78,12 @@ export default function Process() {
   return (
     <section 
       id="process" 
-      className="relative py-24 md:py-36 px-6 md:px-12 bg-page-bg-sec text-text-primary transition-theme"
+      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg-sec text-text-primary transition-theme"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10">
         
         {/* Header */}
-        <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-4 transition-theme">
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-4 transition-theme">
           <div>
             <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
               04 // JOURNEY
@@ -92,7 +93,7 @@ export default function Process() {
             </h2>
           </div>
           <div className="max-w-md text-left">
-            <p className="text-sm font-sans font-light text-text-secondary leading-relaxed transition-theme">
+            <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed transition-theme">
               Growth is structured. We guide clients through a four-phase journey designed to eliminate guesswork, build solid trust, and scale campaigns.
             </p>
           </div>
@@ -111,20 +112,20 @@ export default function Process() {
                 <button
                   key={idx}
                   onClick={() => setActiveStep(idx)}
-                  className={`w-full flex items-center justify-between p-6 rounded-2xl text-left transition-all duration-300 border cursor-pointer ${
+                  className={`w-full flex items-center justify-between p-6 rounded-2xl text-left transition-all duration-300 border-2 cursor-pointer ${
                     isActive 
-                      ? 'bg-text-primary border-text-primary text-page-bg shadow-lg translate-x-2'
-                      : 'bg-card-bg border-border-color text-text-primary hover:border-accent-green/40'
+                      ? 'bg-accent-emerald border-accent-emerald text-white font-bold translate-x-2 shadow-offset-sm'
+                      : 'bg-card-bg border-accent-emerald text-text-primary hover:border-accent-orange shadow-offset-sm'
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <span className="text-xs font-mono opacity-50">0{idx + 1}</span>
-                    <div className="w-10 h-10 rounded-xl bg-accent-green/10 flex items-center justify-center text-accent-green group-hover:text-gold-accent transition-colors">
-                      <StepIcon size={18} className={isActive ? 'text-gold-accent' : 'text-accent-green'} />
+                    <div className="w-10 h-10 rounded-xl bg-page-bg-sec flex items-center justify-center text-accent-emerald group-hover:bg-accent-orange/15 group-hover:text-accent-orange transition-colors">
+                      <StepIcon size={18} className={isActive ? 'text-accent-orange' : 'text-accent-emerald'} />
                     </div>
                     <div className="text-left">
                       <span className="text-sm font-sans font-bold tracking-widest uppercase">{step.title}</span>
-                      <p className="text-[10px] font-sans font-medium uppercase tracking-wider text-text-secondary/60 mt-0.5">{step.duration}</p>
+                      <p className={`text-[10px] font-sans font-medium uppercase tracking-wider mt-0.5 ${isActive ? 'text-white/70' : 'text-text-secondary/60'}`}>{step.duration}</p>
                     </div>
                   </div>
                   <span className="text-xs font-serif italic opacity-60">➔</span>
@@ -142,29 +143,29 @@ export default function Process() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.4 }}
-                className="glass dark:dark-glass p-8 md:p-10 rounded-3xl border border-border-color/40 shadow-xl min-h-[350px] flex flex-col justify-between transition-theme"
+                className="bg-card-bg border-4 border-accent-emerald p-8 md:p-10 rounded-3xl shadow-offset min-h-[350px] flex flex-col justify-between transition-theme"
               >
                 <div>
                   <div className="flex justify-between items-center border-b border-border-color pb-4 mb-6 transition-theme">
                     <span className="text-[9px] font-sans font-bold tracking-widest text-accent-green uppercase transition-theme">
                       DELIVERABLES PHASE 0{activeStep + 1}
                     </span>
-                    <span className="text-xs font-mono text-gold-accent font-bold uppercase transition-theme">
+                    <span className="text-xs font-mono text-accent-orange font-bold uppercase transition-theme">
                       Focus: {steps[activeStep].focus}
                     </span>
                   </div>
 
-                  <h3 className="font-serif italic text-3xl text-text-primary leading-none mb-4 transition-theme">
+                  <h3 className="font-serif italic text-3xl text-text-primary leading-none mb-4 transition-theme text-left">
                     {steps[activeStep].title} Deliverables
                   </h3>
 
-                  <p className="text-sm font-sans font-light text-text-secondary leading-relaxed mb-6 transition-theme">
+                  <p className="text-sm font-sans text-text-secondary leading-relaxed mb-6 text-left transition-theme font-medium">
                     {steps[activeStep].description}
                   </p>
 
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                     {steps[activeStep].deliverables.map((del, idx) => (
-                      <li key={idx} className="flex gap-2.5 items-start text-xs font-sans font-light text-text-secondary transition-theme leading-tight">
+                      <li key={idx} className="flex gap-2.5 items-start text-xs font-sans text-text-secondary transition-theme leading-tight font-medium">
                         <CheckCircle size={13} className="text-accent-green mt-0.5 shrink-0 transition-theme" />
                         <span>{del}</span>
                       </li>
@@ -173,7 +174,7 @@ export default function Process() {
                 </div>
 
                 <div className="mt-8 border-t border-border-color pt-4 text-left transition-theme">
-                  <span className="text-[9px] font-sans text-text-secondary/40 uppercase tracking-widest transition-theme">
+                  <span className="text-[9px] font-sans text-text-secondary/40 uppercase tracking-widest transition-theme font-bold">
                     Phase Outcome // Delhi's Growth Partner
                   </span>
                 </div>
