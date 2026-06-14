@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --page-bg: #F8F6F2;
+  --page-bg-sec: #F1EFEA;
+  --card-bg: #FFFFFF;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --border-color: #E5E7EB;
+  --accent-green: #2F7D32;
+  --accent-hover: #256B2A;
+  --gold-accent: #C9A54D;
+  --hover-highlight: #E5E2DA;
+}
+
+.dark {
+  --page-bg: #0B0D0C;
+  --page-bg-sec: #141716;
+  --card-bg: #121414;
+  --text-primary: #F7F4EE;
+  --text-secondary: #A0A0A0;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --accent-green: #6E8F6A;
+  --accent-hover: #5D7E59;
+  --gold-accent: #C9A54D;
+  --hover-highlight: rgba(255, 255, 255, 0.06);
+}
+
+@theme {
+  --color-page-bg: var(--page-bg);
+  --color-page-bg-sec: var(--page-bg-sec);
+  --color-card-bg: var(--card-bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-color: var(--border-color);
+  --color-accent-green: var(--accent-green);
+  --color-accent-hover: var(--accent-hover);
+  --color-gold-accent: var(--gold-accent);
+  --color-hover-highlight: var(--hover-highlight);
+  
+  --font-serif: "Cormorant Garamond", "Instrument Serif", Georgia, ui-serif, serif;
+  --font-sans: Inter, Satoshi, "General Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+@utility glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+}
+
+@utility dark-glass {
+  background: rgba(11, 13, 12, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(110, 143, 106, 0.15);
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Infinite Marquee Animation styles */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@utility animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+/* Custom selection styling */
+::selection {
+  background-color: var(--accent-green);
+  color: var(--page-bg);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+/* Global Transition utility to easily apply theme transitions across tags */
+.transition-theme {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
+}
