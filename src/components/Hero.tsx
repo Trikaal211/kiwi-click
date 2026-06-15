@@ -46,7 +46,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-20 pb-12 overflow-hidden bg-page-bg text-text-primary transition-theme"
+      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-36 pb-20 overflow-hidden bg-page-bg text-text-primary transition-theme"
     >
       {/* ─── Background: dot grid ─── */}
       <div
