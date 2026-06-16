@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowUpRight, Smile } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 /* ─── Floating particles ─── */
 const FloatingParticle = ({
@@ -69,7 +70,7 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-28 pb-14 overflow-hidden bg-page-bg text-text-primary transition-theme"
+      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-32 md:pt-36 lg:pt-40 pb-14 overflow-hidden bg-page-bg text-text-primary transition-theme"
     >
       {/* ─── Background: dot grid ─── */}
       <div
@@ -139,13 +140,13 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="mt-8 flex flex-wrap items-center gap-4 md:gap-6">
-            <a
-              href="#work"
+            <Link
+              to="/results"
               className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-emerald text-white border-2 border-accent-emerald hover:bg-accent-green hover:border-accent-green transition-theme shadow-offset cursor-pointer flex items-center gap-1.5"
             >
-              View Our Work
+              View Results
               <ArrowUpRight size={13} />
-            </a>
+            </Link>
             <a
               href="#contact"
               className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:bg-hover-highlight transition-theme shadow-offset-orange cursor-pointer"
@@ -214,7 +215,7 @@ export default function Hero() {
               {/* Photo Area */}
               <div className="w-full aspect-[4/5] overflow-hidden relative bg-page-bg-sec/50">
                 <img
-                  src="/cofounder.png"
+                  src="/founder.png"
                   alt="Bandana Kumari - Founder of KiwiClicks"
                   className="w-full h-full object-cover object-top scale-100 group-hover:scale-102 transition-transform duration-700"
                 />

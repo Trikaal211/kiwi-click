@@ -241,7 +241,7 @@ export default function ServiceDetailPage() {
 
   if (!service) {
     return (
-      <div className="min-h-screen bg-page-bg text-text-primary pt-32 px-6 flex flex-col items-center justify-center transition-theme">
+      <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 px-6 flex flex-col items-center justify-center transition-theme">
         <h2 className="font-serif italic text-4xl mb-4">Service Not Found</h2>
         <p className="text-text-secondary mb-8">The service route details you are looking for do not exist.</p>
         <Link to="/" className="px-6 py-3 bg-accent-orange text-white border-2 border-accent-emerald rounded-xl text-xs font-sans font-bold uppercase tracking-wider shadow-offset">
@@ -292,7 +292,7 @@ export default function ServiceDetailPage() {
   } as Record<string, any>)[service.accentColor || 'green']);
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-24 pb-16 transition-theme overflow-x-hidden">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 pb-16 transition-theme overflow-x-hidden">
 
       {/* Hero Section */}
       <section className="py-12 md:py-20 px-6 md:px-12 border-b border-border-color transition-theme">

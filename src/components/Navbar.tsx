@@ -1,16 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Sun, 
-  Moon, 
-  Menu, 
-  X, 
-  ArrowUpRight, 
-  ChevronDown, 
-  TrendingUp, 
-  Code, 
-  Cpu, 
-  MapPin 
+import logoLight from '../assets/logo_light.png';
+import logoDark from '../assets/logo_dark.png';
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  ArrowUpRight,
+  ChevronDown,
+  TrendingUp,
+  Code,
+  Cpu,
+  MapPin
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -18,7 +20,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaOpen, setIsMegaOpen] = useState(false);
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
-  
+
   const location = useLocation();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -137,35 +139,23 @@ export default function Navbar() {
   return (
     <nav className="fixed top-5 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-5xl transition-theme">
       {/* Neobrutalist floating bar */}
-      <div className="bg-card-bg border-2 border-accent-emerald px-5 py-3 rounded-2xl flex justify-between items-center shadow-offset transition-all duration-300 relative z-50">
+      <div className="bg-card-bg border-2 border-accent-emerald px-5 py-1 md:py-1.5 min-h-[46px] md:min-h-[60px] lg:min-h-[72px] rounded-2xl flex justify-between items-center md:grid md:grid-cols-3 md:items-center shadow-offset transition-all duration-300 relative z-50">
 
-        {/* Brand Logo */}
-        <Link to="/" className="font-serif italic text-lg md:text-xl font-bold tracking-wide flex items-center gap-2 group transition-theme">
-          <span className="text-accent-emerald transition-colors duration-300 flex items-center gap-2 font-sans not-italic font-extrabold uppercase text-sm md:text-base tracking-widest">
-            <svg className="w-6 h-6 transition-theme text-accent-green fill-current" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-              <circle cx="12" cy="12" r="8" className="fill-accent-green/10" />
-              <circle cx="12" cy="12" r="3" className="fill-white dark:fill-card-bg" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="12" cy="7.5" r="0.75" className="fill-text-primary" />
-              <circle cx="12" cy="16.5" r="0.75" className="fill-text-primary" />
-              <circle cx="7.5" cy="12" r="0.75" className="fill-text-primary" />
-              <circle cx="16.5" cy="12" r="0.75" className="fill-text-primary" />
-              <circle cx="8.8" cy="8.8" r="0.75" className="fill-text-primary" />
-              <circle cx="15.2" cy="15.2" r="0.75" className="fill-text-primary" />
-              <circle cx="8.8" cy="15.2" r="0.75" className="fill-text-primary" />
-              <circle cx="15.2" cy="8.8" r="0.75" className="fill-text-primary" />
-            </svg>
-            KiwiClicks
-          </span>
-          <span className="text-text-secondary font-sans font-light text-[9px] tracking-widest mt-1 hidden sm:inline-block transition-theme">
-            / DELHI
-          </span>
-        </Link>
+        {/* Brand Logo (Left Section) */}
+        <div className="flex justify-start items-center">
+          <Link to="/" className="flex items-center transition-all duration-300 shrink-0">
+            <img
+              src={isDarkMode ? logoDark : logoLight}
+              alt="KiwiClicks"
+              className="w-[80px] md:w-[110px] lg:w-[130px] h-auto object-contain transition-all duration-300 hover:scale-[1.02]"
+            />
+          </Link>
+        </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop Navigation (Center Section) */}
+        <div className="hidden md:flex justify-center items-center gap-6 lg:gap-8">
           {/* Services Mega Trigger */}
-          <div 
+          <div
             className="relative py-1"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -177,11 +167,11 @@ export default function Navbar() {
           </div>
 
           <Link
-            to="/#work"
-            className="text-[11px] font-sans tracking-widest uppercase font-bold text-text-primary hover:text-accent-orange transition-colors duration-300 relative group py-1"
+            to="/results"
+            className={`text-[11px] font-sans tracking-widest uppercase font-bold transition-colors duration-300 relative group py-1 ${location.pathname === '/results' ? 'text-accent-orange' : 'text-text-primary hover:text-accent-orange'}`}
           >
-            Work
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-accent-orange transition-all duration-300 group-hover:w-full" />
+            Results
+            <span className={`absolute bottom-0 left-0 h-[2px] bg-accent-orange transition-all duration-300 ${location.pathname === '/results' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
           </Link>
 
           <Link
@@ -201,12 +191,12 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* CTAs & Controls */}
-        <div className="flex items-center gap-2 md:gap-3">
+        {/* CTAs & Controls (Right Section) */}
+        <div className="flex justify-end items-center gap-2 md:gap-3">
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl hover:bg-hover-highlight text-text-primary border-2 border-transparent hover:border-border-color/10 transition-all duration-300 cursor-pointer active:scale-95"
+            className="p-2 rounded-xl hover:bg-hover-highlight text-text-primary border-2 border-transparent hover:border-border-color/10 transition-all duration-300 cursor-pointer active:scale-95 flex items-center justify-center"
             aria-label="Toggle theme mode"
           >
             {isDarkMode ? (
@@ -219,7 +209,7 @@ export default function Navbar() {
           {/* CTA Button */}
           <Link
             to="/contact"
-            className="hidden sm:inline-flex items-center gap-1 px-4 py-2 rounded-xl text-[10px] font-sans font-bold tracking-wider uppercase bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald hover:text-white transition-theme shadow-offset-sm"
+            className="hidden sm:inline-flex items-center justify-center gap-1 px-4 py-2 rounded-xl text-[10px] font-sans font-bold tracking-wider uppercase bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald hover:text-white transition-theme shadow-offset-sm"
           >
             Discovery Call
             <ArrowUpRight size={11} />
@@ -238,7 +228,7 @@ export default function Navbar() {
 
       {/* Desktop Glassmorphic Mega Menu with hover bridge */}
       {isMegaOpen && (
-        <div 
+        <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className="hidden md:block absolute top-full left-0 right-0 pt-2 z-40 animate-fadeIn"
@@ -286,10 +276,10 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-16 left-0 w-full bg-card-bg border-4 border-accent-emerald rounded-3xl p-6 shadow-offset transition-all duration-300 text-left max-h-[85vh] overflow-y-auto">
           <div className="flex flex-col gap-3">
-            
+
             {/* Mobile Services Accordion */}
             <div className="border-b border-border-color/10 pb-2">
-              <button 
+              <button
                 onClick={() => setMobileExpandedCat(mobileExpandedCat === 'services' ? null : 'services')}
                 className="w-full text-base font-sans font-bold tracking-wide text-text-primary flex justify-between items-center py-1 cursor-pointer"
               >
@@ -323,11 +313,11 @@ export default function Navbar() {
             </div>
 
             <Link
-              to="/#work"
+              to="/results"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-sans font-bold tracking-wide text-text-primary border-b border-border-color/10 pb-2 hover:text-accent-orange transition-colors"
+              className={`text-base font-sans font-bold tracking-wide border-b border-border-color/10 pb-2 transition-colors ${location.pathname === '/results' ? 'text-accent-orange' : 'text-text-primary hover:text-accent-orange'}`}
             >
-              Work
+              Results
             </Link>
 
             <Link

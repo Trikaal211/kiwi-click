@@ -209,7 +209,7 @@ export default function BlogArticlePage() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-page-bg text-text-primary pt-36 flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 flex flex-col items-center justify-center px-6">
         <h1 className="font-serif italic text-5xl text-text-primary mb-4">Article Not Found</h1>
         <p className="text-text-secondary font-medium mb-8">This article is coming soon or the link may be incorrect.</p>
         <Link to="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-orange text-white text-sm font-bold border-2 border-accent-emerald">
@@ -222,7 +222,7 @@ export default function BlogArticlePage() {
   const related = allArticles.filter(a => article.relatedSlugs.includes(a.slug)).slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
 
       {/* Hero Image */}
       <div className="w-full h-72 md:h-[440px] overflow-hidden relative">

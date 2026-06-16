@@ -27,7 +27,7 @@ export default function ServicePageTemplate({ props }: { props: ServicePageProps
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
 
       {/* Hero */}
       <section className="py-16 md:py-20 px-6 md:px-12 border-b border-border-color transition-theme">
@@ -47,8 +47,8 @@ export default function ServicePageTemplate({ props }: { props: ServicePageProps
               <Link to="/#contact" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald transition-all shadow-offset">
                 Get Started <ArrowUpRight size={13} />
               </Link>
-              <Link to="/#work" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:border-accent-orange transition-all shadow-offset-sm">
-                View Case Studies
+              <Link to="/results" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:border-accent-orange transition-all shadow-offset-sm">
+                View Results
               </Link>
             </div>
           </div>

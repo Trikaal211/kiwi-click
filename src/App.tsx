@@ -11,6 +11,7 @@ const TeamPage = lazy(() => import('./pages/TeamPage'));
 const FAQPage = lazy(() => import('./pages/FAQPage'));
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const ClientResultsPage = lazy(() => import('./pages/ClientResultsPage'));
 
 // Lazy loaded admin pages
 const Login = lazy(() => import('./pages/admin/Login'));
@@ -61,6 +62,9 @@ export default function App() {
             
             {/* Dedicated Contact Page */}
             <Route path="/contact" element={<ContactPage />} />
+
+            {/* Client Results Page */}
+            <Route path="/results" element={<ClientResultsPage />} />
 
             {/* Dynamic Services Ecosystem */}
             <Route path="/services/:slug" element={<ServiceDetailPage />} />

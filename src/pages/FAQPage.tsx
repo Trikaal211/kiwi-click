@@ -81,7 +81,7 @@ export default function FAQPage() {
   const activeData = categories.find(c => c.id === activeCategory)!;
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
 
       {/* Hero */}
       <section className="py-16 md:py-20 px-6 md:px-12 border-b border-border-color transition-theme">

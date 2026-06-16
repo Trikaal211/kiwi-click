@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { 
   Search, MapPin, Phone, MessageSquare, RefreshCw, 
-  Star, Paperclip
+  Star, Paperclip, ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 // CountUp component to animate trust building metrics
@@ -521,8 +521,8 @@ export default function WhyKiwiClicks() {
 
           </div>
 
-          {/* RIGHT CANVAS: Overlapping Chronological Marketing Journey */}
-          <div className="lg:col-span-7 relative flex flex-col items-center gap-10 py-4 lg:pl-6">
+          {/* RIGHT CANVAS: Overlapping Chronological Marketing Journey (DESKTOP) */}
+          <div className="hidden lg:flex lg:col-span-7 relative flex-col items-center gap-10 py-4 lg:pl-6">
             
             {/* Whiteboard outline background container indicator */}
             <div className="absolute inset-0 bg-[#EBF0EE]/30 dark:bg-[#152a22]/10 border-4 border-dashed border-border-color/20 rounded-3xl -z-10 pointer-events-none" />
@@ -600,6 +600,119 @@ export default function WhyKiwiClicks() {
               );
             })}
 
+          </div>
+
+          {/* MOBILE/TABLET SLIDESHOW: Stepper/Slideshow for Mobile Viewports */}
+          <div className="lg:hidden col-span-12 w-full flex flex-col items-center gap-6 py-4 px-2 relative">
+            {/* Whiteboard outline background container indicator */}
+            <div className="absolute inset-0 bg-[#EBF0EE]/30 dark:bg-[#152a22]/10 border-4 border-dashed border-border-color/20 rounded-3xl -z-10 pointer-events-none" />
+
+            {/* Stepper Progress bar indicators */}
+            <div className="w-full max-w-[500px] flex justify-between items-center px-4 relative mb-2 select-none">
+              {/* Connector line behind steps */}
+              <div className="absolute top-1/2 left-6 right-6 h-0.5 bg-border-color/20 dark:bg-white/10 -translate-y-1/2 -z-10" />
+              
+              {journeyStages.map((_, index) => {
+                const isCompleted = index < activeStage;
+                const isActive = index === activeStage;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveStage(index)}
+                    className={`w-8 h-8 rounded-full border-2 font-mono text-xs font-bold flex items-center justify-center transition-all duration-300 relative cursor-pointer ${
+                      isActive
+                        ? 'bg-accent-green border-accent-green text-white scale-110 shadow-offset-sm shadow-offset-green'
+                        : isCompleted
+                        ? 'bg-accent-emerald border-accent-emerald text-white'
+                        : 'bg-card-bg border-border-color/30 text-text-secondary hover:border-accent-orange'
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Active stage Card wrapper */}
+            <div className="w-full max-w-[500px] min-h-[420px] relative flex flex-col items-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeStage}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full bg-card-bg border-2 border-accent-green shadow-offset-green rounded-2xl p-5 relative overflow-hidden group select-none"
+                >
+                  {/* Sticky tape representation on the card */}
+                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-yellow-200/50 dark:bg-yellow-950/20 border border-yellow-300/40 transform rotate-1 backdrop-blur-sm pointer-events-none" />
+
+                  <div className="flex justify-between items-start border-b border-border-color/10 pb-3 mb-4">
+                    <div>
+                      <span className="text-[8px] font-mono uppercase tracking-widest text-accent-orange font-bold">
+                        {journeyStages[activeStage].tag}
+                      </span>
+                      <h4 className="font-serif italic text-lg md:text-xl text-text-primary mt-1 font-bold">
+                        {journeyStages[activeStage].title}
+                      </h4>
+                    </div>
+                    <span className="font-mono text-[9px] text-text-secondary/50 font-bold uppercase mt-1">
+                      STAGE 0{activeStage + 1}
+                    </span>
+                  </div>
+
+                  <p className="text-xs font-sans text-text-secondary leading-relaxed text-left">
+                    {journeyStages[activeStage].desc}
+                  </p>
+
+                  {/* Stage Custom SVG/HTML illustration */}
+                  <div className="my-4">
+                    {journeyStages[activeStage].illustration}
+                  </div>
+
+                  {/* Strategist Strategy handwritten memo */}
+                  <div className="text-left border-t border-border-color/10 pt-3 mt-3">
+                    <p className="text-[9px] font-mono text-text-secondary uppercase tracking-wider font-bold mb-1">
+                      Strategist Note:
+                    </p>
+                    <p className="font-handwriting text-accent-emerald dark:text-[#a3d995] text-base leading-snug font-bold">
+                      "{journeyStages[activeStage].note}"
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Stepper Navigation Buttons */}
+            <div className="flex justify-between items-center w-full max-w-[500px] px-2 select-none">
+              <button
+                onClick={() => setActiveStage((prev) => Math.max(0, prev - 1))}
+                disabled={activeStage === 0}
+                className={`flex items-center gap-1 px-4 py-2.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider border-2 shadow-offset-sm transition-all duration-300 cursor-pointer ${
+                  activeStage === 0
+                    ? 'bg-page-bg-sec/45 border-border-color/15 text-text-secondary/30 pointer-events-none'
+                    : 'bg-card-bg border-accent-emerald text-text-primary hover:border-accent-orange hover:bg-hover-highlight active:scale-95'
+                }`}
+              >
+                <ChevronLeft size={14} /> Prev
+              </button>
+              
+              <span className="text-xs font-mono font-bold text-text-secondary/60">
+                {activeStage + 1} / {journeyStages.length}
+              </span>
+
+              <button
+                onClick={() => setActiveStage((prev) => Math.min(journeyStages.length - 1, prev + 1))}
+                disabled={activeStage === journeyStages.length - 1}
+                className={`flex items-center gap-1 px-4 py-2.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider border-2 shadow-offset-sm transition-all duration-300 cursor-pointer ${
+                  activeStage === journeyStages.length - 1
+                    ? 'bg-page-bg-sec/45 border-border-color/15 text-text-secondary/30 pointer-events-none'
+                    : 'bg-card-bg border-accent-emerald text-text-primary hover:border-accent-orange hover:bg-hover-highlight active:scale-95'
+                }`}
+              >
+                Next <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
 
         </div>

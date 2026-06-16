@@ -24,7 +24,7 @@ const defaultTeam: TeamMember[] = [
     role: 'Founder & Growth Strategist',
     bio: 'Founder & Growth Strategist. Bandana specializes in Local SEO, Google Business Profile optimization, and lead generation to build sustainable growth engines.',
     expertise: ['Local SEO', 'Google Profile Optimization', 'Lead Generation', 'Digital Strategy'],
-    image: '/cofounder.png', // Swapped: cofounder.png has the female profile photo
+    image: '/founder.png',
     linkedin: 'https://linkedin.com/in/bandana-kumari',
     email: 'bandana.k.official@gmail.com',
     isFounder: true,
@@ -36,7 +36,7 @@ const defaultTeam: TeamMember[] = [
     role: 'Co-Founder & Growth Strategist',
     bio: 'Co-Founder & Growth Strategist. Shammy scales local brands and startups using high-performance ad funnels, search marketing, and custom web systems.',
     expertise: ['Google & Meta Ads', 'Web Architectures', 'Marketing Automation', 'Conversion Funnels'],
-    image: '/founder.png', // Swapped: founder.png has the male profile photo
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/shammy-kumar',
     email: 'info@kiwiclicks.in',
     isFounder: true,
@@ -46,7 +46,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Priya Sharma',
     role: 'SEO Specialist',
-    bio: '',
+    bio: 'SEO Specialist. Priya structures organic search visibility, maps keywords, and analyzes competitor link distributions.',
     expertise: ['Technical SEO', 'Maps Ranking', 'On-Page SEO'],
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/priya-sharma-seo',
@@ -55,7 +55,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Rahul Verma',
     role: 'Performance Marketer',
-    bio: '',
+    bio: 'Performance Marketer. Rahul designs performance search campaigns, Meta ad sets, and maps direct response ROAS metrics.',
     expertise: ['Google Ads', 'Meta Ads', 'ROAS Scaling'],
     image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/rahul-verma-marketing',
@@ -64,7 +64,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Neha Arora',
     role: 'Content Strategist',
-    bio: '',
+    bio: 'Content Strategist. Neha targets search intent and drafts highly engaging copywriting for content campaigns and brand landers.',
     expertise: ['Brand Copy', 'Content Plans', 'SMM Strategy'],
     image: 'https://images.unsplash.com/photo-1594744803329-e58b31de215f?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/neha-arora-content',
@@ -73,7 +73,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Aman Gupta',
     role: 'Web Developer',
-    bio: '',
+    bio: 'Web Developer. Aman builds fast React / Next.js frontends, designs modular page architectures, and integrates databases.',
     expertise: ['React / Next.js', 'WordPress', 'Shopify Dev'],
     image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/aman-gupta-dev',
@@ -82,7 +82,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Rohan Malhotra',
     role: 'Graphic Designer',
-    bio: '',
+    bio: 'Graphic Designer. Rohan crafts high-converting campaign banner ads, brand typography guides, and vector illustrations.',
     expertise: ['UI/UX Design', 'Ad Creatives', 'Brand Identity'],
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/rohan-malhotra-design',
@@ -91,7 +91,7 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Sneha Rao',
     role: 'Automation Specialist',
-    bio: '',
+    bio: 'Automation Specialist. Sneha integrates automated CRM triggers, schedules email workflows, and links database channels.',
     expertise: ['Zapier / Make', 'CRM Pipelines', 'Email Flows'],
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/sneha-rao-automation',
@@ -100,10 +100,19 @@ const defaultTeam: TeamMember[] = [
   {
     name: 'Vikram Singh',
     role: 'Operations Lead',
-    bio: '',
+    bio: 'Operations Lead. Vikram handles milestone delivery times, coordinates project tasks, and audits final deliverables.',
     expertise: ['Project Delivery', 'Client Success', 'Resource Planning'],
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400&q=80',
     linkedin: 'https://linkedin.com/in/vikram-singh-ops',
+    email: 'info@kiwiclicks.in'
+  },
+  {
+    name: 'Neha Gupta',
+    role: 'Lead UI/UX Designer',
+    bio: 'Lead UI/UX Designer. Neha engineers high-fidelity Figma layouts, interactive client prototypes, and responsive digital interface frameworks.',
+    expertise: ['UI/UX Design', 'Figma Prototyping', 'User Journeys', 'Visual Systems'],
+    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=400&h=400&q=80',
+    linkedin: 'https://linkedin.com/in/neha-gupta-design',
     email: 'info@kiwiclicks.in'
   }
 ];
@@ -121,8 +130,8 @@ export default function TeamPage() {
             const defM = defaultTeam.find(m => m.name.toLowerCase() === dbM.name.toLowerCase());
             
             let img = dbM.image;
-            if (dbM.name === 'Bandana Kumari') img = '/cofounder.png';
-            if (dbM.name === 'Shammy Kumar') img = '/founder.png';
+            if (dbM.name === 'Bandana Kumari') img = '/founder.png';
+            if (dbM.name === 'Shammy Kumar') img = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80';
 
             return {
               name: dbM.name,
@@ -163,7 +172,7 @@ export default function TeamPage() {
   const specialists = team.filter(m => m.name !== 'Bandana Kumari' && m.name !== 'Shammy Kumar');
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
 
       {/* Hero Header */}
       <section className="py-10 md:py-14 px-6 md:px-12 border-b border-border-color transition-theme">

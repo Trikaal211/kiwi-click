@@ -14,14 +14,16 @@ export default function Team() {
     {
       name: 'Bandana Kumari',
       role: 'Founder & Growth Strategist',
-      image: '/cofounder.png',
+      image: '/founder.png',
+      bio: 'Specializes in scaling local SEO systems, Google Business Profile optimization, lead generation funnels, and brand reputation systems.',
       skills: ['Local SEO', 'Google Business Profile', 'Lead Generation', 'Growth Strategy'],
       label: 'Growth',
     },
     {
       name: 'Shammy Kumar',
       role: 'Co-Founder & Growth Strategist',
-      image: '/founder.png',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
+      bio: 'Drives customer acquisition through targeted Meta & Google Ads campaigns, performance funnel analysis, and ROI-focused digital growth.',
       skills: ['SEO', 'Performance Marketing', 'Google Ads', 'Web Development'],
       label: 'Strategy',
     },
@@ -29,7 +31,7 @@ export default function Team() {
       name: 'Aniket Sharma',
       role: 'Full Stack Developer & BA',
       image: '/developer.png',
-      bio: 'Builds scalable websites, custom business platforms, CRM systems, automation workflows and growth-focused digital products.',
+      bio: 'Builds scalable React/Next.js platforms, fast web layouts, database integrations, and automated operational pipelines.',
       skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'Business Analysis'],
       label: 'Development',
     },
@@ -37,6 +39,7 @@ export default function Team() {
       name: 'Rohit Verma',
       role: 'Business Analyst',
       image: '/rohit.png',
+      bio: 'Bridges the gap between business objectives and technical execution, mapping user flows, and defining project scopes.',
       skills: ['Requirements Gathering', 'Process Design', 'Market Research', 'Reporting'],
       label: 'Strategy',
     },
@@ -44,7 +47,16 @@ export default function Team() {
       name: 'Vikas Yadav',
       role: 'PHP & WordPress Developer',
       image: '/vikas.png',
+      bio: 'Develops optimized WordPress themes, custom WooCommerce configurations, fast PHP code implementations, and secures responsive web systems.',
       skills: ['PHP', 'WordPress', 'WooCommerce', 'Custom Themes'],
+      label: 'Development',
+    },
+    {
+      name: 'Neha Gupta',
+      role: 'UI/UX Designer',
+      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=400&h=400&q=80',
+      bio: 'Engineers intuitive user experiences, wireframes, interactive Figma prototypes, and modern visual design branding systems.',
+      skills: ['UI/UX Design', 'Figma', 'Wireframing', 'Ad Creatives'],
       label: 'Development',
     },
   ];
@@ -89,8 +101,8 @@ export default function Team() {
           </div>
         </div>
 
-        {/* 4-column responsive grid container (desktop: 4, tablet: 2, mobile: 1) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 4-column responsive layout (desktop: 4 centered, tablet: 2 centered, mobile: 1 centered) */}
+        <div className="flex flex-wrap justify-center gap-6">
           {members.map((member, i) => (
             <motion.div
               key={member.name}
@@ -98,7 +110,7 @@ export default function Team() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-5%' }}
               transition={{ duration: 0.45, delay: i * 0.06 }}
-              className="bg-card-bg border-2 border-border-color/10 dark:border-white/5 rounded-2xl p-4 shadow-offset-sm hover:-translate-y-1.5 hover:shadow-[0_15px_30px_rgba(74,156,58,0.12)] hover:border-accent-green dark:hover:border-accent-green transition-all duration-300 relative group flex flex-col justify-between"
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] max-w-[280px] bg-card-bg border-2 border-border-color/10 dark:border-white/5 rounded-2xl p-4 shadow-offset-sm hover:-translate-y-1.5 hover:shadow-[0_15px_30px_rgba(74,156,58,0.12)] hover:border-accent-green dark:hover:border-accent-green transition-all duration-300 relative group flex flex-col justify-between"
             >
               <div>
                 {/* Photo container */}

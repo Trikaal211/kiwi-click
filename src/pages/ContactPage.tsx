@@ -53,7 +53,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-28 pb-16 transition-theme overflow-x-hidden">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 pb-16 transition-theme overflow-x-hidden">
       
       {/* Hero Header */}
       <section className="px-6 md:px-12 pb-10 border-b border-border-color transition-theme text-left">
@@ -366,7 +366,7 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center text-left">
           <div className="flex gap-4 items-center">
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-accent-emerald shrink-0 bg-card-bg">
-              <img src="/cofounder.png" alt="Bandana Kumari" className="w-full h-full object-cover object-top" />
+              <img src="/founder.png" alt="Bandana Kumari" className="w-full h-full object-cover object-top" />
             </div>
             <div>
               <p className="font-serif italic text-base text-text-primary font-bold">"We build marketing systems that produce commercial results, not salesperson promises."</p>
@@ -376,7 +376,7 @@ export default function ContactPage() {
 
           <div className="flex gap-4 items-center">
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-accent-orange shrink-0 bg-card-bg">
-              <img src="/founder.png" alt="Shammy Kumar" className="w-full h-full object-cover object-top" />
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80" alt="Shammy Kumar" className="w-full h-full object-cover object-top" />
             </div>
             <div>
               <p className="font-serif italic text-base text-text-primary font-bold">"Technical speed coupled with ROI campaign targeting is our blueprint for local growth."</p>
