@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, ExternalLink, Mail, Star, Award, Users, Target } from 'lucide-react';
+import { ArrowUpRight, ExternalLink, Mail, Star, Award, Users, Target, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import apiClient from '../api/client';
 
@@ -22,7 +22,7 @@ const defaultTeam: TeamMember[] = [
     role: 'Founder & Growth Strategist',
     bio: 'Bandana Kumari is the Founder & Growth Strategist at KiwiClicks. She specializes in Local SEO, Google Business Profile Optimization, Lead Generation, Digital Marketing Strategy, and Online Reputation Management.\n\nWith 4+ years of experience helping local businesses generate visibility, trust, and qualified leads, she focuses on building sustainable growth systems instead of short-term marketing tactics.\n\nShe has successfully helped businesses improve Google rankings, increase inquiries, optimize local search presence, and create measurable growth through data-driven digital marketing strategies.',
     expertise: ['Local SEO', 'Google Profile Optimization', 'Lead Generation', 'Digital Strategy', 'Reputation Management'],
-    image: '/founder.png',
+    image: '/cofounder.png', // Swapped: cofounder.png has the female profile photo
     linkedin: 'https://linkedin.com/in/bandana-kumari',
     twitter: 'https://twitter.com/bandana_strategy',
     email: 'bandana.k.official@gmail.com',
@@ -34,7 +34,7 @@ const defaultTeam: TeamMember[] = [
     role: 'Co-Founder & Growth Strategist',
     bio: 'Shammy Kumar is a Digital Marketing & Growth Specialist with expertise in SEO, Google Ads, Meta Ads, Lead Generation, Website Development, Shopify, WordPress, and Marketing Automation.\n\nWith experience across 30+ business categories, he helps companies scale visibility, generate qualified leads, and build conversion-focused digital systems that drive long-term growth.\n\nHis strength lies in combining technical execution with marketing strategy to produce measurable business outcomes.',
     expertise: ['Shopify & WordPress', 'Google & Meta Ads', 'Lead Generation', 'Marketing Automation', 'Growth Funnels'],
-    image: '/cofounder.png',
+    image: '/founder.png', // Swapped: founder.png has the male profile photo
     linkedin: 'https://linkedin.com/in/shammy-kumar',
     twitter: 'https://twitter.com/shammy_ads',
     email: 'info@kiwiclicks.in',
@@ -82,11 +82,17 @@ export default function TeamPage() {
           // Map DB team members and merge with default details if matching by name
           const mapped = dbMembers.map((dbM: any) => {
             const defM = defaultTeam.find(m => m.name.toLowerCase() === dbM.name.toLowerCase());
+            
+            // Resolve correct image paths in database sync
+            let img = dbM.image;
+            if (dbM.name === 'Bandana Kumari') img = '/cofounder.png';
+            if (dbM.name === 'Shammy Kumar') img = '/founder.png';
+
             return {
               name: dbM.name,
               role: dbM.designation,
               bio: dbM.bio,
-              image: dbM.image,
+              image: img,
               linkedin: dbM.linkedin || undefined,
               twitter: dbM.twitter || undefined,
               email: defM?.email || 'info@kiwiclicks.in',
@@ -111,8 +117,10 @@ export default function TeamPage() {
     { icon: Star, title: 'Delhi-Native Edge', desc: 'We understand local buyer behavior and local market dynamics better than any out-of-city agency.' },
   ];
 
-  const founders = team.filter(m => m.isFounder);
-  const specialists = team.filter(m => !m.isFounder);
+  // Extract profiles to align visual sizing correctly
+  const founder = team.find(m => m.name === 'Bandana Kumari') || team[0];
+  const coFounder = team.find(m => m.name === 'Shammy Kumar') || team[1];
+  const specialists = team.filter(m => m.name !== 'Bandana Kumari' && m.name !== 'Shammy Kumar');
 
   return (
     <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
@@ -140,105 +148,185 @@ export default function TeamPage() {
       {/* Founders — Full Width Featured */}
       <section className="py-16 px-6 md:px-12 bg-page-bg transition-theme">
         <div className="max-w-6xl mx-auto space-y-12">
-          {founders.map((founder, idx) => (
-            <div key={founder.name} className={`bg-card-bg border-4 ${idx % 2 === 0 ? 'border-accent-emerald shadow-offset' : 'border-accent-orange shadow-offset-orange'} rounded-3xl overflow-hidden transition-theme`}>
+          
+          {/* 1. Founder Card - Large, highly prominent layout */}
+          {founder && (
+            <div className="bg-card-bg border-4 border-accent-emerald rounded-3xl overflow-hidden shadow-offset transition-theme relative">
+              {/* Trust Badge overlay */}
+              <div className="absolute top-4 right-4 hidden md:flex items-center gap-1.5 bg-accent-green text-white px-3 py-1.5 rounded-xl text-[10px] font-mono font-bold tracking-widest uppercase border-2 border-white shadow-md z-10">
+                <ShieldCheck size={12} /> KiwiClicks Founder
+              </div>
+
               <div className="grid grid-cols-1 lg:grid-cols-12">
                 {/* Image */}
-                <div className="lg:col-span-4 h-72 lg:h-auto relative overflow-hidden">
+                <div className="lg:col-span-5 h-80 lg:h-auto relative overflow-hidden bg-page-bg-sec/50 border-r-0 lg:border-r-4 lg:border-accent-emerald">
                   <img
                     src={founder.image}
                     alt={founder.name}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent lg:bg-gradient-to-r" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:bg-gradient-to-r" />
                   <div className="absolute bottom-4 left-4 lg:hidden">
-                    <span className="text-[9px] font-mono text-white/80 bg-black/50 px-2 py-1 rounded tracking-widest uppercase">{founder.role.includes('Co-Founder') ? 'Co-Founder' : 'Founder'}</span>
+                    <span className="text-[10px] font-mono text-white bg-accent-green px-2.5 py-1 rounded-lg tracking-widest uppercase font-bold">FOUNDER</span>
                   </div>
                 </div>
                 {/* Content */}
-                <div className="lg:col-span-8 p-8 md:p-10 flex flex-col justify-between">
+                <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className={`text-[9px] font-mono ${idx % 2 === 0 ? 'bg-accent-green/10 text-accent-green border-accent-green/20' : 'bg-accent-orange/10 text-accent-orange border-accent-orange/20'} border px-3 py-1 rounded-full font-bold tracking-widest uppercase hidden lg:inline-flex`}>
-                        {founder.role}
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="text-[9px] font-mono bg-accent-green/10 text-accent-green border border-accent-green/20 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
+                        Chief Strategist
                       </span>
                       <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={12} className={idx % 2 === 0 ? "fill-accent-orange text-accent-orange" : "fill-accent-green text-accent-green"} />
+                          <Star key={i} size={13} className="fill-accent-orange text-accent-orange" />
                         ))}
                       </div>
                     </div>
-                    <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-1">{founder.name}</h2>
-                    <p className={`text-sm font-sans font-bold ${idx % 2 === 0 ? 'text-accent-green' : 'text-accent-orange'} tracking-wide mb-5`}>{founder.role}</p>
+                    <h2 className="font-serif text-3xl md:text-5xl text-text-primary mb-2 font-bold tracking-tight">
+                      {founder.name}
+                    </h2>
+                    <p className="text-xs font-sans font-bold text-accent-green tracking-widest uppercase mb-6">{founder.role}</p>
                     <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed mb-6 whitespace-pre-line">{founder.bio}</p>
 
                     {founder.quote && (
-                      <blockquote className={`font-handwriting text-lg ${idx % 2 === 0 ? 'text-accent-emerald dark:text-accent-green border-accent-orange' : 'text-accent-orange border-accent-emerald'} border-l-4 pl-4 italic mb-6`}>
+                      <blockquote className="font-handwriting text-lg text-accent-emerald dark:text-accent-green border-l-4 border-accent-orange pl-4 italic mb-6">
                         {founder.quote}
                       </blockquote>
                     )}
 
                     <div className="flex flex-wrap gap-2 mb-6">
                       {founder.expertise.map((e) => (
-                        <span key={e} className={`text-[10px] font-sans font-bold bg-page-bg border-2 ${idx % 2 === 0 ? 'border-accent-emerald text-accent-emerald' : 'border-accent-orange text-accent-orange'} px-3 py-1 rounded-lg ${idx % 2 === 0 ? 'shadow-offset-sm' : 'shadow-offset-sm-orange'}`}>
+                        <span key={e} className="inline-flex items-center gap-1 text-[10px] font-sans font-bold bg-page-bg border-2 border-accent-emerald text-accent-emerald px-3 py-1.5 rounded-xl shadow-offset-sm">
+                          <CheckCircle2 size={10} className="text-accent-green" /> {e}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 pt-6 border-t border-border-color/60">
+                    {founder.linkedin && <a href={founder.linkedin} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white hover:border-accent-emerald transition-all shadow-offset-sm cursor-pointer"><ExternalLink size={15} /></a>}
+                    {founder.twitter && <a href={founder.twitter} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white hover:border-accent-orange transition-all shadow-offset-sm cursor-pointer"><ExternalLink size={15} /></a>}
+                    {founder.email && <a href={`mailto:${founder.email}`} className="flex items-center gap-2 text-xs font-sans font-bold text-text-secondary hover:text-accent-orange transition-colors"><Mail size={15} /> {founder.email}</a>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 2. Co-Founder Card - Spotlight layout, visually scaled down */}
+          {coFounder && (
+            <div className="max-w-4xl mx-auto bg-card-bg border-4 border-accent-orange rounded-3xl overflow-hidden shadow-offset-orange transition-theme relative">
+              {/* Trust Badge overlay */}
+              <div className="absolute top-4 right-4 hidden md:flex items-center gap-1.5 bg-accent-orange text-white px-3 py-1 rounded-xl text-[9px] font-mono font-bold tracking-widest uppercase border-2 border-white shadow-md z-10">
+                <Zap size={11} className="animate-pulse" /> Co-Founder Spotlight
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12">
+                {/* Image */}
+                <div className="lg:col-span-4 h-72 lg:h-auto relative overflow-hidden bg-page-bg-sec/50 border-r-0 lg:border-r-4 lg:border-accent-orange">
+                  <img
+                    src={coFounder.image}
+                    alt={coFounder.name}
+                    className="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent lg:bg-gradient-to-r" />
+                  <div className="absolute bottom-4 left-4 lg:hidden">
+                    <span className="text-[9px] font-mono text-white bg-accent-orange px-2 py-0.5 rounded-md tracking-widest uppercase font-bold">CO-FOUNDER</span>
+                  </div>
+                </div>
+                {/* Content */}
+                <div className="lg:col-span-8 p-6 md:p-8 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-[9px] font-mono bg-accent-orange/10 text-accent-orange border border-accent-orange/20 px-2.5 py-0.5 rounded-full font-bold tracking-widest uppercase">
+                        Tech & Ads Architect
+                      </span>
+                    </div>
+                    <h3 className="font-serif text-2xl md:text-3xl text-text-primary mb-1 font-bold">
+                      {coFounder.name}
+                    </h3>
+                    <p className="text-[11px] font-sans font-bold text-accent-orange tracking-wider uppercase mb-4">{coFounder.role}</p>
+                    <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-5 whitespace-pre-line">{coFounder.bio}</p>
+
+                    {coFounder.quote && (
+                      <blockquote className="font-handwriting text-base text-accent-orange border-l-4 border-accent-emerald pl-4 italic mb-5">
+                        {coFounder.quote}
+                      </blockquote>
+                    )}
+
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {coFounder.expertise.map((e) => (
+                        <span key={e} className="inline-flex items-center gap-1 text-[9px] font-sans font-bold bg-page-bg border-2 border-accent-orange text-accent-orange px-2.5 py-1 rounded-lg shadow-offset-sm-orange">
                           {e}
                         </span>
                       ))}
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 pt-4 border-t border-border-color">
-                    {founder.linkedin && <a href={founder.linkedin} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white hover:border-accent-emerald transition-all"><ExternalLink size={14} /></a>}
-                    {founder.twitter && <a href={founder.twitter} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white hover:border-accent-orange transition-all"><ExternalLink size={14} /></a>}
-                    {founder.email && <a href={`mailto:${founder.email}`} className="flex items-center gap-2 text-xs font-sans font-medium text-text-secondary hover:text-accent-orange transition-colors"><Mail size={14} /> {founder.email}</a>}
+                  <div className="flex items-center gap-4 pt-4 border-t border-border-color/40">
+                    {coFounder.linkedin && <a href={coFounder.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white hover:border-accent-emerald transition-all cursor-pointer"><ExternalLink size={13} /></a>}
+                    {coFounder.twitter && <a href={coFounder.twitter} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white hover:border-accent-orange transition-all cursor-pointer"><ExternalLink size={13} /></a>}
+                    {coFounder.email && <a href={`mailto:${coFounder.email}`} className="flex items-center gap-2 text-xs font-sans font-bold text-text-secondary hover:text-accent-orange transition-colors"><Mail size={13} /> {coFounder.email}</a>}
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
+
         </div>
       </section>
 
-      {/* Specialist Team */}
+      {/* Specialist Team - Cohesive and Uniform Layout */}
       <section className="py-16 px-6 md:px-12 bg-page-bg-sec transition-theme">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 border-b border-border-color pb-8">
             <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase">Our Specialists</span>
             <h2 className="font-serif italic text-4xl text-text-primary mt-2">Senior Team Members</h2>
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {specialists.map((member, idx) => {
-              const shadows = ['shadow-offset', 'shadow-offset-orange', 'shadow-offset-green'];
-              const borders = ['border-accent-emerald', 'border-accent-orange', 'border-accent-green'];
-              return (
-                <div key={idx} className={`bg-card-bg border-2 ${borders[idx % 3]} rounded-3xl overflow-hidden ${shadows[idx % 3]} hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300 flex flex-col justify-between`}>
-                  <div>
-                    <div className="h-56 overflow-hidden relative">
-                      <img src={member.image} alt={member.name} className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-serif text-xl text-text-primary mb-1">{member.name}</h3>
-                      <p className="text-xs font-sans font-bold text-accent-green tracking-wide mb-3">{member.role}</p>
-                      <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-4">{member.bio}</p>
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {member.expertise.map((e) => (
-                          <span key={e} className="text-[9px] font-sans font-bold bg-page-bg border border-border-color text-text-secondary px-2 py-0.5 rounded-md">
-                            {e}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+            {specialists.map((member, idx) => (
+              <div 
+                key={idx} 
+                className="bg-card-bg border-4 border-accent-emerald rounded-3xl overflow-hidden shadow-offset hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300 flex flex-col justify-between relative"
+              >
+                {/* Tiny trust check badge inside specialist image */}
+                <div className="absolute top-3 right-3 bg-accent-emerald text-white p-1 rounded-lg text-[8px] font-mono tracking-widest uppercase border border-white shadow-sm z-10 flex items-center gap-0.5">
+                  <ShieldCheck size={10} /> Certified
+                </div>
+
+                <div>
+                  <div className="h-56 overflow-hidden relative border-b-4 border-accent-emerald">
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover object-top hover:scale-103 transition-transform duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   </div>
-                  <div className="p-6 pt-0">
-                    <div className="flex items-center gap-3 pt-4 border-t border-border-color">
-                      {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white transition-all"><ExternalLink size={12} /></a>}
-                      {member.twitter && <a href={member.twitter} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white transition-all"><ExternalLink size={12} /></a>}
-                      {member.email && <a href={`mailto:${member.email}`} className="text-[10px] font-sans text-text-secondary hover:text-accent-orange transition-colors">{member.email}</a>}
+                  
+                  <div className="p-6">
+                    <h3 className="font-serif text-xl text-text-primary mb-1 font-bold">{member.name}</h3>
+                    <p className="text-xs font-sans font-bold text-accent-green tracking-wide mb-3">{member.role}</p>
+                    <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-4">{member.bio}</p>
+                    
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {member.expertise.map((e) => (
+                        <span key={e} className="text-[9px] font-sans font-bold bg-page-bg border border-border-color text-text-secondary px-2 py-1 rounded-md">
+                          {e}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
-              );
-            })}
+
+                <div className="p-6 pt-0">
+                  <div className="flex items-center gap-3 pt-4 border-t border-border-color/60">
+                    {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white transition-all cursor-pointer"><ExternalLink size={12} /></a>}
+                    {member.email && <a href={`mailto:${member.email}`} className="text-[10px] font-sans text-text-secondary hover:text-accent-orange transition-colors truncate">{member.email}</a>}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
