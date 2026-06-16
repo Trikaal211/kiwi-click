@@ -60,7 +60,7 @@ export default function Contact() {
           <div className="w-full h-48 rounded-2xl overflow-hidden border-2 border-accent-emerald shadow-offset-sm transition-theme my-6">
             <img 
               src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" 
-              alt="KiwiClicks Connaught Place Delhi Office Workspace" 
+              alt="KiwiClicks Dwarka Delhi Office Workspace" 
               loading="lazy"
               className="w-full h-full object-cover object-center grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-700 ease-in-out"
             />
@@ -75,7 +75,7 @@ export default function Contact() {
             <div className="flex flex-col gap-4">
               {/* WhatsApp CTA */}
               <a 
-                href="https://wa.me/919999999999?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20digital%20growth%20strategy." 
+                href="https://wa.me/916230078396?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20digital%20growth%20strategy." 
                 target="_blank" 
                 rel="noreferrer"
                 className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
@@ -89,13 +89,13 @@ export default function Contact() {
 
               {/* Email Link */}
               <a 
-                href="mailto:hello@kiwiclicks.agency" 
+                href="mailto:info@kiwiclicks.in" 
                 className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
               >
                 <div className="w-8 h-8 rounded-lg bg-accent-green/10 flex items-center justify-center text-accent-green">
                   <Mail size={15} />
                 </div>
-                hello@kiwiclicks.agency
+                info@kiwiclicks.in
                 <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
 
@@ -105,8 +105,8 @@ export default function Contact() {
                   <PinIcon size={15} />
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary leading-none">Delhi CP Office</p>
-                  <p className="text-xs text-text-secondary/60 mt-1">104, Statesman House, Connaught Place, New Delhi 110001</p>
+                  <p className="font-semibold text-text-primary leading-none">Delhi Office</p>
+                  <p className="text-xs text-text-secondary/60 mt-1">Dwarka Sector 2, New Delhi – 110077, India</p>
                 </div>
               </div>
             </div>
@@ -231,7 +231,7 @@ export default function Contact() {
       {/* Footer Copy */}
       <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row justify-between items-center text-[10px] font-sans text-text-secondary/60 border-t border-border-color pt-4 gap-2 transition-theme">
         <p>© 2026-2027 KIWICLICKS AGENCY PVT LTD. ALL CONVERSIONS INTEGRATED.</p>
-        <p className="tracking-widest">STATESMAN CP DELHI // GROW REMARKABLY</p>
+        <p className="tracking-widest">DWARKA SECTOR 2 // NEW DELHI // GROW REMARKABLY</p>
       </div>
     </section>
   );

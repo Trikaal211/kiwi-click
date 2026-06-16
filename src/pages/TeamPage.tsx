@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, ExternalLink, Mail, Star, Award, Users, Target } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import apiClient from '../api/client';
 
 interface TeamMember {
   name: string;
@@ -14,59 +16,103 @@ interface TeamMember {
   quote?: string;
 }
 
+const defaultTeam: TeamMember[] = [
+  {
+    name: 'Bandana Kumari',
+    role: 'Founder & Growth Strategist',
+    bio: 'Bandana Kumari is the Founder & Growth Strategist at KiwiClicks. She specializes in Local SEO, Google Business Profile Optimization, Lead Generation, Digital Marketing Strategy, and Online Reputation Management.\n\nWith 4+ years of experience helping local businesses generate visibility, trust, and qualified leads, she focuses on building sustainable growth systems instead of short-term marketing tactics.\n\nShe has successfully helped businesses improve Google rankings, increase inquiries, optimize local search presence, and create measurable growth through data-driven digital marketing strategies.',
+    expertise: ['Local SEO', 'Google Profile Optimization', 'Lead Generation', 'Digital Strategy', 'Reputation Management'],
+    image: '/founder.png',
+    linkedin: 'https://linkedin.com/in/bandana-kumari',
+    twitter: 'https://twitter.com/bandana_strategy',
+    email: 'bandana.k.official@gmail.com',
+    isFounder: true,
+    quote: '"We build sustainable growth systems instead of short-term marketing tactics."'
+  },
+  {
+    name: 'Shammy Kumar',
+    role: 'Co-Founder & Growth Strategist',
+    bio: 'Shammy Kumar is a Digital Marketing & Growth Specialist with expertise in SEO, Google Ads, Meta Ads, Lead Generation, Website Development, Shopify, WordPress, and Marketing Automation.\n\nWith experience across 30+ business categories, he helps companies scale visibility, generate qualified leads, and build conversion-focused digital systems that drive long-term growth.\n\nHis strength lies in combining technical execution with marketing strategy to produce measurable business outcomes.',
+    expertise: ['Shopify & WordPress', 'Google & Meta Ads', 'Lead Generation', 'Marketing Automation', 'Growth Funnels'],
+    image: '/cofounder.png',
+    linkedin: 'https://linkedin.com/in/shammy-kumar',
+    twitter: 'https://twitter.com/shammy_ads',
+    email: 'info@kiwiclicks.in',
+    isFounder: true,
+    quote: '"Combining technical execution with marketing strategy produces measurable business outcomes."'
+  },
+  {
+    name: 'Priya Sharma',
+    role: 'SEO Specialist',
+    bio: 'Priya is a dedicated SEO Specialist focusing on Local SEO, ranking local business listings, and executing technical search strategies to maximize organic search visibility.',
+    expertise: ['Technical SEO', 'Local Citations', 'Maps Ranking', 'On-Page Optimization'],
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80',
+    linkedin: 'https://linkedin.com/in/priya-sharma-seo',
+    email: 'info@kiwiclicks.in'
+  },
+  {
+    name: 'Rahul Verma',
+    role: 'Performance Marketing Manager',
+    bio: 'Rahul manages performance marketing budgets, designing and scaling conversion-focused ad campaigns on Meta and Google to drive inbound leads.',
+    expertise: ['Meta Ads Manager', 'Google Ads', 'ROAS Optimization', 'A/B Testing'],
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&h=400&q=80',
+    linkedin: 'https://linkedin.com/in/rahul-verma-marketing',
+    email: 'info@kiwiclicks.in'
+  },
+  {
+    name: 'Neha Arora',
+    role: 'Content & Brand Strategist',
+    bio: 'Neha is a creative content strategist and copywriter, formulating brand campaigns and content schedules that engage audiences and build digital trust.',
+    expertise: ['Brand Messaging', 'Content Calendars', 'Copywriting', 'Online Engagement'],
+    image: 'https://images.unsplash.com/photo-1594744803329-e58b31de215f?auto=format&fit=crop&w=400&h=400&q=80',
+    linkedin: 'https://linkedin.com/in/neha-arora-content',
+    email: 'info@kiwiclicks.in'
+  }
+];
+
 export default function TeamPage() {
-  const team: TeamMember[] = [
-    {
-      name: 'Arjun Malhotra',
-      role: 'Founder & Growth Strategist',
-      bio: 'With 8+ years building digital growth engines for Delhi-based businesses, Arjun founded KiwiClicks with a clear mission: help ambitious brands escape generic marketing and build real, measurable pipelines. He has personally overseen campaigns generating over ₹40 Cr in attributable revenue for clients across real estate, D2C, and EdTech sectors.',
-      expertise: ['Growth Strategy', 'Meta Ads', 'Conversion Systems', 'Brand Positioning'],
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
-      linkedin: '#',
-      twitter: '#',
-      email: 'arjun@kiwiclicks.agency',
-      isFounder: true,
-      quote: '"Every campaign we run is a conversation between your brand and a real human being. We treat it like one."'
-    },
-    {
-      name: 'Priya Nair',
-      role: 'Head of SEO & Local Search',
-      bio: 'Priya specializes in semantic SEO, Google Business Profile optimization, and local ranking systems for Delhi businesses. She has ranked 50+ brands to Google page 1 within competitive CP and NCR markets, driving organic traffic that compounds month over month.',
-      expertise: ['Technical SEO', 'Local SEO', 'Google Business', 'Keyword Strategy'],
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&h=400&q=80',
-      linkedin: '#',
-      email: 'priya@kiwiclicks.agency',
-    },
-    {
-      name: 'Rahul Verma',
-      role: 'Lead Web Developer',
-      bio: 'Rahul architects high-performance websites using React, Next.js, and Vite that load in under 1 second and convert visitors into qualified leads. Every site he ships includes HubSpot or CRM integrations, WhatsApp lead routing, and analytics dashboards.',
-      expertise: ['React & Next.js', 'Performance Optimization', 'CRM Integrations', 'UX Engineering'],
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&h=400&q=80',
-      linkedin: '#',
-      email: 'rahul@kiwiclicks.agency',
-    },
-    {
-      name: 'Sneha Kapoor',
-      role: 'Social Media & Paid Ads Strategist',
-      bio: 'Sneha manages Meta and Google Ads accounts spending ₹50L+ monthly for KiwiClicks clients. She is known for creative scripting frameworks that achieve under-3-second hook rates and for building lookalike audience stacks that consistently hit 4-5x ROAS.',
-      expertise: ['Meta Ads', 'Google Ads', 'Creative Strategy', 'Audience Research'],
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&h=400&q=80',
-      linkedin: '#',
-      twitter: '#',
-      email: 'sneha@kiwiclicks.agency',
-    }
-  ];
+  const [team, setTeam] = useState<TeamMember[]>(defaultTeam);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await apiClient.get('/team');
+        const dbMembers = response.data.data.teamMembers;
+        if (dbMembers && dbMembers.length > 0) {
+          // Map DB team members and merge with default details if matching by name
+          const mapped = dbMembers.map((dbM: any) => {
+            const defM = defaultTeam.find(m => m.name.toLowerCase() === dbM.name.toLowerCase());
+            return {
+              name: dbM.name,
+              role: dbM.designation,
+              bio: dbM.bio,
+              image: dbM.image,
+              linkedin: dbM.linkedin || undefined,
+              twitter: dbM.twitter || undefined,
+              email: defM?.email || 'info@kiwiclicks.in',
+              expertise: defM?.expertise || [dbM.designation],
+              isFounder: defM?.isFounder || dbM.designation.toLowerCase().includes('founder'),
+              quote: defM?.quote
+            };
+          });
+          setTeam(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to fetch team from API, using static default:', err);
+      }
+    };
+    fetchTeam();
+  }, []);
 
   const values = [
     { icon: Target, title: 'Results First', desc: 'We measure success in business outcomes — qualified leads, ROAS, and revenue — not vanity metrics.' },
     { icon: Users, title: 'Real Partnership', desc: 'We embed ourselves in your growth story. You get direct access to the people doing the work, always.' },
     { icon: Award, title: 'Transparent Process', desc: 'Weekly reports, plain-English explanations, and milestone-based pricing. No smoke and mirrors.' },
-    { icon: Star, title: 'Delhi-Native Edge', desc: 'We understand CP commercial intent, NCR buyer behavior, and local market dynamics better than any out-of-city agency.' },
+    { icon: Star, title: 'Delhi-Native Edge', desc: 'We understand local buyer behavior and local market dynamics better than any out-of-city agency.' },
   ];
 
-  const founder = team[0];
-  const specialists = team.slice(1);
+  const founders = team.filter(m => m.isFounder);
+  const specialists = team.filter(m => !m.isFounder);
 
   return (
     <div className="min-h-screen bg-page-bg text-text-primary pt-24 transition-theme">
@@ -85,67 +131,70 @@ export default function TeamPage() {
               </h1>
             </div>
             <p className="max-w-md text-base font-sans font-medium text-text-secondary leading-relaxed">
-              We are a compact, senior team based out of Connaught Place, Delhi. No juniors managing your campaigns. The people you meet are the people who do the work.
+              We are a compact, senior team based out of Dwarka, New Delhi. No juniors managing your campaigns. The people you meet are the people who do the work.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Founder Card — Full Width Featured */}
+      {/* Founders — Full Width Featured */}
       <section className="py-16 px-6 md:px-12 bg-page-bg transition-theme">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-card-bg border-4 border-accent-emerald rounded-3xl overflow-hidden shadow-offset transition-theme">
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              {/* Image */}
-              <div className="lg:col-span-4 h-72 lg:h-auto relative overflow-hidden">
-                <img
-                  src={founder.image}
-                  alt={founder.name}
-                  className="w-full h-full object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent lg:bg-gradient-to-r" />
-                <div className="absolute bottom-4 left-4 lg:hidden">
-                  <span className="text-[9px] font-mono text-white/80 bg-black/50 px-2 py-1 rounded tracking-widest uppercase">Founder</span>
+        <div className="max-w-6xl mx-auto space-y-12">
+          {founders.map((founder, idx) => (
+            <div key={founder.name} className={`bg-card-bg border-4 ${idx % 2 === 0 ? 'border-accent-emerald shadow-offset' : 'border-accent-orange shadow-offset-orange'} rounded-3xl overflow-hidden transition-theme`}>
+              <div className="grid grid-cols-1 lg:grid-cols-12">
+                {/* Image */}
+                <div className="lg:col-span-4 h-72 lg:h-auto relative overflow-hidden">
+                  <img
+                    src={founder.image}
+                    alt={founder.name}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent lg:bg-gradient-to-r" />
+                  <div className="absolute bottom-4 left-4 lg:hidden">
+                    <span className="text-[9px] font-mono text-white/80 bg-black/50 px-2 py-1 rounded tracking-widest uppercase">{founder.role.includes('Co-Founder') ? 'Co-Founder' : 'Founder'}</span>
+                  </div>
                 </div>
-              </div>
-              {/* Content */}
-              <div className="lg:col-span-8 p-8 md:p-10 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[9px] font-mono bg-accent-orange/10 text-accent-orange border border-accent-orange/20 px-3 py-1 rounded-full font-bold tracking-widest uppercase hidden lg:inline-flex">
-                      Founder & CEO
-                    </span>
-                    <div className="flex gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={12} className="fill-accent-orange text-accent-orange" />
+                {/* Content */}
+                <div className="lg:col-span-8 p-8 md:p-10 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className={`text-[9px] font-mono ${idx % 2 === 0 ? 'bg-accent-green/10 text-accent-green border-accent-green/20' : 'bg-accent-orange/10 text-accent-orange border-accent-orange/20'} border px-3 py-1 rounded-full font-bold tracking-widest uppercase hidden lg:inline-flex`}>
+                        {founder.role}
+                      </span>
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={12} className={idx % 2 === 0 ? "fill-accent-orange text-accent-orange" : "fill-accent-green text-accent-green"} />
+                        ))}
+                      </div>
+                    </div>
+                    <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-1">{founder.name}</h2>
+                    <p className={`text-sm font-sans font-bold ${idx % 2 === 0 ? 'text-accent-green' : 'text-accent-orange'} tracking-wide mb-5`}>{founder.role}</p>
+                    <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed mb-6 whitespace-pre-line">{founder.bio}</p>
+
+                    {founder.quote && (
+                      <blockquote className={`font-handwriting text-lg ${idx % 2 === 0 ? 'text-accent-emerald dark:text-accent-green border-accent-orange' : 'text-accent-orange border-accent-emerald'} border-l-4 pl-4 italic mb-6`}>
+                        {founder.quote}
+                      </blockquote>
+                    )}
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {founder.expertise.map((e) => (
+                        <span key={e} className={`text-[10px] font-sans font-bold bg-page-bg border-2 ${idx % 2 === 0 ? 'border-accent-emerald text-accent-emerald' : 'border-accent-orange text-accent-orange'} px-3 py-1 rounded-lg ${idx % 2 === 0 ? 'shadow-offset-sm' : 'shadow-offset-sm-orange'}`}>
+                          {e}
+                        </span>
                       ))}
                     </div>
                   </div>
-                  <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-1">{founder.name}</h2>
-                  <p className="text-sm font-sans font-bold text-accent-green tracking-wide mb-5">{founder.role}</p>
-                  <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed mb-6">{founder.bio}</p>
-
-                  {founder.quote && (
-                    <blockquote className="font-handwriting text-lg text-accent-emerald dark:text-accent-green border-l-4 border-accent-orange pl-4 italic mb-6">
-                      {founder.quote}
-                    </blockquote>
-                  )}
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {founder.expertise.map((e) => (
-                      <span key={e} className="text-[10px] font-sans font-bold bg-page-bg border-2 border-accent-emerald text-accent-emerald px-3 py-1 rounded-lg shadow-offset-sm">
-                        {e}
-                      </span>
-                    ))}
+                  <div className="flex items-center gap-4 pt-4 border-t border-border-color">
+                    {founder.linkedin && <a href={founder.linkedin} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white hover:border-accent-emerald transition-all"><ExternalLink size={14} /></a>}
+                    {founder.twitter && <a href={founder.twitter} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white hover:border-accent-orange transition-all"><ExternalLink size={14} /></a>}
+                    {founder.email && <a href={`mailto:${founder.email}`} className="flex items-center gap-2 text-xs font-sans font-medium text-text-secondary hover:text-accent-orange transition-colors"><Mail size={14} /> {founder.email}</a>}
                   </div>
-                </div>
-                <div className="flex items-center gap-4 pt-4 border-t border-border-color">
-                  {founder.linkedin && <a href={founder.linkedin} className="w-9 h-9 rounded-xl border-2 border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white hover:border-accent-emerald transition-all"><ExternalLink size={14} /></a>}
-                  {founder.email && <a href={`mailto:${founder.email}`} className="flex items-center gap-2 text-xs font-sans font-medium text-text-secondary hover:text-accent-orange transition-colors"><Mail size={14} /> {founder.email}</a>}
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -161,24 +210,29 @@ export default function TeamPage() {
               const shadows = ['shadow-offset', 'shadow-offset-orange', 'shadow-offset-green'];
               const borders = ['border-accent-emerald', 'border-accent-orange', 'border-accent-green'];
               return (
-                <div key={idx} className={`bg-card-bg border-2 ${borders[idx]} rounded-3xl overflow-hidden ${shadows[idx]} hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300`}>
-                  <div className="h-56 overflow-hidden relative">
-                    <img src={member.image} alt={member.name} className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-serif text-xl text-text-primary mb-1">{member.name}</h3>
-                    <p className="text-xs font-sans font-bold text-accent-green tracking-wide mb-3">{member.role}</p>
-                    <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-4">{member.bio}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-5">
-                      {member.expertise.map((e) => (
-                        <span key={e} className="text-[9px] font-sans font-bold bg-page-bg border border-border-color text-text-secondary px-2 py-0.5 rounded-md">
-                          {e}
-                        </span>
-                      ))}
+                <div key={idx} className={`bg-card-bg border-2 ${borders[idx % 3]} rounded-3xl overflow-hidden ${shadows[idx % 3]} hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300 flex flex-col justify-between`}>
+                  <div>
+                    <div className="h-56 overflow-hidden relative">
+                      <img src={member.image} alt={member.name} className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
+                    <div className="p-6">
+                      <h3 className="font-serif text-xl text-text-primary mb-1">{member.name}</h3>
+                      <p className="text-xs font-sans font-bold text-accent-green tracking-wide mb-3">{member.role}</p>
+                      <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-4">{member.bio}</p>
+                      <div className="flex flex-wrap gap-1.5 mb-5">
+                        {member.expertise.map((e) => (
+                          <span key={e} className="text-[9px] font-sans font-bold bg-page-bg border border-border-color text-text-secondary px-2 py-0.5 rounded-md">
+                            {e}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 pt-0">
                     <div className="flex items-center gap-3 pt-4 border-t border-border-color">
-                      {member.linkedin && <a href={member.linkedin} className="w-8 h-8 rounded-lg border border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white transition-all"><ExternalLink size={12} /></a>}
+                      {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-emerald hover:text-white transition-all"><ExternalLink size={12} /></a>}
+                      {member.twitter && <a href={member.twitter} target="_blank" rel="noreferrer" className="w-8 h-8 rounded-lg border border-border-color bg-page-bg flex items-center justify-center text-text-secondary hover:bg-accent-orange hover:text-white transition-all"><ExternalLink size={12} /></a>}
                       {member.email && <a href={`mailto:${member.email}`} className="text-[10px] font-sans text-text-secondary hover:text-accent-orange transition-colors">{member.email}</a>}
                     </div>
                   </div>

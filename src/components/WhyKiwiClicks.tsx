@@ -361,7 +361,7 @@ export default function WhyKiwiClicks() {
             
             {/* Strategist Marker Circle */}
             <div className="font-handwriting text-accent-orange text-lg md:text-xl rotate-[-2deg] tracking-wide font-bold bg-accent-orange/5 border border-accent-orange/20 px-4 py-2 rounded-xl">
-              ✦ "Delhi CP office war room blueprints" 🖋️
+              ✦ "Delhi Dwarka office war room blueprints" 🖋️
             </div>
           </div>
 
