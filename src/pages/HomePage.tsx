@@ -9,6 +9,7 @@ import Technology from '../components/Technology';
 import Testimonials from '../components/Testimonials';
 import Blog from '../components/Blog';
 import FAQ from '../components/FAQ';
+import Team from '../components/Team';
 import Contact from '../components/Contact';
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
       <Testimonials />
       <Blog />
       <FAQ />
+      <Team />
       <Contact />
     </>
   );

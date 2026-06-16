@@ -182,7 +182,7 @@ export default function Hero() {
             }}
           />
 
-          {/* Wrapper for interactive 3D parallax/tilt and subtle float (Showcase card size optimized to dominate visual area) */}
+          {/* Wrapper for interactive 3D parallax/tilt and subtle float */}
           <motion.div
             style={{
               rotateX,
@@ -193,107 +193,90 @@ export default function Hero() {
             onMouseLeave={handleMouseLeave}
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] z-10 transition-shadow duration-300 h-auto"
+            className="relative w-full max-w-[340px] sm:max-w-[380px] md:max-w-[400px] z-10 transition-shadow duration-300 h-auto"
           >
             {/* Layered background card depth 1 */}
             <div 
-              style={{ transform: 'translateZ(-15px) rotate(1deg)' }}
-              className="absolute inset-0 bg-white/40 dark:bg-card-bg/40 border border-border-color/10 dark:border-accent-emerald/10 rounded-3xl translate-x-3 translate-y-3 -z-10 shadow-md transition-theme pointer-events-none" 
+              style={{ transform: 'translateZ(-15px) rotate(1.5deg)' }}
+              className="absolute inset-0 bg-white/40 dark:bg-card-bg/40 border border-border-color/10 dark:border-accent-emerald/10 rounded-3xl translate-x-2.5 translate-y-2.5 -z-10 shadow-md transition-theme pointer-events-none" 
             />
 
             {/* Layered background card depth 2 */}
             <div 
-              style={{ transform: 'translateZ(-30px) rotate(-1deg)' }}
-              className="absolute inset-0 bg-accent-emerald/[0.03] dark:bg-accent-emerald/[0.07] border border-accent-emerald/5 dark:border-accent-emerald/10 rounded-3xl -translate-x-2.5 -translate-y-2.5 -z-20 shadow-sm transition-theme pointer-events-none" 
+              style={{ transform: 'translateZ(-30px) rotate(-1.5deg)' }}
+              className="absolute inset-0 bg-accent-emerald/[0.03] dark:bg-accent-emerald/[0.07] border border-accent-emerald/5 dark:border-accent-emerald/10 rounded-3xl -translate-x-2 -translate-y-2 -z-20 shadow-sm transition-theme pointer-events-none" 
             />
-
             {/* ─── PRIMARY CARD: Founder Showcase Spotlight ─── */}
             <div 
               style={{ transform: 'translateZ(10px)' }}
               className="w-full bg-card-bg border border-border-color/15 dark:border-accent-emerald/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] flex flex-col relative transition-theme group"
             >
               {/* Photo Area */}
-              <div className="w-full aspect-[3/2] overflow-hidden relative bg-page-bg-sec/50">
+              <div className="w-full aspect-[4/5] overflow-hidden relative bg-page-bg-sec/50">
                 <img
-                  src="/hero.png"
-                  alt="KiwiClicks Founders - Bandana & Shammy"
-                  className="w-full h-full object-cover object-center scale-100 group-hover:scale-101 transition-transform duration-700"
+                  src="/cofounder.png"
+                  alt="Bandana Kumari - Founder of KiwiClicks"
+                  className="w-full h-full object-cover object-top scale-100 group-hover:scale-102 transition-transform duration-700"
                 />
+                
+                {/* Founder overlay chip identifying agency status */}
+                <div className="absolute top-4 left-4 bg-accent-emerald/90 text-white backdrop-blur-md px-3 py-1 rounded-full text-[9px] font-mono font-bold tracking-wider uppercase shadow-md">
+                  FOUNDER-LED AGENCY
+                </div>
               </div>
 
-              {/* Text / Name Area (Frosted glassmorphism individually refined - no visual clutter) */}
+              {/* Text / Name Area (Frosted glassmorphism individually refined) */}
               <div 
-                className="p-5 bg-card-bg/85 dark:bg-card-bg/75 backdrop-blur-md border-t border-border-color/10 transition-theme relative z-10 rounded-b-3xl"
+                className="p-5 bg-card-bg/95 dark:bg-card-bg/85 backdrop-blur-md border-t border-border-color/10 transition-theme relative z-10 rounded-b-3xl text-left"
               >
-                <div className="grid grid-cols-2 gap-4 divide-x divide-border-color/10 dark:divide-white/10 text-left">
-                  <div>
-                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
-                      Bandana Kumari
-                    </h4>
-                    <p className="text-[8px] font-mono tracking-wider text-accent-green uppercase font-bold transition-theme mt-0.5">
-                      Founder & Strategist
-                    </p>
-                  </div>
-                  <div className="pl-4">
-                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
-                      Shammy Kumar
-                    </h4>
-                    <p className="text-[8px] font-mono tracking-wider text-accent-orange uppercase font-bold transition-theme mt-0.5">
-                      Co-Founder & Strategist
-                    </p>
-                  </div>
+                <h4 className="font-serif text-lg sm:text-xl font-bold text-text-primary tracking-tight transition-theme">
+                  Bandana Kumari
+                </h4>
+                <p className="text-xs font-mono tracking-wider text-accent-green uppercase font-bold transition-theme mt-0.5">
+                  Founder & Growth Strategist
+                </p>
+                
+                {/* Trust Chips list integrated cleanly inside the card footer */}
+                <div className="mt-4 pt-3 border-t border-border-color/10 dark:border-white/10 flex flex-wrap gap-1.5">
+                  {['Local SEO', 'Google Ads', 'Lead Generation', 'Business Growth'].map((chip) => (
+                    <span 
+                      key={chip} 
+                      className="text-[9px] font-sans font-bold px-2.5 py-1 rounded-lg bg-page-bg border border-border-color/10 text-text-secondary transition-theme whitespace-nowrap"
+                    >
+                      {chip}
+                    </span>
+                  ))}
                 </div>
               </div>
 
             </div>
 
-            {/* ─── Micro Results Badges (Floating) ─── */}
-            {/* Badge 1: Leads Generated */}
+            {/* ─── Floating Badges ─── */}
+            {/* Badge: 20+ Businesses Helped */}
             <div 
               style={{ transform: 'translateZ(35px)' }}
-              className="absolute -top-6 -left-4 md:-left-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-green/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
+              className="absolute -top-5 -right-4 md:-right-6 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border-2 border-accent-green px-3.5 py-2 rounded-2xl shadow-lg transition-theme pointer-events-none flex items-center gap-2"
             >
-              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">LIVE RESULTS</span>
-              <span className="text-[11px] font-sans font-black text-accent-green">+127 Leads Generated</span>
+              <div className="w-5 h-5 rounded-lg bg-accent-green/10 flex items-center justify-center text-accent-green font-bold text-xs shrink-0">✓</div>
+              <div>
+                <span className="text-[11px] font-sans font-black text-text-primary block leading-none">20+</span>
+                <span className="text-[7.5px] font-mono uppercase tracking-wider text-text-secondary block mt-0.5">Businesses Helped</span>
+              </div>
             </div>
 
-            {/* Badge 2: Avg ROAS */}
-            <div 
-              style={{ transform: 'translateZ(35px)' }}
-              className="absolute bottom-12 -right-4 md:-right-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-orange/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
-            >
-              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">CAMPAIGN METRIC</span>
-              <span className="text-[11px] font-sans font-black text-accent-orange">4.8x Average ROAS</span>
-            </div>
-
-            {/* ─── Human Signature Note (Desktop Only) ─── */}
+            {/* ─── Human Signature Note ─── */}
             <div
-              style={{ transform: 'translateZ(30px)' }}
-              className="absolute -left-6 lg:-left-10 -bottom-14 z-30 font-handwriting text-accent-orange text-lg lg:text-xl -rotate-2 select-none font-bold hidden md:flex items-center gap-1.5 animate-pulse"
+              style={{ transform: 'translateZ(25px)' }}
+              className="absolute -left-6 -bottom-12 z-30 font-handwriting text-accent-orange text-lg lg:text-xl -rotate-2 select-none font-bold hidden md:flex items-center gap-1.5 animate-pulse"
             >
-              Real founders. Real growth. ➔
+              Founder-led agency. Real growth. ➔
             </div>
 
           </motion.div>
 
-          {/* ─── Clean Credibility Row Below Card (Trust Proof) ─── */}
-          <div className="mt-8 w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] grid grid-cols-2 gap-y-2.5 gap-x-4 border-t border-border-color/10 dark:border-white/10 pt-4 text-left px-2">
-            {[
-              '20+ Businesses Helped',
-              '4+ Years Experience',
-              'Delhi NCR Based',
-              'SEO • Google Ads • Web Development'
-            ].map((text) => (
-              <div key={text} className="flex items-center gap-2 text-xs text-text-secondary transition-theme">
-                <span className="text-accent-green font-bold shrink-0">✓</span>
-                <span className="font-sans font-semibold tracking-tight">{text}</span>
-              </div>
-            ))}
-          </div>
-
           {/* ─── Handwritten note for Mobile ─── */}
           <div className="text-center font-handwriting text-accent-orange text-lg mt-6 block md:hidden -rotate-1 select-none font-bold">
-            Real founders. Real growth. ➔
+            Founder-led agency. Real growth. ➔
           </div>
 
         </motion.div>
