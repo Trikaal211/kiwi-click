@@ -62,7 +62,7 @@ export default function Blog() {
   return (
     <section
       id="blog"
-      className="relative py-16 md:py-28 px-6 md:px-12 bg-page-bg-sec text-text-primary transition-theme overflow-hidden"
+      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg-sec text-text-primary transition-theme overflow-hidden"
     >
       {/* Background watermark */}
       <div className="absolute inset-0 flex items-end justify-end pb-8 pr-8 pointer-events-none select-none overflow-hidden">

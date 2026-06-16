@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, ArrowUpRight, Send, Check } from 'lucide-react';
+import { Mail, Phone, ArrowUpRight, Send, Check } from 'lucide-react';
 
 const WhatsAppIcon = ({ size = 16, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -36,7 +36,7 @@ export default function Contact() {
   return (
     <section 
       id="contact" 
-      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg-sec transition-theme overflow-hidden"
+      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg-sec transition-theme overflow-hidden"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
         
@@ -87,7 +87,31 @@ export default function Contact() {
                 <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
 
-              {/* Email Link */}
+              {/* Call Direct */}
+              <a 
+                href="tel:6230078396" 
+                className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
+              >
+                <div className="w-8 h-8 rounded-lg bg-accent-orange/10 flex items-center justify-center text-accent-orange">
+                  <Phone size={15} />
+                </div>
+                +91 62300 78396 (Call Direct)
+                <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+
+              {/* Founder Email */}
+              <a 
+                href="mailto:bandana.k.official@gmail.com" 
+                className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
+              >
+                <div className="w-8 h-8 rounded-lg bg-accent-green/10 flex items-center justify-center text-accent-green">
+                  <Mail size={15} />
+                </div>
+                bandana.k.official@gmail.com
+                <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+
+              {/* General Email */}
               <a 
                 href="mailto:info@kiwiclicks.in" 
                 className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
@@ -106,7 +130,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="font-semibold text-text-primary leading-none">Delhi Office</p>
-                  <p className="text-xs text-text-secondary/60 mt-1">Dwarka Sector 2, New Delhi – 110077, India</p>
+                  <p className="text-xs text-text-secondary/60 mt-1">New Delhi, Dwarka Sector 2, 110077</p>
                 </div>
               </div>
             </div>
@@ -231,7 +255,7 @@ export default function Contact() {
       {/* Footer Copy */}
       <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row justify-between items-center text-[10px] font-sans text-text-secondary/60 border-t border-border-color pt-4 gap-2 transition-theme">
         <p>© 2026-2027 KIWICLICKS AGENCY PVT LTD. ALL CONVERSIONS INTEGRATED.</p>
-        <p className="tracking-widest">DWARKA SECTOR 2 // NEW DELHI // GROW REMARKABLY</p>
+        <p className="tracking-widest">NEW DELHI, DWARKA SECTOR 2, 110077 // GROW REMARKABLY</p>
       </div>
     </section>
   );

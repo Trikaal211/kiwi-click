@@ -70,7 +70,7 @@ export default function Testimonials() {
   return (
     <section 
       id="testimonials" 
-      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
+      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10">
         

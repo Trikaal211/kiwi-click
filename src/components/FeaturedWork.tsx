@@ -65,7 +65,7 @@ export default function FeaturedWork() {
   return (
     <section 
       id="work" 
-      className="relative py-16 md:py-24 px-6 md:px-12 bg-page-bg text-text-primary transition-theme"
+      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary transition-theme"
     >
       <div className="max-w-6xl w-full mx-auto relative z-10">
         

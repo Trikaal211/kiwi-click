@@ -313,7 +313,7 @@ export default function WhyKiwiClicks() {
   return (
     <section 
       id="about" 
-      className="relative py-20 md:py-28 px-6 md:px-12 bg-page-bg text-text-primary overflow-hidden transition-theme"
+      className="relative py-12 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary overflow-hidden transition-theme"
     >
       {/* Background strategist Grid and whiteboard textures */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.06] select-none">

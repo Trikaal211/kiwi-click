@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, DollarSign, Users, Smile } from 'lucide-react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { ArrowUpRight, Smile } from 'lucide-react';
 
 /* ─── Floating particles ─── */
 const FloatingParticle = ({
@@ -9,7 +9,7 @@ const FloatingParticle = ({
   x: string; y: string; size: number; delay: number; shape?: 'circle' | 'square' | 'diamond'; color?: string;
 }) => (
   <motion.div
-    className={`absolute ${color} opacity-20 pointer-events-none select-none`}
+    className={`absolute ${color} opacity-10 pointer-events-none select-none`}
     style={{
       left: x,
       top: y,
@@ -21,10 +21,10 @@ const FloatingParticle = ({
     animate={{
       y: [0, -12, 0],
       rotate: shape === 'diamond' ? [45, 55, 45] : [0, 8, 0],
-      opacity: [0.15, 0.35, 0.15],
+      opacity: [0.06, 0.18, 0.06],
     }}
     transition={{
-      duration: 4 + delay,
+      duration: 5 + delay,
       delay,
       repeat: Infinity,
       ease: 'easeInOut',
@@ -39,63 +39,69 @@ export default function Hero() {
     offset: ['start start', 'end start']
   });
 
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '25%']);
-  const boardY = useTransform(scrollYProgress, [0, 1], ['0%', '-8%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const boardY = useTransform(scrollYProgress, [0, 1], ['0%', '-5%']);
   const fadeOut = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  // Premium Interactive Parallax / Tilt values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { damping: 25, stiffness: 180 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { damping: 25, stiffness: 180 });
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const el = event.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left - width / 2;
+    const mouseY = event.clientY - rect.top - height / 2;
+    
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-36 pb-20 overflow-hidden bg-page-bg text-text-primary transition-theme"
+      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-28 pb-14 overflow-hidden bg-page-bg text-text-primary transition-theme"
     >
       {/* ─── Background: dot grid ─── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.045] select-none"
+        className="absolute inset-0 pointer-events-none opacity-[0.02] select-none"
         style={{
           backgroundImage: 'radial-gradient(var(--accent-emerald) 1.5px, transparent 1.5px)',
           backgroundSize: '24px 24px',
         }}
       />
 
-      {/* ─── Background: hand-drawn circle doodles ─── */}
-      <div className="absolute inset-0 pointer-events-none opacity-5 dark:opacity-10 select-none">
+      {/* ─── Background: hand-drawn circle doodles (very light) ─── */}
+      <div className="absolute inset-0 pointer-events-none opacity-2 dark:opacity-4 select-none">
         <svg width="100%" height="100%" className="w-full h-full">
-          <circle cx="8%" cy="18%" r="90" stroke="currentColor" strokeWidth="1.5" fill="none" strokeDasharray="6 5" />
-          <circle cx="88%" cy="72%" r="130" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="12 4" />
-          <circle cx="50%" cy="90%" r="65" stroke="currentColor" strokeWidth="1" fill="none" />
-          <circle cx="75%" cy="15%" r="45" stroke="currentColor" strokeWidth="1" fill="none" strokeDasharray="3 6" />
+          <circle cx="8%" cy="18%" r="90" stroke="currentColor" strokeWidth="0.75" fill="none" strokeDasharray="6 5" />
+          <circle cx="88%" cy="72%" r="130" stroke="currentColor" strokeWidth="1.2" fill="none" strokeDasharray="12 4" />
+          <circle cx="50%" cy="90%" r="65" stroke="currentColor" strokeWidth="0.5" fill="none" />
+          <circle cx="75%" cy="15%" r="45" stroke="currentColor" strokeWidth="0.5" fill="none" strokeDasharray="3 6" />
         </svg>
       </div>
 
-      {/* ─── Floating ambient particles ─── */}
-      <FloatingParticle x="5%" y="30%" size={10} delay={0} shape="circle" color="bg-accent-orange" />
-      <FloatingParticle x="12%" y="65%" size={8} delay={1.2} shape="square" color="bg-accent-green" />
-      <FloatingParticle x="90%" y="25%" size={12} delay={0.5} shape="diamond" color="bg-gold-accent" />
-      <FloatingParticle x="80%" y="60%" size={7} delay={2} shape="circle" color="bg-accent-orange" />
-      <FloatingParticle x="55%" y="92%" size={9} delay={1.6} shape="circle" color="bg-accent-green" />
-      <FloatingParticle x="25%" y="88%" size={6} delay={0.8} shape="diamond" color="bg-accent-orange" />
-      <FloatingParticle x="94%" y="50%" size={8} delay={1.4} shape="square" color="bg-accent-green" />
+      {/* ─── Floating ambient particles (Subtle framing) ─── */}
+      <FloatingParticle x="6%" y="28%" size={6} delay={0} shape="circle" color="bg-accent-orange" />
+      <FloatingParticle x="10%" y="75%" size={5} delay={1.5} shape="square" color="bg-accent-green" />
+      <FloatingParticle x="94%" y="22%" size={8} delay={0.5} shape="diamond" color="bg-gold-accent" />
+      <FloatingParticle x="88%" y="65%" size={6} delay={2} shape="circle" color="bg-accent-orange" />
 
-      {/* ─── Competitor sticky note (floating) ─── */}
-      <motion.div
-        animate={{ y: [0, -6, 0], rotate: [-3, -1, -3] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-24 right-8 md:right-16 hidden md:block z-30 select-none pointer-events-none"
-      >
-        <div className="bg-[#FEF08A] border-2 border-gray-800 p-3 rounded-sm shadow-lg w-40 text-left">
-          <span className="text-[7px] font-mono font-bold uppercase tracking-widest text-gray-500">⚠️ heads up</span>
-          <p className="font-handwriting text-gray-800 text-sm leading-tight font-bold mt-1">
-            Your competitor is already running ads 👀
-          </p>
-        </div>
-      </motion.div>
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center relative z-10">
 
-      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
-
-        {/* ─── Left Column ─── */}
+        {/* ─── Left Column: Content (50%) ─── */}
         <motion.div
           style={{ y: textY, opacity: fadeOut }}
-          className="lg:col-span-7 flex flex-col justify-center text-left"
+          className="lg:col-span-6 flex flex-col justify-center text-left"
         >
           {/* Subtitle Badge */}
           <div className="flex items-center gap-2 mb-6">
@@ -107,10 +113,10 @@ export default function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif font-light text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] text-text-primary transition-theme relative">
-            We grow <br />
-            <span className="relative inline-block font-sans font-extrabold text-accent-green tracking-tight not-italic transition-theme">
-              businesses
+          <h1 className="font-serif font-light text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-text-primary transition-theme relative">
+            Growth systems <br />
+            built by <span className="relative inline-block font-sans font-extrabold text-accent-green tracking-tight not-italic transition-theme">
+              marketers
               <motion.svg
                 className="absolute -bottom-2 left-0 w-full h-3 text-accent-orange"
                 viewBox="0 0 100 10"
@@ -122,19 +128,13 @@ export default function Hero() {
               >
                 <path d="M0,7 C30,2 70,2 100,7 M5,9 C35,4 75,4 95,9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </motion.svg>
-            </span> <br />
-            through marketing, <br />
-            <span className="italic font-serif font-normal text-accent-emerald dark:text-text-primary transition-theme">Web & AI.</span>
+            </span>, <br />
+            not <span className="italic font-serif font-normal text-accent-emerald dark:text-text-primary transition-theme">salespeople.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="mt-6 max-w-xl text-base md:text-lg font-sans font-medium text-text-secondary leading-relaxed transition-theme">
             KiwiClicks helps ambitious Delhi brands capture customer attention, earn real trust, and scale campaigns through transparent metrics, high-velocity websites, and automated operations pipelines.
-          </p>
-
-          {/* Handwriting note */}
-          <p className="font-handwriting text-accent-orange text-xl -rotate-2 mt-4 tracking-wide font-semibold block">
-            ✦ Delhi CP office based growth engineers // GROW REMARKABLY 📈
           </p>
 
           {/* Buttons */}
@@ -169,119 +169,133 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* ─── Right Column: Whiteboard Canvas ─── */}
+        {/* ─── Right Column: Founder Showcase (50%) ─── */}
         <motion.div
           style={{ y: boardY }}
-          className="lg:col-span-5 flex justify-center relative mt-12 lg:mt-0"
+          className="lg:col-span-6 flex flex-col items-center justify-center relative mt-12 lg:mt-0 select-none overflow-visible"
         >
-          {/* Main Whiteboard */}
-          <div className="w-full max-w-md aspect-[4/5] bg-card-bg border-4 border-accent-emerald rounded-3xl p-6 relative shadow-offset transition-theme flex flex-col justify-between overflow-hidden">
+          {/* Gentle Ambient Glow behind the card */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] h-[125%] rounded-full opacity-50 dark:opacity-35 blur-3xl -z-30 pointer-events-none transition-theme"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(27,77,62,0.18) 0%, rgba(255,138,61,0.06) 50%, transparent 70%)',
+            }}
+          />
 
-            {/* Dot grid background */}
-            <div
-              className="absolute inset-0 pointer-events-none opacity-5 select-none"
-              style={{
-                backgroundImage: 'radial-gradient(var(--accent-emerald) 1.5px, transparent 1.5px)',
-                backgroundSize: '20px 20px',
-              }}
+          {/* Wrapper for interactive 3D parallax/tilt and subtle float (Showcase card size optimized to dominate visual area) */}
+          <motion.div
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] z-10 transition-shadow duration-300 h-auto"
+          >
+            {/* Layered background card depth 1 */}
+            <div 
+              style={{ transform: 'translateZ(-15px) rotate(1deg)' }}
+              className="absolute inset-0 bg-white/40 dark:bg-card-bg/40 border border-border-color/10 dark:border-accent-emerald/10 rounded-3xl translate-x-3 translate-y-3 -z-10 shadow-md transition-theme pointer-events-none" 
             />
 
-            {/* Polaroid photo */}
-            <div className="relative w-44 bg-white border border-gray-200 p-2.5 shadow-md rounded-sm transform rotate-3 hover:rotate-0 transition-transform duration-300 z-10 select-none">
-              <div className="aspect-square w-full overflow-hidden bg-gray-100 rounded-sm">
+            {/* Layered background card depth 2 */}
+            <div 
+              style={{ transform: 'translateZ(-30px) rotate(-1deg)' }}
+              className="absolute inset-0 bg-accent-emerald/[0.03] dark:bg-accent-emerald/[0.07] border border-accent-emerald/5 dark:border-accent-emerald/10 rounded-3xl -translate-x-2.5 -translate-y-2.5 -z-20 shadow-sm transition-theme pointer-events-none" 
+            />
+
+            {/* ─── PRIMARY CARD: Founder Showcase Spotlight ─── */}
+            <div 
+              style={{ transform: 'translateZ(10px)' }}
+              className="w-full bg-card-bg border border-border-color/15 dark:border-accent-emerald/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] flex flex-col relative transition-theme group"
+            >
+              {/* Photo Area */}
+              <div className="w-full aspect-[3/2] overflow-hidden relative bg-page-bg-sec/50">
                 <img
-                  src="https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?auto=format&fit=crop&w=350&q=80"
-                  alt="KiwiClicks team strategy session"
-                  className="w-full h-full object-cover"
+                  src="/hero.png"
+                  alt="KiwiClicks Founders - Bandana & Shammy"
+                  className="w-full h-full object-cover object-center scale-100 group-hover:scale-101 transition-transform duration-700"
                 />
               </div>
-              <div className="pt-2 text-center">
-                <p className="font-handwriting text-xs text-gray-800 font-bold leading-tight">Brainstorm @ CP office</p>
-              </div>
-            </div>
 
-            {/* Sticky note: SEO goal */}
-            <div className="absolute top-[36%] right-4 w-36 bg-[#FEF08A] border-2 border-gray-800 p-3 shadow-md rounded-sm transform -rotate-3 hover:rotate-0 transition-transform duration-300 z-20 text-left select-none text-gray-800">
-              <span className="text-[8px] font-mono tracking-widest font-bold opacity-50 block uppercase">SEO GOAL</span>
-              <p className="font-handwriting text-[13px] leading-tight font-bold mt-1">
-                Target CP commercial keywords first! 🚀
-              </p>
-              <div className="flex gap-1.5 mt-2 justify-end">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-orange" />
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-emerald" />
-              </div>
-            </div>
-
-            {/* Sticky note: Paid ads */}
-            <div className="absolute bottom-28 left-4 w-36 bg-orange-100 dark:bg-orange-950/90 border-2 border-accent-orange p-3 shadow-md rounded-sm transform rotate-6 hover:rotate-0 transition-transform duration-300 z-20 text-left select-none">
-              <span className="text-[8px] font-mono tracking-widest font-bold text-accent-orange uppercase">Paid Ads Loop</span>
-              <p className="font-handwriting text-[13px] leading-tight text-text-primary font-bold mt-1">
-                Meta: hook tests (3s) + speed landing conversion.
-              </p>
-            </div>
-
-            {/* Mini to-do checklist */}
-            <div className="absolute top-6 right-4 w-32 bg-white dark:bg-card-bg border border-gray-200 dark:border-border-color rounded-xl p-2.5 shadow-sm z-10 select-none">
-              <p className="text-[7px] font-mono uppercase font-bold text-gray-400 mb-1.5">This week ✓</p>
-              {[
-                { task: 'Fix keyword gaps', done: true },
-                { task: 'Launch Meta A/B', done: true },
-                { task: 'New landing pg', done: false },
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-1.5 mb-1">
-                  <div className={`w-3 h-3 rounded-sm border flex items-center justify-center ${item.done ? 'bg-accent-green border-accent-green' : 'border-gray-300'}`}>
-                    {item.done && <svg width="6" height="5" viewBox="0 0 6 5" fill="none"><path d="M1 2.5L2.5 4L5 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+              {/* Text / Name Area (Frosted glassmorphism individually refined - no visual clutter) */}
+              <div 
+                className="p-5 bg-card-bg/85 dark:bg-card-bg/75 backdrop-blur-md border-t border-border-color/10 transition-theme relative z-10 rounded-b-3xl"
+              >
+                <div className="grid grid-cols-2 gap-4 divide-x divide-border-color/10 dark:divide-white/10 text-left">
+                  <div>
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
+                      Bandana Kumari
+                    </h4>
+                    <p className="text-[8px] font-mono tracking-wider text-accent-green uppercase font-bold transition-theme mt-0.5">
+                      Founder & Strategist
+                    </p>
                   </div>
-                  <span className={`text-[7px] font-sans ${item.done ? 'line-through text-gray-400' : 'text-gray-700 dark:text-text-secondary font-medium'}`}>{item.task}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Animated growth curve */}
-            <div className="absolute top-4 right-20 w-24 h-16 pointer-events-none text-accent-green z-0 select-none">
-              <svg width="100%" height="100%" viewBox="0 0 100 60" fill="none">
-                <motion.path
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.5, delay: 0.8, ease: 'easeOut' }}
-                  d="M10,55 Q40,50 60,30 T105,10"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <path d="M96,10 L105,10 L103,20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                <text x="8" y="36" fill="#FF8A3D" fontSize="10" fontFamily="Caveat, cursive" fontWeight="bold">+312%</text>
-              </svg>
-            </div>
-
-            {/* Bottom stat chips */}
-            <div className="w-full flex justify-between items-end relative z-30 pt-16">
-              <div className="bg-card-bg border-2 border-border-color rounded-xl p-3 shadow-offset-sm flex items-center gap-2 max-w-[125px] transition-theme">
-                <div className="w-6 h-6 rounded-md bg-gold-accent/15 flex items-center justify-center text-gold-accent">
-                  <DollarSign size={13} />
-                </div>
-                <div className="text-left">
-                  <span className="text-[8px] font-mono text-text-secondary leading-none block font-bold transition-theme">ROAS</span>
-                  <span className="text-xs font-sans font-bold text-text-primary block transition-theme">4.8x</span>
+                  <div className="pl-4">
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
+                      Shammy Kumar
+                    </h4>
+                    <p className="text-[8px] font-mono tracking-wider text-accent-orange uppercase font-bold transition-theme mt-0.5">
+                      Co-Founder & Strategist
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="bg-card-bg border-2 border-border-color rounded-xl p-3 shadow-offset-sm flex items-center gap-2 max-w-[125px] transition-theme">
-                <div className="w-6 h-6 rounded-md bg-accent-green/15 flex items-center justify-center text-accent-green">
-                  <Users size={13} />
-                </div>
-                <div className="text-left">
-                  <span className="text-[8px] font-mono text-text-secondary leading-none block font-bold transition-theme">LEADS</span>
-                  <span className="text-xs font-sans font-bold text-text-primary block transition-theme">+127</span>
-                </div>
-              </div>
             </div>
 
+            {/* ─── Micro Results Badges (Floating) ─── */}
+            {/* Badge 1: Leads Generated */}
+            <div 
+              style={{ transform: 'translateZ(35px)' }}
+              className="absolute -top-6 -left-4 md:-left-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-green/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
+            >
+              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">LIVE RESULTS</span>
+              <span className="text-[11px] font-sans font-black text-accent-green">+127 Leads Generated</span>
+            </div>
+
+            {/* Badge 2: Avg ROAS */}
+            <div 
+              style={{ transform: 'translateZ(35px)' }}
+              className="absolute bottom-12 -right-4 md:-right-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-orange/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
+            >
+              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">CAMPAIGN METRIC</span>
+              <span className="text-[11px] font-sans font-black text-accent-orange">4.8x Average ROAS</span>
+            </div>
+
+            {/* ─── Human Signature Note (Desktop Only) ─── */}
+            <div
+              style={{ transform: 'translateZ(30px)' }}
+              className="absolute -left-6 lg:-left-10 -bottom-14 z-30 font-handwriting text-accent-orange text-lg lg:text-xl -rotate-2 select-none font-bold hidden md:flex items-center gap-1.5 animate-pulse"
+            >
+              Real founders. Real growth. ➔
+            </div>
+
+          </motion.div>
+
+          {/* ─── Clean Credibility Row Below Card (Trust Proof) ─── */}
+          <div className="mt-8 w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] grid grid-cols-2 gap-y-2.5 gap-x-4 border-t border-border-color/10 dark:border-white/10 pt-4 text-left px-2">
+            {[
+              '20+ Businesses Helped',
+              '4+ Years Experience',
+              'Delhi NCR Based',
+              'SEO • Google Ads • Web Development'
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-2 text-xs text-text-secondary transition-theme">
+                <span className="text-accent-green font-bold shrink-0">✓</span>
+                <span className="font-sans font-semibold tracking-tight">{text}</span>
+              </div>
+            ))}
           </div>
 
-          {/* Decorative tape strips */}
-          <div className="absolute -top-3 left-1/4 w-20 h-6 bg-yellow-200/40 border border-yellow-300 transform -rotate-12 backdrop-blur-sm pointer-events-none select-none z-40" />
-          <div className="absolute -bottom-3 right-1/4 w-20 h-6 bg-yellow-200/40 border border-yellow-300 transform rotate-6 backdrop-blur-sm pointer-events-none select-none z-40" />
+          {/* ─── Handwritten note for Mobile ─── */}
+          <div className="text-center font-handwriting text-accent-orange text-lg mt-6 block md:hidden -rotate-1 select-none font-bold">
+            Real founders. Real growth. ➔
+          </div>
+
         </motion.div>
 
       </div>

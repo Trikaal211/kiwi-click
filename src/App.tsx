@@ -1,18 +1,16 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 
-// Lazy loaded client pages (Blog, FAQ, Team, Services)
+// Lazy loaded client pages
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogArticlePage = lazy(() => import('./pages/BlogArticlePage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const FAQPage = lazy(() => import('./pages/FAQPage'));
-const ServiceSEOPage = lazy(() => import('./pages/ServiceSEOPage'));
-const ServiceSocialPage = lazy(() => import('./pages/ServiceSocialPage'));
-const ServiceWebDevPage = lazy(() => import('./pages/ServiceWebDevPage'));
-const ServiceAIPage = lazy(() => import('./pages/ServiceAIPage'));
+const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 // Lazy loaded admin pages
 const Login = lazy(() => import('./pages/admin/Login'));
@@ -60,10 +58,18 @@ export default function App() {
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/faq" element={<FAQPage />} />
-            <Route path="/seo-local-seo" element={<ServiceSEOPage />} />
-            <Route path="/social-media-marketing" element={<ServiceSocialPage />} />
-            <Route path="/web-development" element={<ServiceWebDevPage />} />
-            <Route path="/ai-automation" element={<ServiceAIPage />} />
+            
+            {/* Dedicated Contact Page */}
+            <Route path="/contact" element={<ContactPage />} />
+
+            {/* Dynamic Services Ecosystem */}
+            <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            
+            {/* Legacy Redirections */}
+            <Route path="/seo-local-seo" element={<Navigate to="/services/seo" replace />} />
+            <Route path="/social-media-marketing" element={<Navigate to="/services/meta-ads" replace />} />
+            <Route path="/web-development" element={<Navigate to="/services/business-web-dev" replace />} />
+            <Route path="/ai-automation" element={<Navigate to="/services/ai-chatbots" replace />} />
 
             {/* Administrative panel routes */}
             <Route path="/admin/login" element={<Login />} />
@@ -87,5 +93,3 @@ export default function App() {
     </div>
   );
 }
-
-
