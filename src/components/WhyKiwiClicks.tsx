@@ -372,7 +372,7 @@ export default function WhyKiwiClicks() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start relative">
           
           {/* LEFT STICKY PANEL: Trust Proof & Case Study Folder */}
-          <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
+          <div className="col-span-12 lg:col-span-5 space-y-8 lg:sticky lg:top-24">
             
             {/* Floating Trust Proof Snippets (Physical Desk Clippings) */}
             <div className="relative bg-card-bg/60 dark:bg-card-bg/40 border-2 border-border-color rounded-2xl p-6 shadow-offset transition-theme backdrop-blur-sm">

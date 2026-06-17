@@ -360,23 +360,34 @@ export default function ContactPage() {
 
             {/* Micro Map Box */}
             <div className="bg-card-bg border-4 border-accent-emerald p-6 rounded-3xl shadow-offset text-xs transition-theme relative overflow-hidden">
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin size={15} className="text-accent-green shrink-0" />
-                <div>
-                  <p className="font-bold text-text-primary">New Delhi Office</p>
-                  <p className="text-[10px] text-text-secondary/60">Dwarka Sector 2, New Delhi, 110077</p>
-                </div>
-              </div>
-              <div className="w-full h-32 rounded-xl bg-page-bg border border-border-color flex items-center justify-center overflow-hidden transition-theme">
-                {/* Visual Neobrutalist Map Mockup */}
-                <div className="relative w-full h-full bg-[#f1f5f9] dark:bg-page-bg flex items-center justify-center transition-theme" style={{ backgroundImage: 'radial-gradient(var(--border-color) 1px, transparent 1px)', backgroundSize: '12px 12px' }}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                    <div className="w-4 h-4 bg-accent-orange rounded-full animate-ping absolute" />
-                    <div className="w-4 h-4 bg-accent-emerald rounded-full border-2 border-white relative z-10 flex items-center justify-center text-[7px] text-white font-bold">K</div>
-                    <span className="bg-card-bg border-2 border-accent-emerald text-[8px] font-mono px-2 py-0.5 rounded shadow mt-1 whitespace-nowrap font-bold text-text-primary">KIWICLICKS HQ</span>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <MapPin size={15} className="text-accent-green shrink-0" />
+                  <div>
+                    <p className="font-bold text-text-primary">New Delhi Office</p>
+                    <p className="text-[10px] text-text-secondary/60">Dwarka Sector 2, New Delhi, 110077</p>
                   </div>
-                  <div className="absolute top-4 left-6 text-[8px] font-mono text-text-secondary tracking-widest font-semibold">SECTOR 2 // DWARKA</div>
                 </div>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=New+Delhi,+Dwarka+Sector+2,+110077" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="text-[10px] font-sans font-bold text-accent-orange hover:text-accent-green transition-colors flex items-center gap-0.5"
+                >
+                  Directions <ArrowUpRight size={10} />
+                </a>
+              </div>
+              <div className="w-full h-32 rounded-xl bg-page-bg border border-border-color overflow-hidden transition-theme">
+                <iframe 
+                  title="KiwiClicks Office Location Map"
+                  src="https://maps.google.com/maps?q=Dwarka%20Sector%202%20New%20Delhi%20110077&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0, filter: 'grayscale(0.1) contrast(1.05)' }} 
+                  allowFullScreen={false} 
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             </div>
 

@@ -149,15 +149,23 @@ export default function Contact() {
               </a>
 
               {/* Location Tag */}
-              <div className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-secondary">
-                <div className="w-8 h-8 rounded-lg bg-gold-accent/10 flex items-center justify-center text-gold-accent">
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=New+Delhi,+Dwarka+Sector+2,+110077"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-secondary hover:text-accent-orange transition-colors w-max group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-gold-accent/10 flex items-center justify-center text-gold-accent group-hover:bg-accent-orange/10 group-hover:text-accent-orange transition-colors">
                   <PinIcon size={15} />
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary leading-none">Delhi Office</p>
+                  <p className="font-semibold text-text-primary leading-none group-hover:text-accent-orange transition-colors flex items-center gap-1.5">
+                    Delhi Office
+                    <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </p>
                   <p className="text-xs text-text-secondary/60 mt-1">New Delhi, Dwarka Sector 2, 110077</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -278,7 +286,7 @@ export default function Contact() {
       </div>
 
       {/* Footer Copy */}
-      <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row justify-between items-center text-[10px] font-sans text-text-secondary/60 border-t border-border-color pt-4 gap-2 transition-theme">
+      <div className="max-w-6xl w-full mx-auto mt-16 flex flex-col sm:flex-row justify-between items-center text-[10px] font-sans text-text-secondary/60 border-t border-border-color pt-4 gap-2 transition-theme">
         <p>© 2026-2027 KIWICLICKS AGENCY PVT LTD. ALL CONVERSIONS INTEGRATED.</p>
         <p className="tracking-widest">NEW DELHI, DWARKA SECTOR 2, 110077 // GROW REMARKABLY</p>
       </div>
