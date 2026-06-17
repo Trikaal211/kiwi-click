@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, ArrowUpRight, Send, Check, ShieldCheck, Clock, MapPin, Sparkles } from 'lucide-react';
+import apiClient from '../api/client';
 
 const WhatsAppIcon = ({ size = 16, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -22,14 +23,20 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.phone) return;
     
     setIsSubmitting(true);
-    // Simulate CRM processing pipeline
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await apiClient.post('/leads', {
+        name: formState.name,
+        email: formState.email,
+        phone: formState.phone,
+        service: formState.service,
+        budget: formState.budget,
+        message: `Business Name: ${formState.business || 'N/A'}\nWebsite: ${formState.website || 'N/A'}\n\nProject Goals: ${formState.message || 'N/A'}`
+      });
       setIsSubmitted(true);
       setFormState({
         name: '',
@@ -42,7 +49,12 @@ export default function ContactPage() {
         message: ''
       });
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1200);
+    } catch (error) {
+      console.error('Failed to submit contact page lead:', error);
+      alert('Failed to submit request. Please try again or connect via WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const trustBadges = [
@@ -312,6 +324,17 @@ export default function ContactPage() {
                 </a>
 
                 <a 
+                  href="tel:8210077633"
+                  className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
+                >
+                  <div className="w-7 h-7 rounded bg-accent-orange/10 flex items-center justify-center text-accent-orange">
+                    <Phone size={13} />
+                  </div>
+                  +91 82100 77633 (Call Direct)
+                  <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+
+                <a 
                   href="mailto:bandana.k.official@gmail.com" 
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
@@ -376,11 +399,11 @@ export default function ContactPage() {
 
           <div className="flex gap-4 items-center">
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-accent-orange shrink-0 bg-card-bg">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80" alt="Shammy Kumar" className="w-full h-full object-cover object-top" />
+              <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80" alt="Baman Kumar" className="w-full h-full object-cover object-top" />
             </div>
             <div>
               <p className="font-serif italic text-base text-text-primary font-bold">"Technical speed coupled with ROI campaign targeting is our blueprint for local growth."</p>
-              <p className="text-[10px] font-sans font-bold text-accent-orange uppercase tracking-widest mt-1">Shammy Kumar // Co-Founder</p>
+              <p className="text-[10px] font-sans font-bold text-accent-orange uppercase tracking-widest mt-1">Baman Kumar // Co-Founder</p>
             </div>
           </div>
         </div>

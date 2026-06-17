@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, ArrowUpRight, Send, Check } from 'lucide-react';
+import apiClient from '../api/client';
 
 const WhatsAppIcon = ({ size = 16, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -19,18 +20,29 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.phone) return;
     
     setIsSubmitting(true);
-    // Simulate CRM processing pipeline
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await apiClient.post('/leads', {
+        name: formState.name,
+        email: formState.email,
+        phone: formState.phone,
+        service: 'General Discovery',
+        budget: 'N/A',
+        message: `Business Name: ${formState.business || 'N/A'}\n\nProject Details: ${formState.details || 'N/A'}`
+      });
       setIsSubmitted(true);
       setFormState({ name: '', business: '', email: '', phone: '', details: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1200);
+    } catch (error) {
+      console.error('Failed to submit contact lead:', error);
+      alert('Failed to submit request. Please try again or connect via WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,16 +100,29 @@ export default function Contact() {
               </a>
 
               {/* Call Direct */}
-              <a 
-                href="tel:6230078396" 
-                className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
-              >
-                <div className="w-8 h-8 rounded-lg bg-accent-orange/10 flex items-center justify-center text-accent-orange">
-                  <Phone size={15} />
-                </div>
-                +91 62300 78396 (Call Direct)
-                <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
+              <div className="flex flex-col gap-4">
+                <a 
+                  href="tel:6230078396" 
+                  className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-accent-orange/10 flex items-center justify-center text-accent-orange">
+                    <Phone size={15} />
+                  </div>
+                  +91 62300 78396 (Call Direct)
+                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+
+                <a 
+                  href="tel:8210077633" 
+                  className="flex items-center gap-3 text-sm font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-accent-orange/10 flex items-center justify-center text-accent-orange">
+                    <Phone size={15} />
+                  </div>
+                  +91 82100 77633 (Call Direct)
+                  <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+              </div>
 
               {/* Founder Email */}
               <a 

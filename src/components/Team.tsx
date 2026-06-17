@@ -20,9 +20,9 @@ export default function Team() {
       label: 'Growth',
     },
     {
-      name: 'Shammy Kumar',
+      name: 'Baman Kumar',
       role: 'Co-Founder & Growth Strategist',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
+      image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80',
       bio: 'Drives customer acquisition through targeted Meta & Google Ads campaigns, performance funnel analysis, and ROI-focused digital growth.',
       skills: ['SEO', 'Performance Marketing', 'Google Ads', 'Web Development'],
       label: 'Strategy',
@@ -83,7 +83,7 @@ export default function Team() {
       />
 
       <div className="max-w-6xl w-full mx-auto relative z-10">
-        
+
         {/* Section Header */}
         <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color/15 pb-5 gap-4 transition-theme">
           <div>
@@ -120,13 +120,12 @@ export default function Team() {
                     alt={member.name}
                     className="w-full h-full object-cover object-center scale-100 group-hover:scale-102 transition-transform duration-500"
                   />
-                  
+
                   {/* Floating Handwritten Label Overlay (Overlaps photo corner) */}
                   <span className={`absolute top-2.5 right-2.5 font-handwriting text-xs font-bold px-2 py-0.5 rounded shadow-sm select-none border -rotate-6
-                    ${
-                      member.label === 'Growth'
-                        ? 'bg-accent-emerald/90 text-white border-accent-emerald'
-                        : member.label === 'Strategy'
+                    ${member.label === 'Growth'
+                      ? 'bg-accent-emerald/90 text-white border-accent-emerald'
+                      : member.label === 'Strategy'
                         ? 'bg-accent-orange/95 text-white border-accent-orange'
                         : 'bg-gold-accent/95 text-white border-gold-accent'
                     }

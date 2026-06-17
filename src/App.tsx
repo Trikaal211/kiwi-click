@@ -55,6 +55,7 @@ export default function App() {
           <Routes>
             {/* Client facing routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/index.html" element={<Navigate to="/" replace />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogArticlePage />} />
             <Route path="/team" element={<TeamPage />} />

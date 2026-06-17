@@ -32,12 +32,12 @@ const defaultTeam: TeamMember[] = [
     stat: '20+ Businesses Helped'
   },
   {
-    name: 'Shammy Kumar',
+    name: 'Baman Kumar',
     role: 'Co-Founder & Growth Strategist',
-    bio: 'Co-Founder & Growth Strategist. Shammy scales local brands and startups using high-performance ad funnels, search marketing, and custom web systems.',
+    bio: 'Co-Founder & Growth Strategist. Baman scales local brands and startups using high-performance ad funnels, search marketing, and custom web systems.',
     expertise: ['Google & Meta Ads', 'Web Architectures', 'Marketing Automation', 'Conversion Funnels'],
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80',
-    linkedin: 'https://linkedin.com/in/shammy-kumar',
+    image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80',
+    linkedin: 'https://linkedin.com/in/baman-kumar',
     email: 'info@kiwiclicks.in',
     isFounder: true,
     experience: '4+ Years Experience',
@@ -131,7 +131,7 @@ export default function TeamPage() {
             
             let img = dbM.image;
             if (dbM.name === 'Bandana Kumari') img = '/founder.png';
-            if (dbM.name === 'Shammy Kumar') img = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&h=400&q=80';
+            if (dbM.name === 'Shammy Kumar' || dbM.name === 'Baman Kumar') img = 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=400&h=400&q=80';
 
             return {
               name: dbM.name,
@@ -168,8 +168,8 @@ export default function TeamPage() {
   ];
 
   const founder = team.find(m => m.name === 'Bandana Kumari') || team[0];
-  const coFounder = team.find(m => m.name === 'Shammy Kumar') || team[1];
-  const specialists = team.filter(m => m.name !== 'Bandana Kumari' && m.name !== 'Shammy Kumar');
+  const coFounder = team.find(m => m.name === 'Baman Kumar' || m.name === 'Shammy Kumar') || team[1];
+  const specialists = team.filter(m => m.name !== 'Bandana Kumari' && m.name !== 'Shammy Kumar' && m.name !== 'Baman Kumar');
 
   return (
     <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
