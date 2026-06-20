@@ -372,7 +372,7 @@ export default function WhyKiwiClicks() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start relative">
           
           {/* LEFT STICKY PANEL: Trust Proof & Case Study Folder */}
-          <div className="col-span-12 lg:col-span-5 space-y-8 lg:sticky lg:top-24">
+          <div className="col-span-1 lg:col-span-5 space-y-8 lg:sticky lg:top-24">
             
             {/* Floating Trust Proof Snippets (Physical Desk Clippings) */}
             <div className="relative bg-card-bg/60 dark:bg-card-bg/40 border-2 border-border-color rounded-2xl p-6 shadow-offset transition-theme backdrop-blur-sm">
@@ -383,7 +383,7 @@ export default function WhyKiwiClicks() {
               {/* Coffee ring stain overlapping proof details */}
               <CoffeeStain className="absolute right-3 bottom-3 w-32 h-32 opacity-40" />
 
-              <div className="grid grid-cols-2 gap-4 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 relative z-10">
                 <div className="p-3 bg-white dark:bg-[#152a22]/30 border border-border-color rounded-xl shadow-offset-sm transform -rotate-1 hover:rotate-0 transition-transform duration-200">
                   <span className="text-[8px] font-mono text-text-secondary uppercase block font-bold">SEO Traffic Impact</span>
                   <p className="text-xl font-bold text-accent-green mt-1">
@@ -449,7 +449,7 @@ export default function WhyKiwiClicks() {
               </p>
 
               {/* Before/After Metrics */}
-              <div className="grid grid-cols-2 gap-4 mt-6 border-t border-b border-border-color/10 py-4 font-sans">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-6 border-t border-b border-border-color/10 py-4 font-sans">
                 <div className="text-left bg-white/50 dark:bg-card-bg/20 p-2.5 rounded-xl border border-border-color/20">
                   <span className="text-[8px] font-mono uppercase text-text-secondary/60 block">Previous Inbound</span>
                   <span className="text-lg font-bold text-text-secondary/80 font-mono">12 leads / mo</span>
@@ -603,7 +603,7 @@ export default function WhyKiwiClicks() {
           </div>
 
           {/* MOBILE/TABLET SLIDESHOW: Stepper/Slideshow for Mobile Viewports */}
-          <div className="lg:hidden col-span-12 w-full flex flex-col items-center gap-6 py-4 px-2 relative">
+          <div className="lg:hidden col-span-1 w-full flex flex-col items-center gap-6 py-4 px-2 relative">
             {/* Whiteboard outline background container indicator */}
             <div className="absolute inset-0 bg-[#EBF0EE]/30 dark:bg-[#152a22]/10 border-4 border-dashed border-border-color/20 rounded-3xl -z-10 pointer-events-none" />
 

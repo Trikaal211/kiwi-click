@@ -28,9 +28,9 @@ export default function Team() {
       label: 'Strategy',
     },
     {
-      name: 'Aniket Sharma',
+      name: 'Chandan Mali Sharma',
       role: 'Full Stack Developer & BA',
-      image: '/developer.png',
+      image: '/chandan.png',
       bio: 'Builds scalable React/Next.js platforms, fast web layouts, database integrations, and automated operational pipelines.',
       skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'Business Analysis'],
       label: 'Development',
@@ -38,7 +38,7 @@ export default function Team() {
     {
       name: 'Rohit Verma',
       role: 'Business Analyst',
-      image: '/rohit.png',
+      image: '/rohit_new.png',
       bio: 'Bridges the gap between business objectives and technical execution, mapping user flows, and defining project scopes.',
       skills: ['Requirements Gathering', 'Process Design', 'Market Research', 'Reporting'],
       label: 'Strategy',
@@ -54,7 +54,7 @@ export default function Team() {
     {
       name: 'Neha Gupta',
       role: 'UI/UX Designer',
-      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=400&h=400&q=80',
+      image: '/neha_new.png',
       bio: 'Engineers intuitive user experiences, wireframes, interactive Figma prototypes, and modern visual design branding systems.',
       skills: ['UI/UX Design', 'Figma', 'Wireframing', 'Ad Creatives'],
       label: 'Development',

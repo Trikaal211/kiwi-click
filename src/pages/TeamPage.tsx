@@ -111,7 +111,7 @@ const defaultTeam: TeamMember[] = [
     role: 'Lead UI/UX Designer',
     bio: 'Lead UI/UX Designer. Neha engineers high-fidelity Figma layouts, interactive client prototypes, and responsive digital interface frameworks.',
     expertise: ['UI/UX Design', 'Figma Prototyping', 'User Journeys', 'Visual Systems'],
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=400&h=400&q=80',
+    image: '/neha_new.png',
     linkedin: 'https://linkedin.com/in/neha-gupta-design',
     email: 'info@kiwiclicks.in'
   }
