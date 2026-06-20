@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Search, MapPin, Phone, MessageSquare, RefreshCw, 
   Star, Paperclip, ChevronLeft, ChevronRight
@@ -100,6 +101,16 @@ const CoffeeStain = ({ className = '' }: { className?: string }) => (
 export default function WhyKiwiClicks() {
   const [activeStage, setActiveStage] = useState<number>(0);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  const stageLinks = [
+    { path: '/services/seo', label: 'SEO & Local SEO' },
+    { path: '/services/gbp-optimization', label: 'Google Business Profile' },
+    { path: '/services/business-web-dev', label: 'Website Development' },
+    { path: '/services/whatsapp-automation', label: 'WhatsApp Automation' },
+    { path: '/services/crm-automation', label: 'CRM Automation' },
+    { path: '/services/cro', label: 'Conversion Optimization' },
+    { path: '/services/email-automation', label: 'Email Automation' }
+  ];
 
   const journeyStages = [
     {
@@ -579,14 +590,23 @@ export default function WhyKiwiClicks() {
 
                     {/* Strategist Strategy handwritten memo (Expands / shows on active click or hover) */}
                     <div className={`transition-all duration-300 overflow-hidden text-left border-t border-border-color/10 pt-3 mt-3 ${
-                      isActive || hoveredCard === index ? 'max-h-36 opacity-100' : 'max-h-0 opacity-0'
+                      isActive || hoveredCard === index ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'
                     }`}>
                       <p className="text-[9px] font-mono text-text-secondary uppercase tracking-wider font-bold mb-1">
                         Strategist Note:
                       </p>
-                      <p className="font-handwriting text-accent-emerald dark:text-[#a3d995] text-base leading-snug font-bold">
+                      <p className="font-handwriting text-accent-emerald dark:text-[#a3d995] text-base leading-snug font-bold mb-2">
                         "{stage.note}"
                       </p>
+                      <div className="flex justify-end pt-1">
+                        <Link 
+                          to={stageLinks[index].path}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-[9px] font-sans font-black uppercase tracking-widest text-accent-orange hover:text-accent-green transition-colors cursor-pointer border border-accent-orange/20 px-2 py-0.5 rounded bg-accent-orange/5"
+                        >
+                          Explore {stageLinks[index].label} &rarr;
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
 
@@ -675,9 +695,17 @@ export default function WhyKiwiClicks() {
                     <p className="text-[9px] font-mono text-text-secondary uppercase tracking-wider font-bold mb-1">
                       Strategist Note:
                     </p>
-                    <p className="font-handwriting text-accent-emerald dark:text-[#a3d995] text-base leading-snug font-bold">
+                    <p className="font-handwriting text-accent-emerald dark:text-[#a3d995] text-base leading-snug font-bold mb-2.5">
                       "{journeyStages[activeStage].note}"
                     </p>
+                    <div className="flex justify-end pt-1">
+                      <Link 
+                        to={stageLinks[activeStage].path}
+                        className="inline-flex items-center gap-1 text-[9px] font-sans font-black uppercase tracking-widest text-accent-orange hover:text-accent-green transition-colors cursor-pointer border border-accent-orange/20 px-2 py-0.5 rounded bg-accent-orange/5"
+                      >
+                        Explore {stageLinks[activeStage].label} &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </motion.div>
               </AnimatePresence>

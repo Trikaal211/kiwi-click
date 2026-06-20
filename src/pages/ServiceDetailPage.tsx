@@ -12,8 +12,7 @@ import {
   Star, 
   Clock, 
   Sparkles, 
-  ArrowRight,
-  Check
+  ArrowRight
 } from 'lucide-react';
 
 /* ─── INTERACTIVE PREVIEW WIDGETS ─── */
@@ -401,13 +400,20 @@ export default function ServiceDetailPage() {
               {service.solution} We cut through standard marketing fluff and configure robust conversion loops that drive direct sales appointments, walk-ins, or orders.
             </p>
 
-            <div className="space-y-3 pt-2">
-              {service.benefits.map((ben: string, i: number) => (
-                <div key={i} className="flex items-start gap-2 text-xs font-sans font-semibold text-text-primary">
-                  <Check className="text-accent-green shrink-0 mt-0.5" size={14} />
-                  <span>{ben}</span>
+            <div className="pt-2 space-y-4">
+              <div className="p-5 bg-accent-green/5 dark:bg-[#0d1f19] border-2 border-dashed border-accent-green/30 rounded-2xl space-y-4">
+                <p className="text-[10px] font-mono uppercase font-bold text-accent-green tracking-wider">
+                  AAPKO KYA FAYDA MILEGA (Your Direct Benefits):
+                </p>
+                <div className="grid grid-cols-1 gap-3">
+                  {service.benefits.map((ben: string, i: number) => (
+                    <div key={i} className="flex items-start gap-2.5 text-xs font-sans font-bold text-text-primary bg-card-bg/60 dark:bg-card-bg/30 p-3 rounded-xl border border-border-color/20">
+                      <CheckCircle2 className="text-accent-green shrink-0 mt-0.5" size={15} />
+                      <span>{ben}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 

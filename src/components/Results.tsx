@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Target, Laptop, Users, TrendingUp } from 'lucide-react';
 
 function Counter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
@@ -70,6 +71,7 @@ interface CaseStat {
   sparklinePath: string;
   sparklineColor: string;
   note: string;
+  href: string;
 }
 
 export default function Results() {
@@ -89,6 +91,7 @@ export default function Results() {
       sparklinePath: 'M0,25 L15,22 L30,18 L45,14 L60,10 L75,7 L90,4 L100,2',
       sparklineColor: '#4A9C3A',
       note: '+320% Organic traffic',
+      href: '/services/local-seo'
     },
     {
       id: 2,
@@ -105,6 +108,7 @@ export default function Results() {
       sparklinePath: 'M0,28 L20,24 L40,19 L55,14 L70,9 L85,5 L100,2',
       sparklineColor: '#FF8A3D',
       note: '4.8x average ROAS',
+      href: '/services/meta-ads'
     },
     {
       id: 3,
@@ -121,6 +125,7 @@ export default function Results() {
       sparklinePath: 'M0,26 L18,22 L35,17 L50,13 L65,9 L80,5 L100,2',
       sparklineColor: '#4A9C3A',
       note: '-40% CPL Reduction',
+      href: '/services/google-ads'
     },
     {
       id: 4,
@@ -137,6 +142,7 @@ export default function Results() {
       sparklinePath: 'M0,27 L20,22 L40,16 L55,11 L70,7 L85,3 L100,1',
       sparklineColor: '#C9A54D',
       note: '7.8% Avg Conversion Rate',
+      href: '/services/business-web-dev'
     },
   ];
 
@@ -185,55 +191,56 @@ export default function Results() {
           {cases.map((c, i) => {
             const Icon = c.icon;
             return (
-              <motion.div
-                key={c.id}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-5%' }}
-                transition={{ duration: 0.5, delay: i * 0.08 }}
-                whileHover={{ y: -3 }}
-                className={`bg-card-bg border-2 ${c.borderColor} rounded-2xl p-5 ${c.shadowClass} transition-all duration-300 flex flex-col justify-between min-h-[300px] group relative overflow-hidden`}
-              >
-                {/* Ghost watermark number */}
-                <div className="absolute -bottom-2 -right-2 text-[48px] font-sans font-black leading-none text-text-primary/[0.02] dark:text-text-primary/[0.04] select-none pointer-events-none">
-                  {c.value}{c.suffix}
-                </div>
+              <Link to={c.href} key={c.id} className="block h-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-5%' }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  whileHover={{ y: -3 }}
+                  className={`bg-card-bg border-2 ${c.borderColor} rounded-2xl p-5 ${c.shadowClass} transition-all duration-300 flex flex-col justify-between min-h-[300px] group relative overflow-hidden h-full`}
+                >
+                  {/* Ghost watermark number */}
+                  <div className="absolute -bottom-2 -right-2 text-[48px] font-sans font-black leading-none text-text-primary/[0.02] dark:text-text-primary/[0.04] select-none pointer-events-none">
+                    {c.value}{c.suffix}
+                  </div>
 
-                <div className="relative z-10 text-left">
-                  {/* Category / Client Info */}
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-[7.5px] font-mono font-bold uppercase tracking-wider text-text-secondary">
-                      {c.industry}
-                    </span>
-                    <div className={`w-7 h-7 rounded-lg bg-page-bg-sec border border-border-color/10 flex items-center justify-center ${c.accentColor}`}>
-                      <Icon size={14} />
+                  <div className="relative z-10 text-left">
+                    {/* Category / Client Info */}
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-[7.5px] font-mono font-bold uppercase tracking-wider text-text-secondary">
+                        {c.industry}
+                      </span>
+                      <div className={`w-7 h-7 rounded-lg bg-page-bg-sec border border-border-color/10 flex items-center justify-center ${c.accentColor}`}>
+                        <Icon size={14} />
+                      </div>
+                    </div>
+
+                    {/* Client name */}
+                    <h4 className="font-serif text-base font-bold text-text-primary tracking-tight transition-theme">
+                      {c.client}
+                    </h4>
+
+                    {/* Value / Outcome Indicator */}
+                    <div className="my-2.5">
+                      <span className={`text-4xl font-sans font-extrabold tracking-tight ${c.accentColor}`}>
+                        <Counter value={c.value} suffix={c.suffix} duration={1.8} />
+                      </span>
+                      <p className="font-handwriting text-accent-orange text-xs mt-0.5 font-bold">
+                        {c.note}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Client name */}
-                  <h4 className="font-serif text-base font-bold text-text-primary tracking-tight transition-theme">
-                    {c.client}
-                  </h4>
-
-                  {/* Value / Outcome Indicator */}
-                  <div className="my-2.5">
-                    <span className={`text-4xl font-sans font-extrabold tracking-tight ${c.accentColor}`}>
-                      <Counter value={c.value} suffix={c.suffix} duration={1.8} />
-                    </span>
-                    <p className="font-handwriting text-accent-orange text-xs mt-0.5 font-bold">
-                      {c.note}
+                  {/* Sparkline + Description */}
+                  <div className="mt-4 relative z-10">
+                    <Sparkline path={c.sparklinePath} color={c.sparklineColor} />
+                    <p className="text-[10px] font-sans font-medium text-text-secondary leading-relaxed mt-2 text-left">
+                      {c.desc}
                     </p>
                   </div>
-                </div>
-
-                {/* Sparkline + Description */}
-                <div className="mt-4 relative z-10">
-                  <Sparkline path={c.sparklinePath} color={c.sparklineColor} />
-                  <p className="text-[10px] font-sans font-medium text-text-secondary leading-relaxed mt-2 text-left">
-                    {c.desc}
-                  </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             );
           })}
         </div>

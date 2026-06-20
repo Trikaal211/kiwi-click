@@ -149,7 +149,7 @@ export default function Services() {
       bgAccent: 'from-accent-green/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'SEO analysis',
-      href: '/seo-local-seo',
+      href: '/services/seo',
       widget: SEORankingWidget,
     },
     {
@@ -166,7 +166,7 @@ export default function Services() {
       bgAccent: 'from-accent-orange/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'Meta ads manager dashboard',
-      href: '/social-media-marketing',
+      href: '/services/meta-ads',
       widget: MetaAdWidget,
     },
     {
@@ -183,7 +183,7 @@ export default function Services() {
       bgAccent: 'from-cyan-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'High performance web code template',
-      href: '/web-development',
+      href: '/services/business-web-dev',
       widget: WebDevWidget,
     },
     {
@@ -200,7 +200,7 @@ export default function Services() {
       bgAccent: 'from-accent-green/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'Google Ads visual stats dashboard',
-      href: '/social-media-marketing',
+      href: '/services/google-ads',
       widget: GoogleAdsWidget,
     },
     {
@@ -217,7 +217,7 @@ export default function Services() {
       bgAccent: 'from-violet-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'AI pipeline automation steps chart',
-      href: '/ai-automation',
+      href: '/services/ai-chatbots',
       widget: AIWorkflowWidget,
     },
     {
@@ -234,7 +234,7 @@ export default function Services() {
       bgAccent: 'from-gold-accent/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=400&q=80',
       imageAlt: 'SEO keyword search content map',
-      href: '/seo-local-seo',
+      href: '/services/content-marketing',
       widget: ContentWidget,
     },
   ];
@@ -317,12 +317,15 @@ export default function Services() {
                     </div>
 
                     {/* Inline badges representation of benefits to compress height */}
-                    <div className="flex flex-wrap gap-1 border-t border-border-color/10 pt-3 mb-3">
-                      {s.benefits.map((b, idx) => (
-                        <span key={idx} className="text-[7.5px] font-mono font-bold px-1.5 py-0.5 bg-page-bg-sec/50 border border-border-color/10 text-text-secondary rounded">
-                          ✓ {b}
-                        </span>
-                      ))}
+                    <div className="border-t border-border-color/10 pt-3 mb-3">
+                      <p className="text-[8px] font-mono uppercase font-bold text-accent-green mb-1.5">Your Benefits (Faayde):</p>
+                      <div className="flex flex-wrap gap-1">
+                        {s.benefits.map((b, idx) => (
+                          <span key={idx} className="text-[7.5px] font-mono font-bold px-1.5 py-0.5 bg-page-bg-sec/50 border border-border-color/10 text-text-secondary rounded">
+                            ✓ {b}
+                          </span>
+                        ))}
+                      </div>
                     </div>
 
                     {/* CTA link indicator */}
