@@ -5,10 +5,11 @@ export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
+  const cursorX = useMotionValue(-200);
+  const cursorY = useMotionValue(-200);
 
-  const springConfig = { damping: 35, stiffness: 350, mass: 0.4 };
+  // Super tight spring — near zero lag
+  const springConfig = { damping: 50, stiffness: 1200, mass: 0.1 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -19,74 +20,97 @@ export default function CustomCursor() {
       if (!isVisible) setIsVisible(true);
     };
 
-    window.addEventListener('mousemove', moveCursor);
-
-    // Check if mouse is hovering over interactive elements
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target) return;
-      
-      const isInteractive = 
+      const isInteractive =
         target.tagName === 'A' ||
         target.tagName === 'BUTTON' ||
-        target.closest('button') ||
-        target.closest('a') ||
-        target.classList.contains('interactive') ||
-        target.style.cursor === 'pointer';
-        
+        target.closest('button') !== null ||
+        target.closest('a') !== null ||
+        getComputedStyle(target).cursor === 'pointer';
       setIsHovered(!!isInteractive);
     };
 
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
+
+    window.addEventListener('mousemove', moveCursor);
     window.addEventListener('mouseover', handleMouseOver);
-
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
-
     document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter);
     };
   }, [cursorX, cursorY, isVisible]);
 
-  // Disable custom cursor on touch devices for accessibility
   useEffect(() => {
     const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (touchDevice) {
-      setIsVisible(false);
-    }
+    if (touchDevice) setIsVisible(false);
   }, []);
 
   if (!isVisible) return null;
 
   return (
-    <>
-      {/* Outer Glow Ring */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 hidden md:block"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-          scale: isHovered ? 1.6 : 1,
-          backgroundColor: isHovered ? 'rgba(201, 165, 77, 0.05)' : 'rgba(110, 143, 106, 0.02)',
-          borderColor: isHovered ? 'rgba(201, 165, 77, 0.6)' : 'rgba(110, 143, 106, 0.35)',
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
+      style={{
+        x: cursorXSpring,
+        y: cursorYSpring,
+        translateX: '-2px',
+        translateY: '-2px',
+      }}
+    >
+      <motion.svg
+        width="26"
+        height="30"
+        viewBox="0 0 22 26"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        animate={{
+          scale: isHovered ? 1.25 : 1,
+          rotate: 15,
         }}
-      />
-      {/* Inner Pinpoint Dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 hidden md:block"
-        style={{
-          x: cursorX,
-          y: cursorY,
-          scale: isHovered ? 0.6 : 1,
-          backgroundColor: isHovered ? '#C9A54D' : '#6E8F6A',
-          boxShadow: isHovered ? '0 0 8px rgba(201, 165, 77, 0.8)' : 'none'
-        }}
-        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-      />
-    </>
+        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+        style={{ transformOrigin: '2px 2px' }}
+      >
+        <defs>
+          {/* 7-color rainbow gradient painted top→bottom on the arrow */}
+          <linearGradient id="rainbowGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"      stopColor="#FF0000" /> {/* Red */}
+            <stop offset="16.6%"  stopColor="#FF7700" /> {/* Orange */}
+            <stop offset="33.3%"  stopColor="#FFE600" /> {/* Yellow */}
+            <stop offset="50%"    stopColor="#00C853" /> {/* Green */}
+            <stop offset="66.6%"  stopColor="#2979FF" /> {/* Blue */}
+            <stop offset="83.3%"  stopColor="#7C4DFF" /> {/* Indigo */}
+            <stop offset="100%"   stopColor="#E040FB" /> {/* Violet */}
+          </linearGradient>
+          {/* Slightly darker version for the stroke */}
+          <linearGradient id="rainbowStroke" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"      stopColor="#CC0000" />
+            <stop offset="16.6%"  stopColor="#CC5500" />
+            <stop offset="33.3%"  stopColor="#CCB800" />
+            <stop offset="50%"    stopColor="#009940" />
+            <stop offset="66.6%"  stopColor="#1155CC" />
+            <stop offset="83.3%"  stopColor="#5533CC" />
+            <stop offset="100%"   stopColor="#BB00DD" />
+          </linearGradient>
+        </defs>
+
+        {/* Arrow shape filled with 7-color rainbow gradient */}
+        <path
+          d="M2 2L20 10.5L11.5 12.5L7.5 24L2 2Z"
+          fill="url(#rainbowGrad)"
+          stroke="url(#rainbowStroke)"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      </motion.svg>
+    </motion.div>
   );
 }

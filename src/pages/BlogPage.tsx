@@ -82,8 +82,6 @@ const articles: Article[] = [
   },
 ];
 
-const categories = ['All', 'SEO', 'Social Media', 'Web Development', 'AI Automation'];
-
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All');
 

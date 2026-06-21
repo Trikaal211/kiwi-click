@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
+import WhatsAppWidget from './components/WhatsAppWidget';
 import HomePage from './pages/HomePage';
 
 // Lazy loaded client pages
@@ -50,6 +51,7 @@ export default function App() {
       {!isAdmin && <CustomCursor />}
       <ScrollToTop />
       {!isAdmin && <Navbar />}
+      {!isAdmin && <WhatsAppWidget />}
       <main className="relative z-10 w-full">
         <Suspense fallback={<LoadingFallback />}>
           <Routes>

@@ -1,75 +1,55 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { HelpCircle, ChevronDown, ArrowUpRight } from 'lucide-react';
 
 interface FAQItem {
   id: number;
-  category: string;
   question: string;
   answer: string;
+  category: string;
 }
 
 export default function FAQ() {
-  const [openId, setOpenId] = useState<number | null>(1);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState<string>('SEO');
+  const [openId, setOpenId] = useState<number | null>(null);
+
+  const categories = ['SEO', 'Web Design', 'Automation', 'Meta Ads'];
 
   const faqs: FAQItem[] = [
     {
       id: 1,
+      question: 'What is your core philosophy on digital growth?',
+      answer: 'We believe in a unified digital engine—combining web engineering, intent SEO mapping, paid conversion loops, and lead routing under one single strategy. Everything Digital. One Place.',
       category: 'SEO',
-      question: 'How long does SEO take to show results for a Delhi business?',
-      answer: 'For most Delhi businesses, we see ranking movements within 4-8 weeks and meaningful organic traffic growth within 3-4 months. Local SEO — particularly Google Maps rankings — shows results faster, sometimes within 2-4 weeks for specific location-based queries.'
     },
     {
       id: 2,
+      question: 'Do you only work with large enterprise clients?',
+      answer: 'No. We serve businesses across all growth stages—from local Delhi/NCR shops looking to dominate their Map Pack keyword slots, to fast-growing startups, D2C brands, and international enterprises requiring advanced operations integrations.',
       category: 'SEO',
-      question: 'What is Local SEO and why does it matter?',
-      answer: 'Local SEO focuses on ranking your business for location-specific searches like "digital marketing agency Connaught Place" or "web developer Delhi CP." It includes Google Business Profile optimization, local citations, review management, and Maps ranking strategies that drive high-intent, ready-to-buy traffic.'
     },
     {
       id: 3,
-      category: 'Website',
-      question: 'What makes your landing pages convert better?',
-      answer: 'We engineer conversion from day one: single-focused page structure, above-the-fold social proof, friction-reduced contact forms (3 fields, not 10), WhatsApp quick-contact buttons, sub-1.5 second load times, and CTA placement informed by heatmap data. Our average landing page conversion rate is 6-9% vs the industry average of 2-3%.'
+      question: 'Why Next.js edge landing pages instead of basic builders?',
+      answer: 'Speed is directly proportional to conversion. Edge pages load in under 1 second globally, passing Core Web Vitals and preventing mobile traffic drop-offs to capture every possible lead.',
+      category: 'Web Design',
     },
     {
       id: 4,
-      category: 'Marketing',
-      question: 'What is the minimum ad budget you work with?',
-      answer: 'For Google Ads, we recommend a minimum of ₹30,000/month in ad spend to gather meaningful data. For Meta Ads, ₹20,000/month is a workable starting point. Below these amounts, the ad algorithms do not have enough conversion data to optimize effectively. Our management fees are separate from ad spend.'
+      question: 'How do your AI lead qualification systems operate?',
+      answer: 'We build serverless qualifiers that analyze incoming inquiries using custom LLM logic, scoring budget parameters and intent scores, then automatically routing them to your HubSpot, CRM, or WhatsApp nodes within 0.12 seconds.',
+      category: 'Automation',
     },
     {
       id: 5,
-      category: 'AI',
-      question: 'How does your CRM automation pipeline work?',
-      answer: 'Every lead from your forms, WhatsApp, Google Ads, and Meta Ads flows into a central hub. AI qualifies and scores the lead, populates your CRM automatically, and sends an instant WhatsApp alert to the relevant team member — all within 90 seconds of the enquiry. No manual data entry required.'
+      question: 'What performance metrics do you guarantee for Paid Social?',
+      answer: 'While direct revenue is determined by sales team close rates, we hold our social ad loops accountable to direct-attribution ROAS (targeting 4-5x average ROAS across direct-to-consumer and B2B platforms).',
+      category: 'Meta Ads',
     },
-    {
-      id: 6,
-      category: 'Marketing',
-      question: 'How is your pricing structured?',
-      answer: 'We align pricing to verified business milestones: qualified lead volume, conversion rate improvements, and revenue growth. We do not charge retainers for vanity impressions or generic activity reports. Every engagement starts with a discovery call where we outline a clear, milestone-based roadmap.'
-    },
-    {
-      id: 7,
-      category: 'Website',
-      question: 'How long does it take to build a website?',
-      answer: 'A standard 5-7 page business website takes 3-4 weeks from approved design to launch. More complex sites with custom features, CRM integrations, or e-commerce functionality take 6-10 weeks. We provide a clear milestone timeline before starting any project.'
-    },
-    {
-      id: 8,
-      category: 'AI',
-      question: 'Do I need technical knowledge to manage the automations you build?',
-      answer: 'No. We build every automation with a clean, intuitive dashboard and simple controls. You get full training, comprehensive documentation, and ongoing support. The most complex system we deliver should feel simple enough for any business owner to monitor independently.'
-    }
   ];
 
-  const categories = ['All', 'SEO', 'Website', 'Marketing', 'AI'];
-
-  const filtered = activeCategory === 'All'
-    ? faqs
-    : faqs.filter(f => f.category === activeCategory);
+  const filtered = faqs.filter((faq) => faq.category === activeCategory);
 
   const toggleFAQ = (id: number) => {
     setOpenId(openId === id ? null : id);
@@ -78,38 +58,38 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary transition-theme"
+      className="relative py-20 md:py-32 px-6 md:px-12 bg-page-bg text-text-primary transition-theme border-b border-border-color"
     >
       <div className="max-w-4xl w-full mx-auto relative z-10">
 
-        {/* Header */}
-        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-4 transition-theme">
+        {/* Section Header */}
+        <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-6 transition-theme">
           <div>
-            <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
-              Common Questions
+            <span className="text-xs font-mono tracking-widest text-accent-green font-bold uppercase">
+              06 // COMMON INQUIRIES
             </span>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-text-primary mt-2 transition-theme">
-              Frequently Asked
+            <h2 className="font-sans font-extrabold text-4xl md:text-5xl text-text-primary mt-3 uppercase transition-theme">
+              FAQ Database
             </h2>
           </div>
           <Link
             to="/faq"
-            className="inline-flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-widest text-accent-orange border-2 border-accent-orange px-4 py-2.5 rounded-xl hover:bg-accent-orange hover:text-white transition-all shrink-0 shadow-offset-sm"
+            className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-text-primary border border-border-color px-5 py-3 rounded-full bg-page-bg-sec hover:bg-text-primary hover:text-page-bg transition-all shrink-0"
           >
-            All FAQs <ArrowUpRight size={12} />
+            Explore FAQ Docs <ArrowUpRight size={12} />
           </Link>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Category Tabs */}
+        <div className="flex flex-wrap gap-2.5 mb-10">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => { setActiveCategory(cat); setOpenId(null); }}
-              className={`px-4 py-2 rounded-xl text-[10px] font-sans font-bold uppercase tracking-widest border-2 transition-all duration-300 cursor-pointer ${
+              className={`px-4.5 py-2.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider border transition-all duration-300 cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-accent-emerald border-accent-emerald text-white shadow-offset-sm'
-                  : 'bg-card-bg border-border-color text-text-primary hover:border-accent-orange'
+                  ? 'bg-accent-green border-accent-green text-slate-950 shadow-[0_5px_15px_rgba(0,255,102,0.2)]'
+                  : 'bg-page-bg-sec border-border-color text-text-secondary hover:border-text-secondary/35 hover:text-text-primary'
               }`}
             >
               {cat}
@@ -124,24 +104,24 @@ export default function FAQ() {
             return (
               <div
                 key={faq.id}
-                className={`bg-card-bg border-2 border-accent-emerald rounded-2xl overflow-hidden transition-all duration-300 ${
-                  isOpen ? 'shadow-offset' : 'shadow-offset-sm hover:translate-x-[-1px] hover:translate-y-[-1px]'
+                className={`bg-card-bg border rounded-3xl overflow-hidden transition-all duration-300 ${
+                  isOpen ? 'border-accent-green/30 bg-page-bg-sec/50 shadow-lg' : 'border-border-color hover:border-text-secondary/30'
                 }`}
               >
                 <button
                   onClick={() => toggleFAQ(faq.id)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left cursor-pointer transition-theme select-none"
+                  className="w-full px-6 py-5.5 flex items-center justify-between text-left cursor-pointer select-none"
                 >
-                  <div className="flex items-start gap-3 flex-1 pr-4">
-                    <HelpCircle size={16} className={`mt-0.5 shrink-0 transition-colors ${isOpen ? 'text-accent-orange' : 'text-accent-green'}`} />
-                    <span className="font-sans font-semibold text-sm md:text-base text-text-primary transition-theme leading-snug">
+                  <div className="flex items-start gap-4 pr-4">
+                    <HelpCircle size={16} className={`mt-0.5 shrink-0 transition-colors ${isOpen ? 'text-accent-green' : 'text-text-secondary'}`} />
+                    <span className="font-sans font-bold text-sm md:text-base text-text-primary leading-snug transition-theme">
                       {faq.question}
                     </span>
                   </div>
-                  <div className={`w-7 h-7 rounded-full border border-border-color/20 flex items-center justify-center bg-page-bg transition-all duration-300 shrink-0 ${
-                    isOpen ? 'rotate-180 bg-accent-orange text-white border-accent-orange' : 'text-text-primary'
+                  <div className={`w-8 h-8 rounded-full border border-border-color flex items-center justify-center bg-page-bg transition-all duration-300 shrink-0 ${
+                    isOpen ? 'rotate-180 bg-accent-green text-slate-950 border-accent-green' : 'text-text-secondary'
                   }`}>
-                    <ChevronDown size={13} />
+                    <ChevronDown size={14} />
                   </div>
                 </button>
 
@@ -151,10 +131,10 @@ export default function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      transition={{ duration: 0.25, ease: 'easeInOut' }}
                     >
-                      <div className="px-6 pb-6 pt-1 border-t border-accent-emerald/20 transition-theme">
-                        <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed">{faq.answer}</p>
+                      <div className="px-6 pb-6 pt-1.5 border-t border-border-color transition-theme">
+                        <p className="text-xs font-sans text-text-secondary leading-relaxed transition-theme">{faq.answer}</p>
                       </div>
                     </motion.div>
                   )}
@@ -164,14 +144,13 @@ export default function FAQ() {
           })}
         </div>
 
-        {/* Bottom link to full FAQ page */}
-        <div className="mt-8 text-center">
-          <p className="font-handwriting text-accent-orange text-lg -rotate-1 mb-3">Have more questions?</p>
+        {/* Bottom link */}
+        <div className="mt-12 text-center">
           <Link
             to="/faq"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-card-bg border-2 border-accent-emerald text-sm font-sans font-bold text-text-primary hover:bg-accent-orange hover:text-white hover:border-accent-orange transition-all shadow-offset-sm"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-page-bg-sec border border-border-color text-xs font-mono font-bold uppercase tracking-wider text-text-primary hover:bg-text-primary hover:text-page-bg hover:border-text-primary transition-all shadow-md"
           >
-            View All FAQs <ArrowUpRight size={13} />
+            All FAQ Archives <ArrowUpRight size={13} />
           </Link>
         </div>
 

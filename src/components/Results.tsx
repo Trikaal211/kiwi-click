@@ -1,72 +1,64 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Target, Laptop, Users, TrendingUp } from 'lucide-react';
+import { TrendingUp, Cpu, Users, BarChart3 } from 'lucide-react';
 
-function Counter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-10%' });
+/* ─── Animated Counters ─── */
+const Counter = ({ value, suffix }: { value: number; suffix: string }) => {
   const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
 
   useEffect(() => {
-    if (isInView) {
-      const start = Date.now();
-      const ms = duration * 1000;
-      const tick = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / ms, 1);
-        const ease = 1 - Math.pow(1 - progress, 3); // cubic ease out
-        setCount(Math.floor(ease * value));
-        if (progress < 1) requestAnimationFrame(tick);
-        else setCount(value);
-      };
-      requestAnimationFrame(tick);
-    }
-  }, [isInView, value, duration]);
+    if (!inView) return;
+    const duration = 1.5;
 
-  return <span ref={ref}>{count}{suffix}</span>;
-}
+    const end = value;
+    const totalFrames = 60 * duration;
+    let frame = 0;
 
-// Inline animated sparkline SVG
+    const counter = setInterval(() => {
+      frame++;
+      const progress = frame / totalFrames;
+      const easeOutQuad = progress * (2 - progress);
+      const currentCount = Math.round(easeOutQuad * end);
+
+      setCount(currentCount);
+
+      if (frame >= totalFrames) {
+        setCount(end);
+        clearInterval(counter);
+      }
+    }, 1000 / 60);
+
+    return () => clearInterval(counter);
+  }, [value, inView]);
+
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
+};
+
+/* ─── Compact Sparklines ─── */
 const Sparkline = ({ path, color }: { path: string; color: string }) => (
-  <svg className="w-full h-8" viewBox="0 0 100 30" preserveAspectRatio="none">
-    {/* Fill area */}
-    <motion.path
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      d={`${path} L 100,30 L 0,30 Z`}
-      fill={color}
-      fillOpacity={0.1}
-    />
-    {/* Line */}
-    <motion.path
-      initial={{ pathLength: 0 }}
-      whileInView={{ pathLength: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.2, ease: 'easeOut' }}
-      d={path}
-      fill="none"
-      stroke={color}
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+  <svg className="w-full h-8 overflow-visible" viewBox="0 0 100 40" preserveAspectRatio="none">
+    <path d={path} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
   </svg>
 );
 
-interface CaseStat {
+interface ResultCase {
   id: number;
   client: string;
   industry: string;
-  metricLabel: string;
   value: number;
   suffix: string;
-  icon: React.ElementType;
   desc: string;
-  shadowClass: string;
+  icon: React.FC<any>;
   borderColor: string;
+  glowColor: string;
   accentColor: string;
   sparklinePath: string;
   sparklineColor: string;
@@ -75,73 +67,69 @@ interface CaseStat {
 }
 
 export default function Results() {
-  const cases: CaseStat[] = [
+  const cases: ResultCase[] = [
     {
       id: 1,
-      client: 'Dwarka Dental Care',
-      industry: 'Local Healthcare',
-      metricLabel: 'Google Maps Rank',
-      value: 1,
-      suffix: 'st',
-      icon: Target,
-      desc: 'Locking in HNW patients in Southwest Delhi. Crawl optimizations and Map citations drove visibility.',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-accent-green/30 hover:border-accent-green',
-      accentColor: 'text-accent-green',
-      sparklinePath: 'M0,25 L15,22 L30,18 L45,14 L60,10 L75,7 L90,4 L100,2',
-      sparklineColor: '#4A9C3A',
-      note: '+320% Organic traffic',
-      href: '/services/local-seo'
-    },
-    {
-      id: 2,
-      client: 'Veda Organics',
-      industry: 'E-Commerce Retailer',
-      metricLabel: 'Meta Ads ROAS',
-      value: 4,
-      suffix: '.8x',
+      client: 'Veda Labs (SaaS)',
+      industry: 'Paid Social Ads',
+      value: 4.8,
+      suffix: 'x',
+      desc: 'Meta direct response campaigns scaling customer acquisitions.',
       icon: TrendingUp,
-      desc: 'Meta ad creatives engineered with 3-sec hook scripts cut customer acquisition costs by 38% in 45 days.',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-orange',
-      borderColor: 'border-accent-orange/30 hover:border-accent-orange',
-      accentColor: 'text-accent-orange',
-      sparklinePath: 'M0,28 L20,24 L40,19 L55,14 L70,9 L85,5 L100,2',
-      sparklineColor: '#FF8A3D',
-      note: '4.8x average ROAS',
+      borderColor: 'border-border-color hover:border-accent-green/30',
+      glowColor: 'hover:shadow-[0_15px_30px_rgba(0,255,102,0.06)]',
+      accentColor: 'text-accent-green',
+      sparklinePath: 'M0,35 L20,30 L40,25 L60,18 L80,10 L100,5',
+      sparklineColor: '#00FF66',
+      note: 'Verified attributed ROAS',
       href: '/services/meta-ads'
     },
     {
+      id: 2,
+      client: 'Apex Systems',
+      industry: 'Enterprise SEO',
+      value: 320,
+      suffix: '%',
+      desc: 'Topical cluster rank indexing increasing search pipeline volumes.',
+      icon: BarChart3,
+      borderColor: 'border-border-color hover:border-cyan-400/30',
+      glowColor: 'hover:shadow-[0_15px_30px_rgba(6,182,212,0.06)]',
+      accentColor: 'text-cyan-400',
+      sparklinePath: 'M0,32 L20,28 L40,20 L60,15 L80,5 L100,2',
+      sparklineColor: '#38bdf8',
+      note: 'Organic search volume increase',
+      href: '/services/seo'
+    },
+    {
       id: 3,
-      client: 'Apex Realty CP',
-      industry: 'B2B Services Delhi',
-      metricLabel: 'Inbound Qualified Leads',
-      value: 127,
-      suffix: '+',
-      icon: Users,
-      desc: 'Intent-focused Google Search campaigns and progressive forms pruned junk leads by 60%.',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-accent-green/30 hover:border-accent-green',
-      accentColor: 'text-accent-green',
-      sparklinePath: 'M0,26 L18,22 L35,17 L50,13 L65,9 L80,5 L100,2',
-      sparklineColor: '#4A9C3A',
-      note: '-40% CPL Reduction',
-      href: '/services/google-ads'
+      client: 'SkillForge Platform',
+      industry: 'Conversion Engineering',
+      value: 10,
+      suffix: 'X',
+      desc: 'Next.js checkout flow adjustments reducing user funnel friction.',
+      icon: Cpu,
+      borderColor: 'border-border-color hover:border-purple-400/30',
+      glowColor: 'hover:shadow-[0_15px_30px_rgba(168,85,247,0.06)]',
+      accentColor: 'text-purple-400',
+      sparklinePath: 'M0,36 L20,34 L40,28 L60,20 L80,12 L100,6',
+      sparklineColor: '#a855f7',
+      note: 'Checkout loading speed velocity',
+      href: '/services/business-web-dev'
     },
     {
       id: 4,
-      client: 'SkillForge India',
-      industry: 'EdTech Platform',
-      metricLabel: 'Funnel Conversion',
-      value: 7,
-      suffix: '.8%',
-      icon: Laptop,
-      desc: 'React Next.js layouts load in under 1.5s. Integrated passwordless WhatsApp CRM lead qualifier.',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-orange',
-      borderColor: 'border-gold-accent/30 hover:border-gold-accent',
-      accentColor: 'text-gold-accent',
-      sparklinePath: 'M0,27 L20,22 L40,16 L55,11 L70,7 L85,3 L100,1',
-      sparklineColor: '#C9A54D',
-      note: '7.8% Avg Conversion Rate',
+      client: 'Centra SaaS Onboarding',
+      industry: 'Automation Operations',
+      value: 92,
+      suffix: '%',
+      desc: 'LLM qualification qualifiers reducing manual screening friction.',
+      icon: Users,
+      borderColor: 'border-border-color hover:border-yellow-500/30',
+      glowColor: 'hover:shadow-[0_15px_30px_rgba(234,179,8,0.06)]',
+      accentColor: 'text-yellow-500',
+      sparklinePath: 'M0,38 L20,35 L40,28 L60,24 L80,18 L100,10',
+      sparklineColor: '#eab308',
+      note: '84% Registration yield rate',
       href: '/services/business-web-dev'
     },
   ];
@@ -149,93 +137,85 @@ export default function Results() {
   return (
     <section
       id="results"
-      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
+      className="relative py-20 md:py-32 px-6 md:px-12 bg-page-bg text-text-primary overflow-hidden transition-theme border-b border-border-color"
     >
       {/* Background watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-        <span className="text-[clamp(60px,14vw,160px)] font-sans font-black text-text-primary/[0.015] dark:text-text-primary/[0.03] tracking-tighter leading-none whitespace-nowrap">
-          CASE RESULTS
+        <span className="text-[clamp(60px,14vw,160px)] font-sans font-black text-text-primary/[0.01] tracking-tighter leading-none whitespace-nowrap transition-theme">
+          ATTRIBUTION LOGS
         </span>
       </div>
 
-      {/* Dot grid */}
+      {/* Grid Overlay */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03] select-none"
+        className="absolute inset-0 pointer-events-none opacity-[0.01] select-none"
         style={{
-          backgroundImage: 'radial-gradient(var(--accent-emerald) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
+          backgroundImage: 'radial-gradient(var(--text-primary) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
         }}
       />
 
       <div className="max-w-6xl w-full mx-auto relative z-10">
 
-        {/* Header */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-6 gap-4 transition-theme">
+        {/* Section Header */}
+        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-6 transition-theme">
           <div>
-            <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
-              05 // CASE OUTCOMES
+            <span className="text-xs font-mono tracking-widest text-accent-green font-bold uppercase">
+              05 // PROVEN PIPELINES
             </span>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-text-primary mt-2 transition-theme">
-              Our Results
+            <h2 className="font-sans font-extrabold text-4xl md:text-6xl text-text-primary mt-3 uppercase transition-theme">
+              Performance Index
             </h2>
           </div>
           <div className="max-w-md text-left">
-            <p className="text-xs md:text-sm font-sans font-medium text-text-secondary leading-relaxed transition-theme">
-              No vanity estimates. We analyze campaigns and hold them accountable to direct commercial leads and transaction wins.
+            <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed transition-theme">
+              We connect digital tracking pixels directly to sales invoices to map verified transaction performance.
             </p>
           </div>
         </div>
 
         {/* Case Studies Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {cases.map((c, i) => {
             const Icon = c.icon;
             return (
-              <Link to={c.href} key={c.id} className="block h-full">
+              <Link to={c.href} key={c.id} className="block h-full group">
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-5%' }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
-                  whileHover={{ y: -3 }}
-                  className={`bg-card-bg border-2 ${c.borderColor} rounded-2xl p-5 ${c.shadowClass} transition-all duration-300 flex flex-col justify-between min-h-[300px] group relative overflow-hidden h-full`}
+                  className={`bg-card-bg backdrop-blur-md border ${c.borderColor} rounded-3xl p-5 ${c.glowColor} transition-all duration-300 flex flex-col justify-between min-h-[300px] relative overflow-hidden h-full`}
                 >
-                  {/* Ghost watermark number */}
-                  <div className="absolute -bottom-2 -right-2 text-[48px] font-sans font-black leading-none text-text-primary/[0.02] dark:text-text-primary/[0.04] select-none pointer-events-none">
-                    {c.value}{c.suffix}
-                  </div>
-
                   <div className="relative z-10 text-left">
-                    {/* Category / Client Info */}
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-[7.5px] font-mono font-bold uppercase tracking-wider text-text-secondary">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-[8px] font-mono font-bold uppercase tracking-wider text-text-secondary opacity-60">
                         {c.industry}
                       </span>
-                      <div className={`w-7 h-7 rounded-lg bg-page-bg-sec border border-border-color/10 flex items-center justify-center ${c.accentColor}`}>
-                        <Icon size={14} />
+                      <div className={`w-7 h-7 rounded-lg bg-page-bg-sec border border-border-color flex items-center justify-center transition-theme ${c.accentColor}`}>
+                        <Icon size={13} />
                       </div>
                     </div>
 
-                    {/* Client name */}
-                    <h4 className="font-serif text-base font-bold text-text-primary tracking-tight transition-theme">
+                    <h4 className="font-sans font-extrabold text-base text-text-primary tracking-tight transition-theme">
                       {c.client}
                     </h4>
 
-                    {/* Value / Outcome Indicator */}
-                    <div className="my-2.5">
-                      <span className={`text-4xl font-sans font-extrabold tracking-tight ${c.accentColor}`}>
-                        <Counter value={c.value} suffix={c.suffix} duration={1.8} />
+                    {/* Counter Metric */}
+                    <div className="my-4">
+                      <span className={`text-4xl font-sans font-black tracking-tight ${c.accentColor}`}>
+                        <Counter value={c.value} suffix={c.suffix} />
                       </span>
-                      <p className="font-handwriting text-accent-orange text-xs mt-0.5 font-bold">
+                      <p className="font-mono text-text-secondary text-[9px] mt-1.5 leading-none transition-theme">
                         {c.note}
                       </p>
                     </div>
                   </div>
 
-                  {/* Sparkline + Description */}
+                  {/* Sparkline & Description */}
                   <div className="mt-4 relative z-10">
                     <Sparkline path={c.sparklinePath} color={c.sparklineColor} />
-                    <p className="text-[10px] font-sans font-medium text-text-secondary leading-relaxed mt-2 text-left">
+                    <p className="text-[10px] font-sans text-text-secondary leading-normal mt-3 text-left transition-theme">
                       {c.desc}
                     </p>
                   </div>
@@ -245,17 +225,17 @@ export default function Results() {
           })}
         </div>
 
-        {/* Storytelling banner (Compact) */}
+        {/* Global Blueprint Quote */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-8 relative bg-card-bg border-2 border-border-color rounded-2xl p-6 shadow-offset-sm transition-theme text-center overflow-hidden"
+          className="mt-12 relative bg-card-bg border border-border-color rounded-3xl p-6 shadow-lg text-center overflow-hidden transition-theme"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-green/5 via-transparent to-accent-orange/5 pointer-events-none" />
-          <p className="font-handwriting text-accent-emerald dark:text-accent-green text-xl md:text-2xl font-bold -rotate-0.5 relative z-10">
-            "Behind every case study is a real business that achieved growth." 📈
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
+          <p className="font-sans text-text-primary text-sm md:text-base font-bold relative z-10 transition-theme">
+            "We hold acquisition campaigns accountable to real balance sheet revenue." 📈
           </p>
         </motion.div>
 

@@ -2,114 +2,114 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Zap } from 'lucide-react';
 
-/* ─── Per-service visual widgets (Compact versions) ─── */
+/* ─── Premium Technical Widgets ─── */
 
 const SEORankingWidget = () => (
-  <div className="w-full bg-[#f0fdf4] dark:bg-[#0d1f19] rounded-xl border border-accent-green/30 p-2.5">
-    <div className="flex items-center gap-1.5 mb-1.5">
-      <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
-      <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
-      <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-      <span className="text-[6.5px] font-mono text-text-secondary/60 ml-1">google.com · Delhi NCR</span>
+  <div className="w-full bg-page-bg/85 rounded-xl border border-border-color p-3.5 transition-theme">
+    <div className="flex items-center gap-1.5 mb-2.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+      <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+      <div className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+      <span className="text-[8px] font-mono text-text-secondary opacity-60 ml-1">organic.crawler // node</span>
     </div>
-    <div className="space-y-1 text-[7.5px]">
-      <div className="flex items-center gap-1.5 bg-accent-green/10 border border-accent-green/20 rounded p-1">
-        <span className="font-bold text-accent-green font-mono">#1</span>
-        <span className="font-bold text-text-primary truncate max-w-[140px]">Delhi Clinic CP — Dental</span>
-        <span className="ml-auto text-[6px] bg-accent-orange/15 text-accent-orange px-0.5 rounded font-bold">Ad</span>
+    <div className="space-y-1.5 text-[9px] font-mono">
+      <div className="flex items-center justify-between bg-emerald-500/5 border border-emerald-500/10 rounded p-1.5">
+        <span className="font-bold text-accent-green">#1 Organic</span>
+        <span className="text-text-primary font-medium transition-theme">Enterprise Software</span>
+        <span className="text-[8px] bg-accent-green/10 text-accent-green px-1.5 py-0.2 rounded font-bold">Live</span>
       </div>
     </div>
-    <div className="flex justify-between mt-2 text-[6.5px] font-mono border-t border-accent-green/10 pt-1">
-      <span className="text-text-secondary">Organic Traffic</span>
-      <span className="text-accent-green font-bold">+320% ↑</span>
+    <div className="flex justify-between mt-3 text-[8px] font-mono border-t border-border-color pt-2 transition-theme">
+      <span className="text-text-secondary opacity-70">Search Volume Visibility</span>
+      <span className="text-accent-green font-bold">+320% Compounding</span>
     </div>
   </div>
 );
 
 const MetaAdWidget = () => (
-  <div className="w-full rounded-xl border border-accent-orange/30 bg-gradient-to-br from-[#1a1a2e] to-[#16213e] p-2.5">
-    <div className="flex justify-between items-center mb-1.5">
-      <span className="text-[6.5px] font-mono text-white/50 uppercase">Meta Ads</span>
-      <span className="text-[6.5px] font-mono text-green-400 font-bold">● Active</span>
+  <div className="w-full rounded-xl border border-border-color bg-page-bg/85 p-3.5 transition-theme">
+    <div className="flex justify-between items-center mb-2">
+      <span className="text-[8px] font-mono text-text-secondary opacity-65 uppercase">acquisition.roas</span>
+      <span className="text-[8px] font-mono text-accent-green font-bold">● Optimized</span>
     </div>
-    <div className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 rounded p-1 border border-white/5 mb-1.5">
-      <p className="text-[7.5px] font-bold text-white truncate">🔥 Delhi's #1 Ads Hook Framework</p>
+    <div className="bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 rounded p-1.5 border border-border-color mb-2">
+      <p className="text-[9px] font-bold text-text-primary truncate">⚡ High-Yield Paid Creative Pipeline</p>
     </div>
-    <div className="grid grid-cols-3 gap-0.5 text-center text-[7.5px]">
+    <div className="grid grid-cols-3 gap-1 text-center text-[9px] font-mono">
       <div>
-        <p className="font-bold text-accent-orange">4.8x</p>
-        <p className="text-[5px] text-white/50 font-mono">ROAS</p>
+        <p className="font-bold text-text-primary">4.8x</p>
+        <p className="text-[6.5px] text-text-secondary font-medium">ROAS</p>
       </div>
       <div>
-        <p className="font-bold text-green-400">₹140</p>
-        <p className="text-[5px] text-white/50 font-mono">CPL</p>
+        <p className="font-bold text-accent-green">-$14.50</p>
+        <p className="text-[6.5px] text-text-secondary font-medium">CPA Δ</p>
       </div>
       <div>
-        <p className="font-bold text-blue-400">89K</p>
-        <p className="text-[5px] text-white/50 font-mono">Reach</p>
+        <p className="font-bold text-cyan-400">890K</p>
+        <p className="text-[6.5px] text-text-secondary font-medium">Reach</p>
       </div>
     </div>
   </div>
 );
 
 const WebDevWidget = () => (
-  <div className="w-full bg-[#f8fffe] dark:bg-[#0d1f19] rounded-xl border border-border-color/20 p-2">
-    <div className="flex items-center gap-1 border-b border-border-color/10 pb-1 mb-1.5">
-      <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-      <span className="text-[6.5px] font-mono text-text-secondary/50">your-brand.in</span>
+  <div className="w-full bg-page-bg/85 rounded-xl border border-border-color p-3 transition-theme">
+    <div className="flex items-center gap-1.5 border-b border-border-color pb-2 mb-2 transition-theme">
+      <div className="w-1.5 h-1.5 rounded-full bg-accent-green" />
+      <span className="text-[8px] font-mono text-text-secondary opacity-60">production.edge-url</span>
       <div className="ml-auto flex gap-1">
-        <span className="px-1 bg-green-500/10 text-green-500 text-[5px] font-mono rounded font-bold">100 SEO</span>
-        <span className="px-1 bg-accent-orange/10 text-accent-orange text-[5px] font-mono rounded font-bold">0.9s</span>
+        <span className="px-1.5 py-0.2 bg-emerald-500/10 text-accent-green text-[7px] font-mono rounded font-bold">100 Perf</span>
+        <span className="px-1.5 py-0.2 bg-cyan-500/10 text-cyan-400 text-[7px] font-mono rounded font-bold">0.8s</span>
       </div>
     </div>
     <div className="space-y-1">
-      <div className="h-4 bg-accent-green/10 rounded flex items-center justify-center border border-accent-green/20">
-        <p className="text-[7px] font-serif italic font-bold text-text-primary">Delhi's Premium Care</p>
+      <div className="h-5 bg-white/5 rounded flex items-center justify-center border border-border-color">
+        <p className="text-[8px] font-mono text-text-secondary">Next.js Header Components Loaded</p>
       </div>
     </div>
   </div>
 );
 
 const GoogleAdsWidget = () => (
-  <div className="w-full bg-[#f8fffe] dark:bg-[#0d1f19] rounded-xl border border-accent-emerald/20 p-2.5">
-    <div className="flex justify-between items-center mb-1">
-      <span className="text-[6.5px] font-mono font-bold text-text-secondary uppercase">Google Search Ads</span>
-      <span className="text-[6.5px] font-mono text-accent-green font-bold">↓ -40% CPL</span>
+  <div className="w-full bg-page-bg/85 rounded-xl border border-border-color p-3.5 transition-theme">
+    <div className="flex justify-between items-center mb-1.5">
+      <span className="text-[8px] font-mono text-text-secondary opacity-65 uppercase">google.intent-funnel</span>
+      <span className="text-[8px] font-mono text-accent-green font-bold">-40% Acquisition Costs</span>
     </div>
-    <svg className="w-full h-6" viewBox="0 0 100 40" preserveAspectRatio="none">
-      <path d="M0,10 L20,15 L40,22 L60,28 L80,33 L100,38" fill="none" stroke="var(--accent-green)" strokeWidth="2.5" strokeLinecap="round" />
+    <svg className="w-full h-8" viewBox="0 0 100 40" preserveAspectRatio="none">
+      <path d="M0,35 L20,32 L40,24 L60,18 L80,10 L100,2" fill="none" stroke="var(--accent-green)" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
-    <div className="flex justify-between text-[6.5px] font-mono mt-1 border-t border-border-color/5 pt-1">
-      <span className="text-red-400/70">Before: ₹380</span>
-      <span className="text-accent-green font-bold">Now: ₹140/lead</span>
+    <div className="flex justify-between text-[8px] font-mono mt-2 border-t border-border-color pt-1.5 transition-theme">
+      <span className="text-text-secondary opacity-70">Prior CPA: $18.50</span>
+      <span className="text-accent-green font-bold">Attributed CPA: $9.80</span>
     </div>
   </div>
 );
 
 const AIWorkflowWidget = () => (
-  <div className="w-full bg-[#0d1117] rounded-xl border border-violet-500/20 p-2.5 text-left font-mono text-white">
-    <div className="flex items-center gap-1.5 mb-1.5">
-      <Zap size={8} className="text-violet-400" />
-      <span className="text-[6.5px] font-mono text-violet-400 uppercase font-bold">AI Active</span>
+  <div className="w-full bg-page-bg/85 rounded-xl border border-border-color p-3 text-left font-mono text-text-primary transition-theme">
+    <div className="flex items-center gap-1.5 mb-2">
+      <Zap size={10} className="text-accent-green" />
+      <span className="text-[8px] font-mono text-accent-green uppercase font-bold">AI Workflow active</span>
     </div>
-    <div className="space-y-0.5 text-[6.5px]">
-      <div className="flex justify-between"><span className="text-white/60">AI Qualifier</span><span className="text-violet-400">0.3s</span></div>
-      <div className="flex justify-between"><span className="text-green-400">WhatsApp Sent</span><span className="text-green-400">0.5s</span></div>
-      <div className="flex justify-between"><span className="text-accent-orange">CRM Updated</span><span className="text-accent-orange">0.8s</span></div>
+    <div className="space-y-1 text-[8px] text-text-secondary">
+      <div className="flex justify-between"><span>Qualifying Model</span><span className="text-accent-green">0.12s</span></div>
+      <div className="flex justify-between"><span>Webhook Dispatch</span><span className="text-accent-green">0.05s</span></div>
+      <div className="flex justify-between"><span>HubSpot CRM Sync</span><span className="text-accent-green">0.08s</span></div>
     </div>
   </div>
 );
 
 const ContentWidget = () => (
-  <div className="w-full bg-[#f8fffe] dark:bg-[#0d1f19] rounded-xl border border-accent-emerald/20 p-2">
-    <div className="space-y-1 text-[6.5px]">
-      <div className="flex justify-between border-b border-border-color/10 pb-0.5">
-        <span className="text-text-secondary truncate max-w-[80px]">🎯 Delhi SEO Guide</span>
-        <span className="text-accent-green font-bold font-mono">Rank #1</span>
+  <div className="w-full bg-page-bg/85 rounded-xl border border-border-color p-3 transition-theme">
+    <div className="space-y-1.5 text-[8px] font-mono">
+      <div className="flex justify-between border-b border-border-color pb-1 transition-theme">
+        <span className="text-text-secondary truncate max-w-[120px]">Topical Search Cluster</span>
+        <span className="text-accent-green font-bold">100/100</span>
       </div>
       <div className="flex justify-between">
-        <span className="text-text-secondary truncate max-w-[80px]">📊 Ads Hooks framework</span>
-        <span className="text-accent-orange font-bold font-mono">Trending</span>
+        <span className="text-text-secondary truncate max-w-[120px]">Velocity Schema Generator</span>
+        <span className="text-cyan-400 font-bold">Running</span>
       </div>
     </div>
   </div>
@@ -124,7 +124,6 @@ interface Service {
   benefits: string[];
   metrics: string;
   metricsColor: string;
-  shadowClass: string;
   borderColor: string;
   bgAccent: string;
   image: string;
@@ -137,103 +136,97 @@ export default function Services() {
   const services: Service[] = [
     {
       id: 1,
-      title: 'SEO & Local SEO',
-      tag: 'Local SEO',
-      tagColor: 'bg-accent-green/10 text-accent-green border-accent-green/20',
-      desc: 'Rank on Google Maps and page 1 for immediate search queries. Compounding organic visibility with no ad budget requirements.',
-      benefits: ['Google Profile Audit', 'Maps Ranking top 3', 'Local Keyword Clusters'],
-      metrics: '+320% Organic traffic',
+      title: 'Enterprise SEO & Content Stacks',
+      tag: 'Organic Growth',
+      tagColor: 'bg-emerald-500/10 text-accent-green border-emerald-500/20',
+      desc: 'Dominate search queries through custom crawlers, velocity schemas, and technical crawl optimization. Compounding organic authority.',
+      benefits: ['Topical Cluster Planning', 'Velocity Schema Generation', 'Edge Server Injection'],
+      metrics: '+320% Traffic Volume',
       metricsColor: 'text-accent-green',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-accent-green/30 hover:border-accent-green',
-      bgAccent: 'from-accent-green/5 to-transparent',
+      borderColor: 'border-border-color hover:border-accent-green/30',
+      bgAccent: 'from-emerald-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'SEO analysis',
+      imageAlt: 'SEO data mapping interface',
       href: '/services/seo',
       widget: SEORankingWidget,
     },
     {
       id: 2,
-      title: 'Social Media Ads',
-      tag: 'Paid Social',
-      tagColor: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-      desc: 'Scroll-stopping content and Meta ad structures designed to capture regional buyer attention and route leads directly.',
-      benefits: ['Instagram Strategy', 'Creative Script Hook', ' NCR Audience Targeting'],
-      metrics: '4.8x average ROAS',
-      metricsColor: 'text-accent-orange',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-orange',
-      borderColor: 'border-accent-orange/30 hover:border-accent-orange',
-      bgAccent: 'from-accent-orange/5 to-transparent',
+      title: 'Performance Marketing & Social Ads',
+      tag: 'Paid Acquisition',
+      tagColor: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+      desc: 'High-ROAS Meta, LinkedIn & Twitter campaigns built around direct-response models, creative loops, and conversion metrics.',
+      benefits: ['Dynamic Hook Architectures', 'ABM Audience Pipelines', 'Attribution Integration'],
+      metrics: '4.8x Attributed ROAS',
+      metricsColor: 'text-cyan-400',
+      borderColor: 'border-border-color hover:border-cyan-400/30',
+      bgAccent: 'from-cyan-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'Meta ads manager dashboard',
+      imageAlt: 'SaaS paid performance metrics panel',
       href: '/services/meta-ads',
       widget: MetaAdWidget,
     },
     {
       id: 3,
-      title: 'Website Development',
-      tag: 'Web Dev',
-      tagColor: 'bg-cyan-500/10 text-cyan-500 border-cyan-500/20',
-      desc: 'Blazing fast custom React & Next.js landing pages built for speed, schema indexes, and mobile conversation flow.',
-      benefits: ['Sub-1.5s Load Time', 'Mobile UI conversion', 'CRM Whatsapp Webhook'],
-      metrics: '7.8% Conv Rate avg',
-      metricsColor: 'text-cyan-500',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-cyan-500/30 hover:border-cyan-500',
-      bgAccent: 'from-cyan-500/5 to-transparent',
+      title: 'High-Performance Web Engineering',
+      tag: 'Experience Engineering',
+      tagColor: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+      desc: 'Blazing fast React & Next.js static and serverless architectures. Built for sub-1s load times, perfect SEO indexing, and optimal conversions.',
+      benefits: ['Sub-1.0s Edge Redirection', 'Plausible Analytics Integrations', 'Next.js Edge Rendering'],
+      metrics: '10X Conversion Speed',
+      metricsColor: 'text-yellow-400',
+      borderColor: 'border-border-color hover:border-yellow-400/30',
+      bgAccent: 'from-yellow-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'High performance web code template',
+      imageAlt: 'Next.js rendering framework console',
       href: '/services/business-web-dev',
       widget: WebDevWidget,
     },
     {
       id: 4,
-      title: 'Google Ads',
+      title: 'Intent Search Optimization (Google Ads)',
       tag: 'Search Ads',
-      tagColor: 'bg-accent-green/10 text-accent-green border-accent-green/20',
-      desc: 'High-intent search keyword campaigns targeting buyers at the exact second they are searching. Handled end-to-end.',
-      benefits: ['Neg Keyword Pruning', 'High-intent bidding', 'Landing Page match'],
-      metrics: '-40% CPL reduction',
+      tagColor: 'bg-emerald-500/10 text-accent-green border-emerald-500/20',
+      desc: 'High-intent search keyword matching targeting enterprise purchasers at the exact millisecond of purchase decision.',
+      benefits: ['Negative Phrase Pruning', 'Optimized Bid Adjusters', 'Landing Matching Layouts'],
+      metrics: '-40% Acquisition Costs',
       metricsColor: 'text-accent-green',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-accent-green/30 hover:border-accent-green',
-      bgAccent: 'from-accent-green/5 to-transparent',
+      borderColor: 'border-border-color hover:border-accent-green/30',
+      bgAccent: 'from-emerald-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'Google Ads visual stats dashboard',
+      imageAlt: 'Google Ads metrics dashboard',
       href: '/services/google-ads',
       widget: GoogleAdsWidget,
     },
     {
       id: 5,
-      title: 'AI Business Automation',
-      tag: 'Business AI',
-      tagColor: 'bg-violet-500/10 text-violet-500 border-violet-500/20',
-      desc: 'Cut 20+ hours of manual work weekly. Qualify leads via WhatsApp agents and sync logs directly to CRM pipelines.',
-      benefits: ['Instant 90s response', 'Auto CRM database sync', 'WhatsApp AI bots'],
-      metrics: '92% Time Savings',
-      metricsColor: 'text-violet-500',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-orange',
-      borderColor: 'border-violet-500/30 hover:border-violet-500',
-      bgAccent: 'from-violet-500/5 to-transparent',
+      title: 'AI Qualification & Pipeline Automations',
+      tag: 'Operations Tech',
+      tagColor: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+      desc: 'Eliminate friction from sales. Qualify inbound inquiries using LLM scorers, routing leads instantly to sales hubs.',
+      benefits: ['Instant 0.2s Qualification', 'Dynamic CRM Hub Mapping', 'WhatsApp Business Flows'],
+      metrics: '92% Manual Friction Cut',
+      metricsColor: 'text-purple-400',
+      borderColor: 'border-border-color hover:border-purple-400/30',
+      bgAccent: 'from-purple-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'AI pipeline automation steps chart',
+      imageAlt: 'Automation flow visualizer',
       href: '/services/ai-chatbots',
       widget: AIWorkflowWidget,
     },
     {
       id: 6,
-      title: 'Content & Branding',
-      tag: 'Topical SEO',
-      tagColor: 'bg-gold-accent/10 text-gold-accent border-gold-accent/20',
-      desc: 'Topical authority plans designed to rank blogs, earn backlinks, and establish local relevance across Delhi search queries.',
-      benefits: ['Content Cluster plans', 'SEO copywriting', 'Internal link charts'],
-      metrics: '+185% organic leads',
-      metricsColor: 'text-gold-accent',
-      shadowClass: 'shadow-offset-sm hover:shadow-offset-green',
-      borderColor: 'border-gold-accent/30 hover:border-gold-accent',
-      bgAccent: 'from-gold-accent/5 to-transparent',
+      title: 'Topical Search Authority & Branding',
+      tag: 'Brand Velocity',
+      tagColor: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+      desc: 'Topical authority maps designed to build backlinks, generate referrals, and establish market dominance in high-competition industries.',
+      benefits: ['Topical Coverage Indexing', 'Authority Backlink Modules', 'Entity Schema Architectures'],
+      metrics: '+185% Pipeline Levers',
+      metricsColor: 'text-cyan-400',
+      borderColor: 'border-border-color hover:border-cyan-400/30',
+      bgAccent: 'from-cyan-500/5 to-transparent',
       image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=400&q=80',
-      imageAlt: 'SEO keyword search content map',
+      imageAlt: 'Enterprise marketing strategy blueprint',
       href: '/services/content-marketing',
       widget: ContentWidget,
     },
@@ -242,98 +235,94 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-10 md:py-16 px-6 md:px-12 bg-page-bg text-text-primary transition-theme overflow-hidden"
+      className="relative py-20 md:py-32 px-6 md:px-12 bg-page-bg text-text-primary overflow-hidden transition-theme border-b border-border-color"
     >
-      {/* Background annotation */}
-      <div className="absolute top-6 right-6 pointer-events-none select-none hidden md:block">
-        <div className="font-handwriting text-accent-orange/40 text-xl -rotate-6 font-bold">
-          Pick what you need →
-        </div>
-      </div>
+      {/* Background canvas elements */}
+      <div className="absolute top-1/3 left-1/4 w-[40vw] h-[40vw] rounded-full bg-emerald-500/[0.02] blur-[120px] pointer-events-none" />
 
       <div className="max-w-6xl w-full mx-auto relative z-10">
 
-        {/* Header */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-6 gap-4 transition-theme">
+        {/* Section Header */}
+        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between border-b border-border-color pb-8 gap-6 transition-theme">
           <div>
-            <span className="text-xs font-sans tracking-widest text-accent-green font-semibold uppercase transition-theme">
-              01 // SERVICES
+            <span className="text-xs font-mono tracking-widest text-accent-green font-bold uppercase">
+              01 // CORE ARCHITECTURES
             </span>
-            <h2 className="font-serif italic text-4xl md:text-5xl text-text-primary mt-2 transition-theme">
-              What We Do
+            <h2 className="font-sans font-black text-4xl md:text-5xl text-text-primary mt-2 uppercase transition-theme">
+              Our Growth Capabilities
             </h2>
           </div>
           <div className="max-w-md text-left">
             <p className="text-xs md:text-sm font-sans font-medium text-text-secondary leading-relaxed transition-theme">
-              We build high-converting growth funnels across search, paid campaigns, web properties, and CRM automations.
+              High-performance digital growth systems built to scale businesses from local startups to global enterprise platforms.
             </p>
           </div>
         </div>
 
-        {/* Cohesive 3-Column Services Grid (No top featured banner - compact cards) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Dynamic Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((s, i) => {
             const Widget = s.widget;
             return (
               <motion.div
                 key={s.id}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-5%' }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
               >
                 <Link
                   to={s.href}
-                  className={`relative bg-card-bg border-2 ${s.borderColor} rounded-2xl overflow-hidden ${s.shadowClass} hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-300 flex flex-col group h-full`}
+                  className={`relative bg-card-bg backdrop-blur-md border ${s.borderColor} rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full`}
                 >
-                  {/* Image */}
-                  <div className="w-full h-32 overflow-hidden relative border-b border-border-color/10">
+                  {/* Service Card Image */}
+                  <div className="w-full h-36 overflow-hidden relative border-b border-border-color transition-theme">
                     <img
                       src={s.image}
                       alt={s.imageAlt}
                       loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-102 transition-all duration-700 ease-in-out"
+                      className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-102 transition-all duration-700 ease-in-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
-                    <span className={`absolute top-2.5 left-2.5 text-[8px] font-mono font-bold px-2 py-0.5 rounded-full bg-card-bg border border-border-color/10 shadow-sm ${s.tagColor}`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-page-bg via-page-bg/20 to-transparent transition-all" />
+                    <span className={`absolute top-4.5 left-4.5 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-page-bg border border-border-color shadow-sm transition-theme ${s.tagColor}`}>
                       {s.tag}
                     </span>
-                    <span className={`absolute top-2.5 right-2.5 text-[8px] font-mono font-bold tracking-wide ${s.metricsColor} bg-card-bg/95 backdrop-blur-sm px-2 py-0.5 rounded-full border border-current/25`}>
+                    <span className={`absolute top-4.5 right-4.5 text-[9px] font-mono font-bold tracking-wide ${s.metricsColor} bg-page-bg/90 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-border-color transition-theme`}>
                       {s.metrics}
                     </span>
                   </div>
 
-                  <div className={`p-4 flex flex-col flex-1 bg-gradient-to-br ${s.bgAccent} text-left`}>
-                    <h3 className="font-serif text-lg font-bold text-text-primary mb-1.5 transition-theme group-hover:text-accent-orange duration-300">
+                  {/* Card Content */}
+                  <div className={`p-6 flex flex-col flex-1 bg-gradient-to-br ${s.bgAccent} text-left`}>
+                    <h3 className="font-sans font-extrabold text-xl text-text-primary mb-2 group-hover:text-accent-green transition-theme duration-300">
                       {s.title}
                     </h3>
-                    <p className="text-xs font-sans font-medium text-text-secondary leading-relaxed mb-3 flex-1">
+                    <p className="text-xs font-sans text-text-secondary leading-relaxed mb-4 flex-1 transition-theme">
                       {s.desc}
                     </p>
 
-                    {/* Compact visual widget representation */}
-                    <div className="mb-3">
+                    {/* Performance Widget */}
+                    <div className="mb-4">
                       <Widget />
                     </div>
 
-                    {/* Inline badges representation of benefits to compress height */}
-                    <div className="border-t border-border-color/10 pt-3 mb-3">
-                      <p className="text-[8px] font-mono uppercase font-bold text-accent-green mb-1.5">Your Benefits (Faayde):</p>
-                      <div className="flex flex-wrap gap-1">
+                    {/* Integrated benefits */}
+                    <div className="border-t border-border-color pt-4 mb-4 transition-theme">
+                      <div className="flex flex-wrap gap-1.5">
                         {s.benefits.map((b, idx) => (
-                          <span key={idx} className="text-[7.5px] font-mono font-bold px-1.5 py-0.5 bg-page-bg-sec/50 border border-border-color/10 text-text-secondary rounded">
+                          <span key={idx} className="text-[8px] font-mono font-bold px-2 py-0.5 bg-page-bg border border-border-color text-text-secondary rounded-lg transition-theme">
                             ✓ {b}
                           </span>
                         ))}
                       </div>
                     </div>
 
-                    {/* CTA link indicator */}
-                    <div className="flex justify-between items-center mt-auto">
-                      <span className="text-[9px] font-sans font-bold uppercase tracking-widest text-accent-green group-hover:text-accent-orange transition-colors duration-300">
-                        Learn More
+                    {/* Learn More link */}
+                    <div className="flex justify-between items-center mt-auto pt-2">
+                      <span className="text-[10px] font-sans font-extrabold uppercase tracking-widest text-text-secondary group-hover:text-accent-green transition-colors duration-300">
+                        Explore Capability
                       </span>
-                      <div className="w-7 h-7 rounded-lg bg-page-bg-sec text-text-primary group-hover:bg-accent-orange group-hover:text-white transition-all duration-300 flex items-center justify-center border border-border-color/20">
+                      <div className="w-8 h-8 rounded-full bg-page-bg-sec text-text-secondary group-hover:bg-accent-green group-hover:text-slate-950 transition-all duration-300 flex items-center justify-center border border-border-color">
                         <ArrowUpRight size={12} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                       </div>
                     </div>
