@@ -251,6 +251,8 @@ export default function BlogArticlePage() {
       'Development': 'Web Development',
       'AI': 'AI Automation',
       'Growth': 'Social Media',
+      'Design': 'Design',
+      'Architecture': 'Architecture',
     };
     const mappedCategory = categoryMapping[apiBlog.category] || apiBlog.category;
 
@@ -307,6 +309,8 @@ export default function BlogArticlePage() {
       'Development': 'Web Development',
       'AI': 'AI Automation',
       'Growth': 'Social Media',
+      'Design': 'Design',
+      'Architecture': 'Architecture',
     };
     return {
       slug: b.slug,

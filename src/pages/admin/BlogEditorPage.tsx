@@ -417,6 +417,8 @@ export default function BlogEditorPage() {
                 <option value="Development">Website Development</option>
                 <option value="AI">AI Automation</option>
                 <option value="Growth">Business Growth</option>
+                <option value="Design">Design</option>
+                <option value="Architecture">Architecture</option>
               </select>
             </div>
 

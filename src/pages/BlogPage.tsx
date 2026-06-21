@@ -110,6 +110,8 @@ export default function BlogPage() {
     'Development': 'Web Development',
     'AI': 'AI Automation',
     'Growth': 'Social Media',
+    'Design': 'Design',
+    'Architecture': 'Architecture',
   };
 
   const formattedApiBlogs: Article[] = apiBlogs.map((b: any) => {
@@ -152,10 +154,25 @@ export default function BlogPage() {
 
   console.log('[State] Combined articles list:', combinedArticles);
 
-  const featured = combinedArticles[0] || null;
-  const filtered = combinedArticles
-    .slice(1)
-    .filter(a => activeCategory === 'All' || a.category === activeCategory);
+  // Dynamically compute filters: start with static/default ones, then add any unique categories from combinedArticles
+  const categories = ['All'];
+  const baseCategories = ['SEO', 'Social Media', 'Web Development', 'AI Automation', 'Design', 'Architecture'];
+  baseCategories.forEach(cat => {
+    if (!categories.includes(cat)) {
+      categories.push(cat);
+    }
+  });
+  combinedArticles.forEach(art => {
+    if (art.category && !categories.includes(art.category)) {
+      categories.push(art.category);
+    }
+  });
+
+  // Calculate featured and filtered articles
+  const featured = activeCategory === 'All' ? (combinedArticles[0] || null) : null;
+  const filtered = activeCategory === 'All'
+    ? combinedArticles.slice(1)
+    : combinedArticles.filter(a => a.category === activeCategory);
 
   console.log('[Render] Rendering BlogPage. Featured:', featured?.title, 'Filtered list count:', filtered.length);
 
@@ -187,46 +204,48 @@ export default function BlogPage() {
       </section>
 
       {/* Featured Article */}
-      <section className="py-12 px-6 md:px-12 bg-page-bg transition-theme">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-[10px] font-mono tracking-widest text-accent-orange font-bold uppercase mb-6">✦ Featured Article</p>
-          <Link to={`/blog/${featured.slug}`} className="group block bg-card-bg border-4 border-accent-emerald rounded-3xl overflow-hidden shadow-offset hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300">
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              <div className="lg:col-span-6 h-64 lg:h-auto overflow-hidden relative">
-                <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
-              </div>
-              <div className="lg:col-span-6 p-8 md:p-10 flex flex-col justify-between">
-                <div>
-                  <span className="text-[9px] font-mono bg-accent-green/10 text-accent-green border border-accent-green/20 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
-                    {featured.category}
-                  </span>
-                  <h2 className="font-serif text-2xl md:text-3xl text-text-primary mt-4 mb-4 leading-snug group-hover:text-accent-orange transition-colors">
-                    {featured.title}
-                  </h2>
-                  <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed mb-6">
-                    {featured.excerpt}
-                  </p>
+      {featured && (
+        <section className="py-12 px-6 md:px-12 bg-page-bg transition-theme">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-[10px] font-mono tracking-widest text-accent-orange font-bold uppercase mb-6">✦ Featured Article</p>
+            <Link to={`/blog/${featured.slug}`} className="group block bg-card-bg border-4 border-accent-emerald rounded-3xl overflow-hidden shadow-offset hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300">
+              <div className="grid grid-cols-1 lg:grid-cols-12">
+                <div className="lg:col-span-6 h-64 lg:h-auto overflow-hidden relative">
+                  <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10" />
                 </div>
-                <div className="flex items-center justify-between border-t border-border-color pt-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-accent-emerald flex items-center justify-center text-white text-xs font-bold">
-                      {featured.author.split(' ').map(n => n[0]).join('')}
+                <div className="lg:col-span-6 p-8 md:p-10 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[9px] font-mono bg-accent-green/10 text-accent-green border border-accent-green/20 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
+                      {featured.category}
+                    </span>
+                    <h2 className="font-serif text-2xl md:text-3xl text-text-primary mt-4 mb-4 leading-snug group-hover:text-accent-orange transition-colors">
+                      {featured.title}
+                    </h2>
+                    <p className="text-sm font-sans font-medium text-text-secondary leading-relaxed mb-6">
+                      {featured.excerpt}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-border-color pt-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-accent-emerald flex items-center justify-center text-white text-xs font-bold">
+                        {featured.author.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="text-xs font-sans font-bold text-text-primary">{featured.author}</p>
+                        <p className="text-[10px] font-sans text-text-secondary">{featured.date} · {featured.readTime}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-sans font-bold text-text-primary">{featured.author}</p>
-                      <p className="text-[10px] font-sans text-text-secondary">{featured.date} · {featured.readTime}</p>
+                    <div className="w-9 h-9 rounded-xl bg-accent-orange text-white flex items-center justify-center border-2 border-accent-emerald group-hover:scale-110 transition-transform">
+                      <ArrowUpRight size={14} />
                     </div>
                   </div>
-                  <div className="w-9 h-9 rounded-xl bg-accent-orange text-white flex items-center justify-center border-2 border-accent-emerald group-hover:scale-110 transition-transform">
-                    <ArrowUpRight size={14} />
-                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        </div>
-      </section>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Category Filter + Grid */}
       <section className="py-12 px-6 md:px-12 bg-page-bg-sec transition-theme">

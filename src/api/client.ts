@@ -1,7 +1,23 @@
 import axios from 'axios';
 
-let rawUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-if (rawUrl && !rawUrl.endsWith('/api') && !rawUrl.includes('localhost')) {
+let rawUrl = import.meta.env.VITE_API_URL || '';
+
+if (typeof window !== 'undefined') {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if (isLocal) {
+    rawUrl = 'http://localhost:5000/api';
+  } else {
+    if (!rawUrl || rawUrl.includes('localhost') || rawUrl.includes('127.0.0.1')) {
+      rawUrl = 'https://create-portfolio-backend.onrender.com/api';
+    }
+  }
+} else {
+  if (!rawUrl) {
+    rawUrl = 'http://localhost:5000/api';
+  }
+}
+
+if (rawUrl && !rawUrl.endsWith('/api') && !rawUrl.includes('localhost') && !rawUrl.includes('127.0.0.1')) {
   rawUrl = `${rawUrl}/api`;
 }
 const API_BASE_URL = rawUrl;
