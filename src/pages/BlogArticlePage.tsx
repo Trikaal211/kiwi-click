@@ -209,7 +209,7 @@ export default function BlogArticlePage() {
   const { slug } = useParams<{ slug: string }>();
 
   // 1) Fetch single blog by slug with console logging at fetch layer
-  const { data: apiBlog, isLoading: isBlogLoading, error: blogError } = useQuery({
+  const { data: apiBlog, isLoading: isBlogLoading } = useQuery({
     queryKey: ['publicBlog', slug],
     queryFn: async () => {
       if (!slug) return null;
@@ -375,7 +375,7 @@ export default function BlogArticlePage() {
             <div className="flex flex-wrap items-center gap-5 pb-8 border-b border-border-color mb-10">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-sm">
-                  {article.author.split(' ').map(n => n[0]).join('')}
+                  {article.author.split(' ').map((n: string) => n[0]).join('')}
                 </div>
                 <div>
                   <p className="text-sm font-sans font-bold text-text-primary">{article.author}</p>
@@ -420,7 +420,7 @@ export default function BlogArticlePage() {
             {/* Author Box */}
             <div className="mt-12 p-6 bg-card-bg border-2 border-accent-emerald rounded-2xl shadow-offset flex items-start gap-5">
               <div className="w-14 h-14 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-lg shrink-0">
-                {article.author.split(' ').map(n => n[0]).join('')}
+                {article.author.split(' ').map((n: string) => n[0]).join('')}
               </div>
               <div>
                 <p className="text-sm font-sans font-bold text-text-primary">{article.author}</p>
