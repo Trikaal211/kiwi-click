@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, BookOpen, Clock, User } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import apiClient from '../api/client';
 
 interface Article {
   slug: string;
@@ -85,10 +87,85 @@ const categories = ['All', 'SEO', 'Social Media', 'Web Development', 'AI Automat
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const featured = articles[0];
-  const filtered = articles
+  // Dynamic fetch with temporary console logging at the fetch layer
+  const { data: apiBlogs = [], isLoading, error } = useQuery({
+    queryKey: ['publicBlogs'],
+    queryFn: async () => {
+      console.log('[API Fetch] Fetching public blogs from API...');
+      const response = await apiClient.get('/blogs?published=true');
+      console.log('[API Fetch] Received blogs:', response.data.data.blogs);
+      return response.data.data.blogs;
+    },
+  });
+
+  // Log error if any
+  if (error) {
+    console.error('[API Fetch Error] Failed to fetch blogs:', error);
+  }
+
+  // Map backend fields to frontend fields
+  const categoryMapping: Record<string, string> = {
+    'SEO': 'SEO',
+    'Marketing': 'Social Media',
+    'Development': 'Web Development',
+    'AI': 'AI Automation',
+    'Growth': 'Social Media',
+  };
+
+  const formattedApiBlogs: Article[] = apiBlogs.map((b: any) => {
+    // Dynamic read time estimation
+    const words = (b.content || '').split(/\s+/).length;
+    const readTimeMins = Math.max(1, Math.round(words / 200));
+    const mappedCategory = categoryMapping[b.category] || b.category;
+    
+    return {
+      slug: b.slug,
+      category: mappedCategory,
+      categoryId: mappedCategory.toLowerCase().replace(/\s+/g, '-'),
+      title: b.title,
+      excerpt: b.excerpt,
+      author: b.author,
+      authorRole: 'Author',
+      date: new Date(b.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+      readTime: `${readTimeMins} min read`,
+      image: b.featuredImage,
+      featured: false,
+    };
+  });
+
+  // Log state transition
+  console.log('[State] Formatted API blogs:', formattedApiBlogs);
+
+  // Combine dynamic and static articles, ensuring unique slugs (API articles take priority)
+  const combinedArticles: Article[] = [...formattedApiBlogs];
+  const existingSlugs = new Set(combinedArticles.map(a => a.slug));
+  
+  for (const art of articles) {
+    if (!existingSlugs.has(art.slug)) {
+      combinedArticles.push(art);
+    }
+  }
+
+  console.log('[State] Combined articles list:', combinedArticles);
+
+  const featured = combinedArticles[0] || null;
+  const filtered = combinedArticles
     .slice(1)
     .filter(a => activeCategory === 'All' || a.category === activeCategory);
+
+  console.log('[Render] Rendering BlogPage. Featured:', featured?.title, 'Filtered list count:', filtered.length);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-page-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">

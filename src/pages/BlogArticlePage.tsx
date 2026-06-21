@@ -1,5 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, ArrowUpRight, CheckCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import apiClient from '../api/client';
 
 interface ArticleContent {
   slug: string;
@@ -205,7 +207,85 @@ const allArticles = [
 
 export default function BlogArticlePage() {
   const { slug } = useParams<{ slug: string }>();
-  const article = slug ? articleData[slug] : null;
+
+  // 1) Fetch single blog by slug with console logging at fetch layer
+  const { data: apiBlog, isLoading: isBlogLoading, error: blogError } = useQuery({
+    queryKey: ['publicBlog', slug],
+    queryFn: async () => {
+      if (!slug) return null;
+      console.log(`[API Fetch] Fetching single blog detail by slug "${slug}"...`);
+      try {
+        const response = await apiClient.get(`/blogs/slug/${slug}`);
+        console.log('[API Fetch] Received blog detail:', response.data.data.blog);
+        return response.data.data.blog;
+      } catch (err) {
+        console.warn(`[API Fetch Warning] Blog not found in API for slug "${slug}". Falling back to static mock data. Error:`, err);
+        return null;
+      }
+    },
+    enabled: !!slug,
+  });
+
+  // 2) Fetch mini list of all published blogs to build dynamic related articles
+  const { data: allApiBlogs = [] } = useQuery({
+    queryKey: ['publicBlogsMini'],
+    queryFn: async () => {
+      try {
+        const response = await apiClient.get('/blogs?published=true');
+        return response.data.data.blogs;
+      } catch (err) {
+        return [];
+      }
+    },
+  });
+
+  // Check if we have dynamic blog or fallback to static articleData
+  let article: any = null;
+  let isDynamic = false;
+
+  if (apiBlog) {
+    isDynamic = true;
+    const categoryMapping: Record<string, string> = {
+      'SEO': 'SEO',
+      'Marketing': 'Social Media',
+      'Development': 'Web Development',
+      'AI': 'AI Automation',
+      'Growth': 'Social Media',
+    };
+    const mappedCategory = categoryMapping[apiBlog.category] || apiBlog.category;
+
+    article = {
+      slug: apiBlog.slug,
+      category: mappedCategory,
+      title: apiBlog.title,
+      subtitle: apiBlog.excerpt,
+      author: apiBlog.author,
+      authorRole: 'Author',
+      authorBio: `${apiBlog.author} is a regular contributor at KiwiClicks, specializing in ${mappedCategory} and digital marketing strategies.`,
+      date: new Date(apiBlog.createdAt).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+      readTime: Math.max(1, Math.round((apiBlog.content || '').split(/\s+/).length / 200)) + ' min read',
+      image: apiBlog.featuredImage,
+      content: apiBlog.content,
+      relatedSlugs: [],
+    };
+  } else if (slug && articleData[slug]) {
+    article = articleData[slug];
+  }
+
+  // Log state transition
+  console.log('[State] Active article details:', article, 'Is dynamic backend article:', isDynamic);
+
+  if (isBlogLoading) {
+    return (
+      <div className="min-h-screen bg-page-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-accent-orange border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -219,7 +299,43 @@ export default function BlogArticlePage() {
     );
   }
 
-  const related = allArticles.filter(a => article.relatedSlugs.includes(a.slug)).slice(0, 2);
+  // Build dynamic related articles matching category if dynamic, or list matches for static
+  const formattedApiMini = allApiBlogs.map((b: any) => {
+    const categoryMappingMini: Record<string, string> = {
+      'SEO': 'SEO',
+      'Marketing': 'Social Media',
+      'Development': 'Web Development',
+      'AI': 'AI Automation',
+      'Growth': 'Social Media',
+    };
+    return {
+      slug: b.slug,
+      title: b.title,
+      image: b.featuredImage,
+      category: categoryMappingMini[b.category] || b.category,
+    };
+  });
+
+  const combinedAllArticles = [...formattedApiMini];
+  const existingMiniSlugs = new Set(combinedAllArticles.map(a => a.slug));
+  for (const art of allArticles) {
+    if (!existingMiniSlugs.has(art.slug)) {
+      combinedAllArticles.push(art);
+    }
+  }
+
+  const related = combinedAllArticles
+    .filter(a => a.slug !== article.slug && (isDynamic ? a.category === article.category : article.relatedSlugs.includes(a.slug)))
+    .slice(0, 2);
+
+  if (related.length < 2) {
+    const extra = combinedAllArticles
+      .filter(a => a.slug !== article.slug && !related.some(r => r.slug === a.slug))
+      .slice(0, 2 - related.length);
+    related.push(...extra);
+  }
+
+  console.log('[Render] Rendering BlogArticlePage for article:', article.title, 'Related articles count:', related.length);
 
   return (
     <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
@@ -272,26 +388,33 @@ export default function BlogArticlePage() {
               </div>
             </div>
 
-            {/* Article Sections */}
+            {/* Article Sections / Dynamic Content HTML */}
             <div className="space-y-10">
-              {article.sections.map((section, idx) => (
-                <div key={idx}>
-                  <h2 className="font-serif text-2xl text-text-primary mb-4 leading-snug">{section.heading}</h2>
-                  {section.content.split('\n\n').map((para, pIdx) => (
-                    <p key={pIdx} className="text-base font-sans font-medium text-text-secondary leading-relaxed mb-4">{para}</p>
-                  ))}
-                  {section.bullets && (
-                    <ul className="mt-4 space-y-3 bg-card-bg border-2 border-accent-emerald rounded-2xl p-6 shadow-offset-sm">
-                      {section.bullets.map((b, bIdx) => (
-                        <li key={bIdx} className="flex items-start gap-3 text-sm font-sans font-medium text-text-secondary">
-                          <CheckCircle size={16} className="text-accent-green mt-0.5 shrink-0" />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
+              {isDynamic ? (
+                <div 
+                  className="prose dark:prose-invert max-w-none text-base font-sans leading-relaxed pt-4 text-text-secondary"
+                  dangerouslySetInnerHTML={{ __html: article.content }}
+                />
+              ) : (
+                article.sections.map((section: any, idx: number) => (
+                  <div key={idx}>
+                    <h2 className="font-serif text-2xl text-text-primary mb-4 leading-snug">{section.heading}</h2>
+                    {section.content.split('\n\n').map((para: string, pIdx: number) => (
+                      <p key={pIdx} className="text-base font-sans font-medium text-text-secondary leading-relaxed mb-4">{para}</p>
+                    ))}
+                    {section.bullets && (
+                      <ul className="mt-4 space-y-3 bg-card-bg border-2 border-accent-emerald rounded-2xl p-6 shadow-offset-sm">
+                        {section.bullets.map((b: string, bIdx: number) => (
+                          <li key={bIdx} className="flex items-start gap-3 text-sm font-sans font-medium text-text-secondary">
+                            <CheckCircle size={16} className="text-accent-green mt-0.5 shrink-0" />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
 
             {/* Author Box */}

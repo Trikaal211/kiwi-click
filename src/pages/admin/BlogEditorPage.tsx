@@ -6,6 +6,16 @@ import apiClient from '../../api/client';
 import TipTapEditor from '../../components/admin/TipTapEditor';
 import ImageUpload from '../../components/admin/ImageUpload';
 
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+};
+
 export default function BlogEditorPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,6 +24,8 @@ export default function BlogEditorPage() {
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
+  const [slugManualEdit, setSlugManualEdit] = useState(false);
+  const [canonicalManualEdit, setCanonicalManualEdit] = useState(false);
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [featuredImage, setFeaturedImage] = useState('');
@@ -47,6 +59,7 @@ export default function BlogEditorPage() {
     if (blogData) {
       setTitle(blogData.title || '');
       setSlug(blogData.slug || '');
+      setSlugManualEdit(true); // Disable auto-slugify on loaded edit data
       setExcerpt(blogData.excerpt || '');
       setContent(blogData.content || '');
       setFeaturedImage(blogData.featuredImage || '');
@@ -61,6 +74,7 @@ export default function BlogEditorPage() {
       setOgImage(blogData.ogImage || '');
       setKeywords(blogData.keywords || []);
       setCanonicalUrl(blogData.canonicalUrl || '');
+      setCanonicalManualEdit(true); // Disable auto-canonical on loaded data
     }
   }, [blogData]);
 
@@ -213,7 +227,17 @@ export default function BlogEditorPage() {
               type="text"
               required
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                const newTitle = e.target.value;
+                setTitle(newTitle);
+                if (!slugManualEdit) {
+                  const generatedSlug = slugify(newTitle);
+                  setSlug(generatedSlug);
+                  if (!canonicalManualEdit) {
+                    setCanonicalUrl(`https://kiwiclicks.in/blog/${generatedSlug}`);
+                  }
+                }
+              }}
               placeholder="e.g. 5 AI automation workflows business owners are using right now"
               className="w-full px-4 py-3 bg-page-bg border-2 border-border-color/60 rounded-xl text-sm font-bold text-text-primary placeholder:text-text-secondary/40 focus:outline-none focus:border-accent-orange transition-all"
             />
@@ -281,7 +305,18 @@ export default function BlogEditorPage() {
                 <input
                   type="text"
                   value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setSlug(val);
+                    if (val === '') {
+                      setSlugManualEdit(false);
+                    } else {
+                      setSlugManualEdit(true);
+                    }
+                    if (!canonicalManualEdit) {
+                      setCanonicalUrl(`https://kiwiclicks.in/blog/${val}`);
+                    }
+                  }}
                   placeholder="Auto-generated on empty"
                   className="w-full px-3.5 py-2.5 bg-page-bg border border-border-color/40 rounded-xl text-xs font-medium focus:outline-none focus:border-accent-orange transition-all font-mono"
                 />
@@ -308,7 +343,10 @@ export default function BlogEditorPage() {
               <input
                 type="url"
                 value={canonicalUrl}
-                onChange={(e) => setCanonicalUrl(e.target.value)}
+                onChange={(e) => {
+                  setCanonicalUrl(e.target.value);
+                  setCanonicalManualEdit(true);
+                }}
                 placeholder="https://kiwiclicks.com/blog/your-custom-slug"
                 className="w-full px-3.5 py-2.5 bg-page-bg border border-border-color/40 rounded-xl text-xs font-medium focus:outline-none focus:border-accent-orange transition-all font-mono"
               />
