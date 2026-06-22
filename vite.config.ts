@@ -32,5 +32,31 @@ export default defineConfig({
       'react': path.resolve(__dirname, './node_modules/react'),
       'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
     }
+  },
+  build: {
+    // Warn at 600kB instead of 500kB (TipTap is inherently large)
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting via function form (object literal not supported in this Rollup version's types)
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || (id.includes('node_modules/react') && !id.includes('react-router') && !id.includes('react-dom'))) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/react-router-dom') || id.includes('node_modules/react-router/') || id.includes('node_modules/@remix-run')) {
+            return 'vendor-router';
+          }
+          if (id.includes('node_modules/framer-motion')) {
+            return 'vendor-motion';
+          }
+          if (id.includes('node_modules/@tanstack') || id.includes('node_modules/axios')) {
+            return 'vendor-query';
+          }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons';
+          }
+        }
+      }
+    }
   }
 })

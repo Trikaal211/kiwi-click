@@ -31,23 +31,19 @@ export default function Contact() {
 
       if (response.data.success) {
         setIsSubmitted(true);
-        setStatusMsg('Success! Direct email audit dispatch queue triggered.');
-        // Reset formState
-        setFormState({
-          name: '',
-          business: '',
-          email: '',
-          phone: '',
-          details: '',
-        });
+        setStatusMsg('Your request has been received! We will contact you within 4 hours.');
+        // Reset form
+        setFormState({ name: '', business: '', email: '', phone: '', details: '' });
       } else {
-        setStatusMsg('Fail: server rejected qualifying lead entry.');
+        setIsSubmitted(false);
+        setStatusMsg('Submission failed. Please try again or contact us directly.');
       }
     } catch (err: any) {
       console.error('[Lead Sync Error] Submission failed:', err);
-      // Fallback message for offline states
-      setIsSubmitted(true);
-      setStatusMsg('Success! Direct email audit dispatch queue triggered (Attribution Logged).');
+      setIsSubmitted(false);
+      // Show user-friendly network error (NOT a fake success)
+      const errMsg = err?.response?.data?.message;
+      setStatusMsg(errMsg || 'Network error. Please try again or WhatsApp us directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -151,8 +147,12 @@ export default function Contact() {
             </div>
 
             {statusMsg && (
-              <div className={`p-3 rounded-xl border text-[11px] font-mono mb-4 text-left ${isSubmitted ? 'bg-emerald-500/10 border-accent-green/20 text-accent-green' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
-                {statusMsg}
+              <div className={`p-3 rounded-xl border text-[11px] font-mono mb-4 text-left ${
+                isSubmitted 
+                  ? 'bg-emerald-500/10 border-accent-green/20 text-accent-green' 
+                  : 'bg-red-500/10 border-red-500/20 text-red-400'
+              }`}>
+                {isSubmitted ? '✅ ' : '⚠️ '}{statusMsg}
               </div>
             )}
 

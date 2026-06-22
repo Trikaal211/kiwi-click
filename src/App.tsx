@@ -47,7 +47,7 @@ export default function App() {
   const isAdmin = location.pathname.startsWith('/admin');
 
   return (
-    <div className="relative min-h-screen bg-page-bg text-text-primary overflow-x-hidden transition-theme">
+    <div className={`relative min-h-screen bg-page-bg text-text-primary overflow-x-hidden transition-theme${isAdmin ? ' admin-panel' : ''}`}>
       {!isAdmin && <CustomCursor />}
       <ScrollToTop />
       {!isAdmin && <Navbar />}

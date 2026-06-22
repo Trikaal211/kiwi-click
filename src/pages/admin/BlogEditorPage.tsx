@@ -265,17 +265,15 @@ export default function BlogEditorPage() {
             </label>
             {/* Render TipTap Rich Editor */}
             {isEditMode ? (
-              content !== undefined && content !== '' && (
+              content !== undefined ? (
                 <TipTapEditor content={content} onChange={setContent} />
+              ) : (
+                <div className="p-8 border-2 border-dashed border-border-color/40 rounded-2xl text-center text-text-secondary bg-card-bg text-xs">
+                  Preparing TipTap editor content...
+                </div>
               )
             ) : (
               <TipTapEditor content="" onChange={setContent} />
-            )}
-            {/* Fallback editor in case data has not loaded fully */}
-            {isEditMode && content === '' && (
-              <div className="p-8 border-2 border-dashed border-border-color/40 rounded-2xl text-center text-text-secondary bg-card-bg text-xs">
-                Preparing TipTap editor content...
-              </div>
             )}
           </div>
 

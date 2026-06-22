@@ -37,9 +37,9 @@ export default function WhyKiwiClicks() {
     return () => clearInterval(id);
   }, []);
 
-  /* Init particles once */
+  /* Init particles once — reduced to 20 for performance on low-end devices */
   if (particlesRef.current.length === 0) {
-    particlesRef.current = Array.from({ length: 40 }, () => ({
+    particlesRef.current = Array.from({ length: 20 }, () => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 2.5 + 0.5,

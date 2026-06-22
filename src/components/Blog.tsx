@@ -121,6 +121,7 @@ export default function Blog() {
               <img
                 src={featured.image}
                 alt={featured.title}
+                loading="lazy"
                 className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-102 transition-transform duration-700 ease-in-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-page-bg via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-page-bg/25 transition-all" />
