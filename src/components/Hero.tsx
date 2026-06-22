@@ -146,12 +146,12 @@ export default function Hero() {
               Grow My Business
               <ArrowUpRight size={14} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="px-8.5 py-4.5 rounded-full text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border border-border-color hover:bg-hover-highlight transition-all duration-300"
             >
               Talk To Experts
-            </a>
+            </Link>
           </div>
 
           {/* Audience Verification Chips */}

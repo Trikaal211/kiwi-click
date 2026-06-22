@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─── Billboard messages ─────────────────────────── */
@@ -177,8 +178,8 @@ export default function WhyKiwiClicks() {
               transition={{ duration: 0.6, delay: 0.44 }}
               className="flex flex-wrap gap-4 mt-10"
             >
-              <a
-                href="#contact"
+              <Link
+                to="/contact"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans font-bold uppercase tracking-wider transition-all"
                 style={{
                   fontSize: 'clamp(11px, 1.1vw, 14px)',
@@ -188,14 +189,14 @@ export default function WhyKiwiClicks() {
                 }}
               >
                 Grow My Business →
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/contact"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans font-bold uppercase tracking-wider border border-white/15 text-white/70 hover:border-white/30 hover:text-white transition-all"
                 style={{ fontSize: 'clamp(11px, 1.1vw, 14px)', background: 'rgba(255,255,255,0.04)' }}
               >
                 Talk to Experts
-              </a>
+              </Link>
             </motion.div>
 
             {/* Audience pills row */}

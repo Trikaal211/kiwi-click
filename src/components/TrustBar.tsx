@@ -59,7 +59,7 @@ export default function TrustBar() {
           {logoMarquee.map((brand, idx) => (
             <div
               key={idx}
-              className="flex flex-col items-center gap-1.5 px-16 group cursor-pointer"
+              className="flex flex-col items-center gap-1.5 px-16 group select-none"
             >
               {/* Abstract corporate geometric emblem in SVG */}
               <svg className="w-5 h-5 text-text-secondary/50 group-hover:text-accent-green transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">

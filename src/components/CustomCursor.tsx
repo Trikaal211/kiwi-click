@@ -1,116 +1,120 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
 
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
 
-  // Super tight spring — near zero lag
-  const springConfig = { damping: 50, stiffness: 1200, mass: 0.1 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
+  // Dot — tight & immediate
+  const dotSpring = { damping: 60, stiffness: 1500, mass: 0.08 };
+  const dotX = useSpring(cursorX, dotSpring);
+  const dotY = useSpring(cursorY, dotSpring);
+
+  // Ring — slight lag for "follow" feel
+  const ringSpring = { damping: 28, stiffness: 280, mass: 0.5 };
+  const ringX = useSpring(cursorX, ringSpring);
+  const ringY = useSpring(cursorY, ringSpring);
+
+  const isTouchRef = useRef(false);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
+    isTouchRef.current = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchRef.current) return;
+
+    const move = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       setIsVisible(true);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-      const isInteractive =
-        target.tagName === 'A' ||
-        target.tagName === 'BUTTON' ||
-        target.closest('button') !== null ||
-        target.closest('a') !== null ||
-        getComputedStyle(target).cursor === 'pointer';
-      setIsHovered(!!isInteractive);
+    const over = (e: MouseEvent) => {
+      const t = e.target as HTMLElement;
+      if (!t) return;
+      const interactive =
+        t.tagName === 'A' ||
+        t.tagName === 'BUTTON' ||
+        t.closest('a') !== null ||
+        t.closest('button') !== null ||
+        getComputedStyle(t).cursor === 'pointer';
+      setIsHovered(!!interactive);
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const down = () => setIsClicking(true);
+    const up = () => setIsClicking(false);
 
-    window.addEventListener('mousemove', moveCursor);
-    window.addEventListener('mouseover', handleMouseOver);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseover', over);
+    window.addEventListener('mousedown', down);
+    window.addEventListener('mouseup', up);
+    document.addEventListener('mouseleave', () => setIsVisible(false));
+    document.addEventListener('mouseenter', () => setIsVisible(true));
 
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseover', over);
+      window.removeEventListener('mousedown', down);
+      window.removeEventListener('mouseup', up);
     };
-  }, [cursorX, cursorY]); // removed isVisible — was causing stale closure & duplicate listener
-
-  useEffect(() => {
-    const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (touchDevice) setIsVisible(false);
-  }, []);
+  }, [cursorX, cursorY]);
 
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
-      style={{
-        x: cursorXSpring,
-        y: cursorYSpring,
-        translateX: '-2px',
-        translateY: '-2px',
-      }}
-    >
-      <motion.svg
-        width="26"
-        height="30"
-        viewBox="0 0 22 26"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        animate={{
-          scale: isHovered ? 1.25 : 1,
-          rotate: 15,
+    <div className="hidden md:block">
+      {/* Outer ring — follows with lag */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
+        style={{
+          x: ringX,
+          y: ringY,
+          translateX: '-50%',
+          translateY: '-50%',
         }}
-        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-        style={{ transformOrigin: '2px 2px' }}
       >
-        <defs>
-          {/* 7-color rainbow gradient painted top→bottom on the arrow */}
-          <linearGradient id="rainbowGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"      stopColor="#FF0000" /> {/* Red */}
-            <stop offset="16.6%"  stopColor="#FF7700" /> {/* Orange */}
-            <stop offset="33.3%"  stopColor="#FFE600" /> {/* Yellow */}
-            <stop offset="50%"    stopColor="#00C853" /> {/* Green */}
-            <stop offset="66.6%"  stopColor="#2979FF" /> {/* Blue */}
-            <stop offset="83.3%"  stopColor="#7C4DFF" /> {/* Indigo */}
-            <stop offset="100%"   stopColor="#E040FB" /> {/* Violet */}
-          </linearGradient>
-          {/* Slightly darker version for the stroke */}
-          <linearGradient id="rainbowStroke" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"      stopColor="#CC0000" />
-            <stop offset="16.6%"  stopColor="#CC5500" />
-            <stop offset="33.3%"  stopColor="#CCB800" />
-            <stop offset="50%"    stopColor="#009940" />
-            <stop offset="66.6%"  stopColor="#1155CC" />
-            <stop offset="83.3%"  stopColor="#5533CC" />
-            <stop offset="100%"   stopColor="#BB00DD" />
-          </linearGradient>
-        </defs>
-
-        {/* Arrow shape filled with 7-color rainbow gradient */}
-        <path
-          d="M2 2L20 10.5L11.5 12.5L7.5 24L2 2Z"
-          fill="url(#rainbowGrad)"
-          stroke="url(#rainbowStroke)"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-          strokeLinecap="round"
+        <motion.div
+          animate={{
+            width:  isClicking ? 22 : isHovered ? 40 : 32,
+            height: isClicking ? 22 : isHovered ? 40 : 32,
+            borderColor: isHovered
+              ? 'rgba(0, 255, 102, 0.9)'
+              : 'rgba(255, 255, 255, 0.35)',
+            backgroundColor: isHovered
+              ? 'rgba(0, 255, 102, 0.06)'
+              : 'transparent',
+          }}
+          transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+          style={{
+            borderRadius: '50%',
+            border: '1.5px solid',
+          }}
         />
-      </motion.svg>
-    </motion.div>
+      </motion.div>
+
+      {/* Inner dot — instant */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
+        style={{
+          x: dotX,
+          y: dotY,
+          translateX: '-50%',
+          translateY: '-50%',
+        }}
+      >
+        <motion.div
+          animate={{
+            width:  isClicking ? 3 : isHovered ? 5 : 4,
+            height: isClicking ? 3 : isHovered ? 5 : 4,
+            backgroundColor: isHovered ? '#00FF66' : '#ffffff',
+            opacity: isClicking ? 0.6 : 1,
+          }}
+          transition={{ type: 'spring', stiffness: 800, damping: 30 }}
+          style={{ borderRadius: '50%' }}
+        />
+      </motion.div>
+    </div>
   );
 }
