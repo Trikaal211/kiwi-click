@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─── Billboard messages ─────────────────────────── */
 const MESSAGES = [
+  { line1: 'BEST DIGITAL', line2: 'MARKETING AGENCY', line3: 'IN DELHI NCR.' },
   { line1: 'EVERY BUSINESS.', line2: 'EVERY DREAM.', line3: 'ONE DIGITAL DESTINATION.' },
   { line1: 'BUILD.', line2: 'GROW.', line3: 'SCALE.' },
   { line1: 'LOCAL TO GLOBAL.', line2: '', line3: '' },

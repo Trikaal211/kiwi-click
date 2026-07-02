@@ -118,7 +118,7 @@ export default function Hero() {
           <div className="inline-flex items-center gap-2.5 bg-card-bg border border-border-color rounded-full px-4.5 py-2 w-max mb-8 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
             <span className="text-[10px] font-mono tracking-widest text-text-secondary font-extrabold uppercase transition-theme">
-              Your Complete Digital Destination
+              BEST DIGITAL MARKETING AGENCY IN DELHI
             </span>
           </div>
 
@@ -134,7 +134,7 @@ export default function Hero() {
 
           {/* Positioning subtext */}
           <p className="mt-8 max-w-2xl text-base md:text-lg font-sans text-text-secondary leading-relaxed font-medium transition-theme">
-            KiwiClicks brings marketing, SEO, branding, websites, automation and growth systems together under one roof—helping local businesses and global brands scale with confidence.
+            KiwiClicks is the best digital marketing agency in Delhi, bringing performance marketing, SEO, branding, high-speed websites, and custom CRM automation together under one roof.
           </p>
 
           {/* CTA Buttons */}

@@ -47,6 +47,12 @@ export default function FAQ() {
       answer: 'While direct revenue is determined by sales team close rates, we hold our social ad loops accountable to direct-attribution ROAS (targeting 4-5x average ROAS across direct-to-consumer and B2B platforms).',
       category: 'Meta Ads',
     },
+    {
+      id: 6,
+      question: 'What makes KiwiClicks the best digital marketing agency in Delhi?',
+      answer: 'KiwiClicks stands out as the best digital marketing agency in Delhi because we reject vanity metrics and focus solely on revenue outcome pipelines. Our integration of technical local SEO, custom high-speed web apps, targeted performance ad funnels, and automated WhatsApp/CRM follow-up channels ensures we convert local buyer intent into qualified sales leads and actual business earnings.',
+      category: 'SEO',
+    },
   ];
 
   const filtered = faqs.filter((faq) => faq.category === activeCategory);
