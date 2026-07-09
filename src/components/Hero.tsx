@@ -1,229 +1,302 @@
-import { useState, useEffect } from 'react';
-import { ArrowUpRight, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { ArrowUpRight, Smile } from 'lucide-react';
 
-interface CardConfig {
-  type: 'green' | 'white' | 'blue' | 'glass' | 'counter';
-  label: string;
-  texts: string[];
-  fontClass: string;
-}
-
-// Sub-component for individual cards to handle auto message-cycling
-function ResponsibilityCard({ config }: { config: CardConfig }) {
-  const [textIndex, setTextIndex] = useState(0);
-  const texts = config.texts;
-
-  useEffect(() => {
-    if (texts.length <= 1) return;
-    const interval = setInterval(() => {
-      setTextIndex((prev) => (prev + 1) % texts.length);
-    }, 4000 + Math.random() * 2000); // offset intervals slightly
-    return () => clearInterval(interval);
-  }, [texts]);
-
-  let cardClass = "";
-  if (config.type === 'green') {
-    cardClass = "bg-accent-green text-slate-950 border-accent-green/20 shadow-[0_0_20px_rgba(0,255,102,0.2)] hover:shadow-[0_0_35px_rgba(0,255,102,0.45)] dark:bg-accent-green dark:text-slate-950";
-  } else if (config.type === 'white') {
-    cardClass = "bg-white text-slate-950 border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_35px_rgba(255,255,255,0.35)] dark:bg-white dark:text-slate-950";
-  } else if (config.type === 'blue') {
-    cardClass = "bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 text-white border-cyan-400/25 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)]";
-  } else if (config.type === 'glass') {
-    cardClass = "bg-card-bg backdrop-blur-md border border-border-color text-text-primary hover:border-accent-green/30 hover:shadow-[0_15px_30px_rgba(0,255,102,0.08)]";
-  } else if (config.type === 'counter') {
-    cardClass = "bg-slate-950/90 border border-white/10 text-white shadow-[0_10px_25px_rgba(0,0,0,0.6)]";
-  }
-
-  return (
-    <div 
-      className={`w-full p-4.5 rounded-2xl border transition-all duration-500 cursor-pointer flex flex-col justify-between min-h-[95px] sm:min-h-[105px] group transform hover:translate-z-[30px] hover:scale-[1.04] select-none ${cardClass}`}
-    >
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-[8px] font-mono tracking-widest uppercase opacity-60">
-          {config.label}
-        </span>
-        {config.type !== 'counter' && (
-          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 animate-pulse" />
-        )}
-      </div>
-
-      <div className="flex-1 flex items-center">
-        <p className={`text-left leading-snug w-full transition-all duration-500 tracking-tight ${config.fontClass}`}>
-          {texts[textIndex]}
-        </p>
-      </div>
-    </div>
-  );
-}
+/* ─── Floating particles ─── */
+const FloatingParticle = ({
+  x, y, size, delay, shape = 'circle', color = 'bg-accent-orange'
+}: {
+  x: string; y: string; size: number; delay: number; shape?: 'circle' | 'square' | 'diamond'; color?: string;
+}) => (
+  <motion.div
+    className={`absolute ${color} opacity-10 pointer-events-none select-none`}
+    style={{
+      left: x,
+      top: y,
+      width: size,
+      height: size,
+      borderRadius: shape === 'circle' ? '50%' : shape === 'diamond' ? '2px' : '3px',
+      rotate: shape === 'diamond' ? 45 : 0,
+    }}
+    animate={{
+      y: [0, -12, 0],
+      rotate: shape === 'diamond' ? [45, 55, 45] : [0, 8, 0],
+      opacity: [0.06, 0.18, 0.06],
+    }}
+    transition={{
+      duration: 5 + delay,
+      delay,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    }}
+  />
+);
 
 export default function Hero() {
-  // Columns for the Digital Responsibility Wall
-  const col1: CardConfig[] = [
-    { type: 'green', label: 'SEO', texts: ['SEO? Hum Sambhalenge.', 'SEO Ki Tension Chhodo.'], fontClass: 'font-sans font-black text-sm uppercase' },
-    { type: 'glass', label: 'WEB', texts: ['Website Banwani Hai? Hum Hain.', 'Website Banwa Lo.'], fontClass: 'font-serif italic font-light text-base text-text-primary' },
-    { type: 'counter', label: 'REACH', texts: ['50M+ Reach'], fontClass: 'font-sans font-black text-2xl' },
-    { type: 'blue', label: 'AI + AUTOMATION', texts: ['AI + Automation + Marketing Under One Roof.'], fontClass: 'font-sans font-extrabold text-[11px] leading-tight' },
-    { type: 'white', label: 'BRANDING', texts: ['Branding That Gets Remembered.'], fontClass: 'font-serif italic text-base' }
-  ];
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start']
+  });
 
-  const col2: CardConfig[] = [
-    { type: 'white', label: 'GROWTH', texts: ['Local Business Se Global Brand Tak.', 'From Local To Global.'], fontClass: 'font-sans font-black text-sm uppercase' },
-    { type: 'glass', label: 'ADS', texts: ['Performance Marketing That Compounds.', 'Ads Hum Chalayenge.'], fontClass: 'font-sans font-bold text-xs text-text-primary' },
-    { type: 'counter', label: 'CAMPAIGNS', texts: ['500+ Campaigns'], fontClass: 'font-sans font-black text-2xl text-accent-green' },
-    { type: 'green', label: 'ZIMMEDARI', texts: ['Your Digital Zimmedari Ab Hamari.', 'Digital Zimmedari Ab Hamari.'], fontClass: 'font-sans font-extrabold text-xs' },
-    { type: 'glass', label: 'AI MACHINE', texts: ['Need Leads? Let\'s Build A Machine.'], fontClass: 'font-sans font-black text-xs uppercase text-text-primary' }
-  ];
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const boardY = useTransform(scrollYProgress, [0, 1], ['0%', '-5%']);
+  const fadeOut = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const col3: CardConfig[] = [
-    { type: 'blue', label: 'DESTINATION', texts: ['Everything Digital. One Place.', 'Bas Business Sambhaliye.'], fontClass: 'font-sans font-black text-xs' },
-    { type: 'glass', label: 'CONTENT', texts: ['Content That Converts.'], fontClass: 'font-sans font-extrabold text-sm uppercase tracking-wider text-text-primary' },
-    { type: 'counter', label: 'GROWTH', texts: ['10X Growth'], fontClass: 'font-sans font-black text-2xl text-cyan-400' },
-    { type: 'white', label: 'SCALE', texts: ['From Startup To Enterprise.', 'Build. Rank. Grow.'], fontClass: 'font-serif italic text-sm' },
-    { type: 'counter', label: 'SUPPORT', texts: ['24×7 Support'], fontClass: 'font-sans font-black text-2xl text-yellow-400' }
-  ];
+  // Premium Interactive Parallax / Tilt values
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { damping: 25, stiffness: 180 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { damping: 25, stiffness: 180 });
 
-  const col1Double = [...col1, ...col1];
-  const col2Double = [...col2, ...col2];
-  const col3Double = [...col3, ...col3];
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const el = event.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left - width / 2;
+    const mouseY = event.clientY - rect.top - height / 2;
+    
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <section
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 xl:px-20 pt-36 pb-32 overflow-hidden bg-page-bg text-text-primary transition-theme"
+      ref={heroRef}
+      className="relative min-h-screen flex flex-col justify-center items-center px-6 md:px-12 pt-28 pb-14 overflow-hidden bg-page-bg text-text-primary transition-theme"
     >
-      {/* 1. Cinematic Developer Grid Canvas */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.02] dark:opacity-[0.03] select-none transition-opacity">
+      {/* ─── Background: dot grid ─── */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.02] select-none"
+        style={{
+          backgroundImage: 'radial-gradient(var(--accent-emerald) 1.5px, transparent 1.5px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+
+      {/* ─── Background: hand-drawn circle doodles (very light) ─── */}
+      <div className="absolute inset-0 pointer-events-none opacity-2 dark:opacity-4 select-none">
         <svg width="100%" height="100%" className="w-full h-full">
-          <defs>
-            <pattern id="epicHeroGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1.2" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#epicHeroGrid)" />
+          <circle cx="8%" cy="18%" r="90" stroke="currentColor" strokeWidth="0.75" fill="none" strokeDasharray="6 5" />
+          <circle cx="88%" cy="72%" r="130" stroke="currentColor" strokeWidth="1.2" fill="none" strokeDasharray="12 4" />
+          <circle cx="50%" cy="90%" r="65" stroke="currentColor" strokeWidth="0.5" fill="none" />
+          <circle cx="75%" cy="15%" r="45" stroke="currentColor" strokeWidth="0.5" fill="none" strokeDasharray="3 6" />
         </svg>
       </div>
 
-      {/* 2. Apple-level space cinematic overlays & ambient lighting */}
-      <div className="absolute top-[20%] right-[-15%] w-[80vw] h-[80vw] max-w-[900px] rounded-full bg-emerald-500/[0.05] dark:bg-emerald-500/[0.08] blur-[150px] pointer-events-none transition-all" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vw] max-w-[800px] rounded-full bg-cyan-500/[0.04] dark:bg-cyan-500/[0.07] blur-[140px] pointer-events-none transition-all" />
-      <div className="absolute top-[30%] left-[25%] w-[500px] h-[500px] rounded-full bg-blue-500/[0.03] dark:bg-blue-500/[0.05] blur-[160px] pointer-events-none transition-all" />
+      {/* ─── Floating ambient particles (Subtle framing) ─── */}
+      <FloatingParticle x="6%" y="28%" size={6} delay={0} shape="circle" color="bg-accent-orange" />
+      <FloatingParticle x="10%" y="75%" size={5} delay={1.5} shape="square" color="bg-accent-green" />
+      <FloatingParticle x="94%" y="22%" size={8} delay={0.5} shape="diamond" color="bg-gold-accent" />
+      <FloatingParticle x="88%" y="65%" size={6} delay={2} shape="circle" color="bg-accent-orange" />
 
-      {/* Cinematic Spacing Container (Wide 1600px grid) */}
-      <div className="max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-10 items-center relative z-10">
-        
-        {/* ─── Left Side: Headline dominating ~60% width ─── */}
-        <div className="lg:col-span-7 flex flex-col text-left">
-          
-          {/* Tagline / Subtitle */}
-          <div className="inline-flex items-center gap-2.5 bg-card-bg border border-border-color rounded-full px-4.5 py-2 w-max mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-accent-green animate-pulse" />
-            <span className="text-[10px] font-mono tracking-widest text-text-secondary font-extrabold uppercase transition-theme">
-              BEST DIGITAL MARKETING AGENCY IN DELHI
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center relative z-10">
+
+        {/* ─── Left Column: Content (50%) ─── */}
+        <motion.div
+          style={{ y: textY, opacity: fadeOut }}
+          className="lg:col-span-6 flex flex-col justify-center text-left"
+        >
+          {/* Subtitle Badge */}
+          <div className="flex items-center gap-2 mb-6">
+            <span className="w-2.5 h-2.5 rounded-full bg-accent-orange animate-pulse" />
+            <span className="text-xs font-mono tracking-widest text-accent-emerald dark:text-accent-orange font-bold uppercase transition-theme">
+              DELHI'S DIGITAL GROWTH PARTNER
             </span>
+            <Smile size={14} className="text-accent-orange transform rotate-12" />
           </div>
 
-          {/* Massive Typography: 90px-130px size on desktop */}
-          <h1 className="font-sans font-black text-5xl md:text-7xl lg:text-[85px] xl:text-[95px] tracking-tighter leading-[0.85] text-text-primary uppercase max-w-4xl text-left transition-theme">
-            Your Digital <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-green via-emerald-400 to-cyan-400">
-              One Solution.
-            </span> <br />
-            One Place. <br />
-            <span className="italic font-serif font-light text-text-secondary normal-case tracking-tight transition-theme">Endless Growth.</span>
+          {/* Headline */}
+          <h1 className="font-serif font-light text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-text-primary transition-theme relative">
+            Growth systems <br />
+            built by <span className="relative inline-block font-sans font-extrabold text-accent-green tracking-tight not-italic transition-theme">
+              marketers
+              <motion.svg
+                className="absolute -bottom-2 left-0 w-full h-3 text-accent-orange"
+                viewBox="0 0 100 10"
+                preserveAspectRatio="none"
+                fill="none"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.5, ease: 'easeOut' }}
+              >
+                <path d="M0,7 C30,2 70,2 100,7 M5,9 C35,4 75,4 95,9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+              </motion.svg>
+            </span>, <br />
+            not <span className="italic font-serif font-normal text-accent-emerald dark:text-text-primary transition-theme">salespeople.</span>
           </h1>
 
-          {/* Positioning subtext */}
-          <p className="mt-8 max-w-2xl text-base md:text-lg font-sans text-text-secondary leading-relaxed font-medium transition-theme">
-            KiwiClicks is the best digital marketing agency in Delhi, bringing performance marketing, SEO, branding, high-speed websites, and custom CRM automation together under one roof.
+          {/* Subheadline */}
+          <p className="mt-6 max-w-xl text-base md:text-lg font-sans font-medium text-text-secondary leading-relaxed transition-theme">
+            KiwiClicks helps ambitious Delhi brands capture customer attention, earn real trust, and scale campaigns through transparent metrics, high-velocity websites, and automated operations pipelines.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-wrap items-center gap-4 md:gap-6">
-            <Link
-              to="/contact"
-              className="px-8.5 py-4.5 rounded-full text-xs font-sans font-bold uppercase tracking-wider bg-accent-green text-slate-950 hover:bg-text-primary hover:text-page-bg transition-all duration-300 shadow-[0_10px_35px_-5px_rgba(0,255,102,0.3)] flex items-center gap-2 group"
+          {/* Buttons */}
+          <div className="mt-8 flex flex-wrap items-center gap-4 md:gap-6">
+            <a
+              href="#work"
+              className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-emerald text-white border-2 border-accent-emerald hover:bg-accent-green hover:border-accent-green transition-theme shadow-offset cursor-pointer flex items-center gap-1.5"
             >
-              Grow My Business
-              <ArrowUpRight size={14} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
-            <Link
-              to="/contact"
-              className="px-8.5 py-4.5 rounded-full text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border border-border-color hover:bg-hover-highlight transition-all duration-300"
+              View Our Work
+              <ArrowUpRight size={13} />
+            </a>
+            <a
+              href="#contact"
+              className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:bg-hover-highlight transition-theme shadow-offset-orange cursor-pointer"
             >
-              Talk To Experts
-            </Link>
+              Let's Talk
+            </a>
           </div>
 
-          {/* Audience Verification Chips */}
-          <div className="mt-16 flex flex-wrap items-center gap-3 border-t border-border-color pt-8 transition-theme">
-            <span className="text-[10px] font-mono text-text-secondary uppercase tracking-widest mr-3 block transition-theme">Scaling:</span>
+          {/* Trust signals strip */}
+          <div className="mt-8 flex flex-wrap gap-4">
             {[
-              'Local Businesses',
-              'Startups',
-              'D2C Brands',
-              'Founders',
-              'Enterprises'
-            ].map((chip) => (
-              <div
-                key={chip}
-                className="flex items-center gap-1.5 bg-card-bg border border-border-color rounded-full px-3.5 py-1.5 text-[10px] font-mono text-text-primary font-bold transition-theme"
-              >
-                <Check size={11} className="text-accent-green" />
-                {chip}
+              { label: 'ROAS', value: '4.8x', color: 'text-gold-accent' },
+              { label: 'Leads/mo', value: '400+', color: 'text-accent-green' },
+              { label: 'Traffic ↑', value: '320%', color: 'text-accent-orange' },
+            ].map((stat) => (
+              <div key={stat.label} className="flex items-center gap-2 bg-card-bg border border-border-color/30 rounded-xl px-3 py-2 shadow-offset-sm transition-theme">
+                <span className={`text-sm font-sans font-black ${stat.color}`}>{stat.value}</span>
+                <span className="text-[10px] font-mono text-text-secondary uppercase font-bold">{stat.label}</span>
               </div>
             ))}
           </div>
+        </motion.div>
 
-        </div>
+        {/* ─── Right Column: Founder Showcase (50%) ─── */}
+        <motion.div
+          style={{ y: boardY }}
+          className="lg:col-span-6 flex flex-col items-center justify-center relative mt-12 lg:mt-0 select-none overflow-visible"
+        >
+          {/* Gentle Ambient Glow behind the card */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] h-[125%] rounded-full opacity-50 dark:opacity-35 blur-3xl -z-30 pointer-events-none transition-theme"
+            style={{
+              backgroundImage: 'radial-gradient(circle, rgba(27,77,62,0.18) 0%, rgba(255,138,61,0.06) 50%, transparent 70%)',
+            }}
+          />
 
-        {/* ─── Right Side: Rotating 3D Digital Responsibility Wall (40%) ─── */}
-        <div className="lg:col-span-5 flex items-center justify-center relative mt-12 lg:mt-0 select-none w-full h-[550px] sm:h-[600px] overflow-hidden rounded-3xl bg-slate-950/20 dark:bg-slate-950/40 border border-border-color shadow-offset transition-theme">
-          
-          {/* Subtle inside volumetric glows */}
-          <div className="absolute top-1/4 left-1/4 w-[160px] h-[160px] bg-emerald-500/5 blur-[80px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] bg-cyan-500/5 blur-[95px] rounded-full pointer-events-none" />
-
-          {/* Cinematic Fade Out Overlays */}
-          <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-page-bg via-page-bg/40 to-transparent pointer-events-none z-20 transition-all duration-300" />
-          <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-page-bg via-page-bg/40 to-transparent pointer-events-none z-20 transition-all duration-300" />
-          
-          {/* 3D Perspective Box */}
-          <div className="w-full h-full relative" style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}>
-            
-            {/* Tilted scrolling container */}
+          {/* Wrapper for interactive 3D parallax/tilt and subtle float (Showcase card size optimized to dominate visual area) */}
+          <motion.div
+            style={{
+              rotateX,
+              rotateY,
+              transformStyle: 'preserve-3d',
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] z-10 transition-shadow duration-300 h-auto"
+          >
+            {/* Layered background card depth 1 */}
             <div 
-              className="absolute inset-0 grid grid-cols-3 gap-3 p-3 w-[120%] -left-[10%]"
-              style={{
-                transform: 'rotateY(-18deg) rotateX(12deg) rotateZ(-2deg)',
-                transformStyle: 'preserve-3d'
-              }}
+              style={{ transform: 'translateZ(-15px) rotate(1deg)' }}
+              className="absolute inset-0 bg-white/40 dark:bg-card-bg/40 border border-border-color/10 dark:border-accent-emerald/10 rounded-3xl translate-x-3 translate-y-3 -z-10 shadow-md transition-theme pointer-events-none" 
+            />
+
+            {/* Layered background card depth 2 */}
+            <div 
+              style={{ transform: 'translateZ(-30px) rotate(-1deg)' }}
+              className="absolute inset-0 bg-accent-emerald/[0.03] dark:bg-accent-emerald/[0.07] border border-accent-emerald/5 dark:border-accent-emerald/10 rounded-3xl -translate-x-2.5 -translate-y-2.5 -z-20 shadow-sm transition-theme pointer-events-none" 
+            />
+
+            {/* ─── PRIMARY CARD: Founder Showcase Spotlight ─── */}
+            <div 
+              style={{ transform: 'translateZ(10px)' }}
+              className="w-full bg-card-bg border border-border-color/15 dark:border-accent-emerald/10 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.45)] flex flex-col relative transition-theme group"
             >
-              {/* Column 1 (Scroll Up) */}
-              <div className="flex flex-col gap-3 h-max animate-scroll-up-normal hover:[animation-play-state:paused]">
-                {col1Double.map((card, idx) => (
-                  <ResponsibilityCard key={`col1-${idx}`} config={card} />
-                ))}
+              {/* Photo Area */}
+              <div className="w-full aspect-[3/2] overflow-hidden relative bg-page-bg-sec/50">
+                <img
+                  src="/hero.png"
+                  alt="KiwiClicks Founders - Bandana & Shammy"
+                  className="w-full h-full object-cover object-center scale-100 group-hover:scale-101 transition-transform duration-700"
+                />
               </div>
 
-              {/* Column 2 (Scroll Down) */}
-              <div className="flex flex-col gap-3 h-max animate-scroll-down-slow hover:[animation-play-state:paused]">
-                {col2Double.map((card, idx) => (
-                  <ResponsibilityCard key={`col2-${idx}`} config={card} />
-                ))}
-              </div>
-
-              {/* Column 3 (Scroll Up) */}
-              <div className="flex flex-col gap-3 h-max animate-scroll-up-slow hover:[animation-play-state:paused]">
-                {col3Double.map((card, idx) => (
-                  <ResponsibilityCard key={`col3-${idx}`} config={card} />
-                ))}
+              {/* Text / Name Area (Frosted glassmorphism individually refined - no visual clutter) */}
+              <div 
+                className="p-5 bg-card-bg/85 dark:bg-card-bg/75 backdrop-blur-md border-t border-border-color/10 transition-theme relative z-10 rounded-b-3xl"
+              >
+                <div className="grid grid-cols-2 gap-4 divide-x divide-border-color/10 dark:divide-white/10 text-left">
+                  <div>
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
+                      Bandana Kumari
+                    </h4>
+                    <p className="text-[8px] font-mono tracking-wider text-accent-green uppercase font-bold transition-theme mt-0.5">
+                      Founder & Strategist
+                    </p>
+                  </div>
+                  <div className="pl-4">
+                    <h4 className="font-serif text-sm sm:text-base font-bold text-text-primary tracking-tight transition-theme">
+                      Shammy Kumar
+                    </h4>
+                    <p className="text-[8px] font-mono tracking-wider text-accent-orange uppercase font-bold transition-theme mt-0.5">
+                      Co-Founder & Strategist
+                    </p>
+                  </div>
+                </div>
               </div>
 
             </div>
 
+            {/* ─── Micro Results Badges (Floating) ─── */}
+            {/* Badge 1: Leads Generated */}
+            <div 
+              style={{ transform: 'translateZ(35px)' }}
+              className="absolute -top-6 -left-4 md:-left-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-green/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
+            >
+              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">LIVE RESULTS</span>
+              <span className="text-[11px] font-sans font-black text-accent-green">+127 Leads Generated</span>
+            </div>
+
+            {/* Badge 2: Avg ROAS */}
+            <div 
+              style={{ transform: 'translateZ(35px)' }}
+              className="absolute bottom-12 -right-4 md:-right-8 z-25 bg-card-bg/95 dark:bg-card-bg/90 backdrop-blur-md border border-accent-orange/20 px-3 py-1.5 rounded-xl shadow-lg transition-theme pointer-events-none"
+            >
+              <span className="text-[8px] font-mono uppercase tracking-widest text-text-secondary block">CAMPAIGN METRIC</span>
+              <span className="text-[11px] font-sans font-black text-accent-orange">4.8x Average ROAS</span>
+            </div>
+
+            {/* ─── Human Signature Note (Desktop Only) ─── */}
+            <div
+              style={{ transform: 'translateZ(30px)' }}
+              className="absolute -left-6 lg:-left-10 -bottom-14 z-30 font-handwriting text-accent-orange text-lg lg:text-xl -rotate-2 select-none font-bold hidden md:flex items-center gap-1.5 animate-pulse"
+            >
+              Real founders. Real growth. ➔
+            </div>
+
+          </motion.div>
+
+          {/* ─── Clean Credibility Row Below Card (Trust Proof) ─── */}
+          <div className="mt-8 w-full max-w-[350px] sm:max-w-[420px] md:max-w-[490px] lg:max-w-[550px] xl:max-w-[580px] grid grid-cols-2 gap-y-2.5 gap-x-4 border-t border-border-color/10 dark:border-white/10 pt-4 text-left px-2">
+            {[
+              '20+ Businesses Helped',
+              '4+ Years Experience',
+              'Delhi NCR Based',
+              'SEO • Google Ads • Web Development'
+            ].map((text) => (
+              <div key={text} className="flex items-center gap-2 text-xs text-text-secondary transition-theme">
+                <span className="text-accent-green font-bold shrink-0">✓</span>
+                <span className="font-sans font-semibold tracking-tight">{text}</span>
+              </div>
+            ))}
           </div>
 
-        </div>
+          {/* ─── Handwritten note for Mobile ─── */}
+          <div className="text-center font-handwriting text-accent-orange text-lg mt-6 block md:hidden -rotate-1 select-none font-bold">
+            Real founders. Real growth. ➔
+          </div>
+
+        </motion.div>
 
       </div>
     </section>
