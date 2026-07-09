@@ -4,7 +4,6 @@ import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import HomePage from './pages/HomePage';
-import AnalyticsTracker from './components/AnalyticsTracker';
 
 // Lazy loaded client pages
 const BlogPage = lazy(() => import('./pages/BlogPage'));
@@ -55,49 +54,47 @@ export default function App() {
       {!isAdmin && <WhatsAppWidget />}
       <main className="relative z-10 w-full">
         <Suspense fallback={<LoadingFallback />}>
-          <AnalyticsTracker>
-            <Routes>
-              {/* Client facing routes */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/index.html" element={<Navigate to="/" replace />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogArticlePage />} />
-              <Route path="/team" element={<TeamPage />} />
-              <Route path="/faq" element={<FAQPage />} />
-              
-              {/* Dedicated Contact Page */}
-              <Route path="/contact" element={<ContactPage />} />
+          <Routes>
+            {/* Client facing routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/index.html" element={<Navigate to="/" replace />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogArticlePage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            
+            {/* Dedicated Contact Page */}
+            <Route path="/contact" element={<ContactPage />} />
 
-              {/* Client Results Page */}
-              <Route path="/results" element={<ClientResultsPage />} />
+            {/* Client Results Page */}
+            <Route path="/results" element={<ClientResultsPage />} />
 
-              {/* Dynamic Services Ecosystem */}
-              <Route path="/services/:slug" element={<ServiceDetailPage />} />
-              
-              {/* Legacy Redirections */}
-              <Route path="/seo-local-seo" element={<Navigate to="/services/seo" replace />} />
-              <Route path="/social-media-marketing" element={<Navigate to="/services/meta-ads" replace />} />
-              <Route path="/web-development" element={<Navigate to="/services/business-web-dev" replace />} />
-              <Route path="/ai-automation" element={<Navigate to="/services/ai-chatbots" replace />} />
+            {/* Dynamic Services Ecosystem */}
+            <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            
+            {/* Legacy Redirections */}
+            <Route path="/seo-local-seo" element={<Navigate to="/services/seo" replace />} />
+            <Route path="/social-media-marketing" element={<Navigate to="/services/meta-ads" replace />} />
+            <Route path="/web-development" element={<Navigate to="/services/business-web-dev" replace />} />
+            <Route path="/ai-automation" element={<Navigate to="/services/ai-chatbots" replace />} />
 
-              {/* Administrative panel routes */}
-              <Route path="/admin/login" element={<Login />} />
-              <Route path="/admin" element={<DashboardLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="blogs" element={<BlogManagement />} />
-                <Route path="blogs/new" element={<BlogEditorPage />} />
-                <Route path="blogs/edit/:id" element={<BlogEditorPage />} />
-                <Route path="services" element={<ServiceManagement />} />
-                <Route path="leads" element={<LeadManagement />} />
-                <Route path="team" element={<TeamManagement />} />
-                <Route path="faqs" element={<FAQManagement />} />
-                <Route path="testimonials" element={<TestimonialManagement />} />
-                <Route path="media" element={<MediaLibrary />} />
-                <Route path="settings" element={<SettingsPage />} />
-              </Route>
-            </Routes>
-          </AnalyticsTracker>
+            {/* Administrative panel routes */}
+            <Route path="/admin/login" element={<Login />} />
+            <Route path="/admin" element={<DashboardLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="blogs" element={<BlogManagement />} />
+              <Route path="blogs/new" element={<BlogEditorPage />} />
+              <Route path="blogs/edit/:id" element={<BlogEditorPage />} />
+              <Route path="services" element={<ServiceManagement />} />
+              <Route path="leads" element={<LeadManagement />} />
+              <Route path="team" element={<TeamManagement />} />
+              <Route path="faqs" element={<FAQManagement />} />
+              <Route path="testimonials" element={<TestimonialManagement />} />
+              <Route path="media" element={<MediaLibrary />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
+          </Routes>
         </Suspense>
       </main>
     </div>

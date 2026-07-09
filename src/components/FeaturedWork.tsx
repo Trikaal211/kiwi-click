@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
-import { trackPortfolioOpened } from '../lib/analytics';
 
 interface CaseStudy {
   id: number;
@@ -96,12 +95,7 @@ export default function FeaturedWork() {
         <div className="space-y-12">
           {cases.map((c) => {
             return (
-              <Link 
-                to={c.href} 
-                key={c.id} 
-                onClick={() => trackPortfolioOpened(c.client)}
-                className="block group"
-              >
+              <Link to={c.href} key={c.id} className="block group">
                 <motion.div
                   className={`w-full bg-card-bg backdrop-blur-md border border-border-color rounded-3xl p-6 md:p-8 hover:border-text-secondary/30 transition-all duration-500 cursor-pointer grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative overflow-hidden ${c.borderColor} ${c.glowColor}`}
                 >

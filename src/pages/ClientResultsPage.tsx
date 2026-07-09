@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Lock } from 'lucide-react';
-import { trackContactUsClick, trackWhatsAppClick } from '../lib/analytics';
 
 // Counter component for stats and cards
 function Counter({ value, suffix, duration = 2 }: { value: number; suffix: string; duration?: number }) {
@@ -727,7 +726,6 @@ export default function ClientResultsPage() {
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <Link
               to="/contact"
-              onClick={() => trackContactUsClick('Client Results Page Bottom')}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-accent-emerald text-white border-2 border-accent-emerald hover:bg-accent-green hover:border-accent-green transition-theme shadow-offset cursor-pointer"
             >
               Contact Us
@@ -736,7 +734,6 @@ export default function ClientResultsPage() {
               href="https://wa.me/916230078396?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20growth%20options."
               target="_blank"
               rel="noreferrer"
-              onClick={() => trackWhatsAppClick('Client Results Page Bottom')}
               className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald hover:text-white transition-theme shadow-offset cursor-pointer"
             >
               Book Discovery Call

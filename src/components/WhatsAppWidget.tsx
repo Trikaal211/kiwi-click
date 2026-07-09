@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { MessageSquare, X } from 'lucide-react';
-import { trackWhatsAppClick } from '../lib/analytics';
 
 export default function WhatsAppWidget() {
   const [isMobile, setIsMobile] = useState(false);
@@ -206,7 +205,6 @@ export default function WhatsAppWidget() {
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackWhatsAppClick('Floating WhatsApp Widget')}
             className="w-full py-3.5 rounded-xl text-[10px] font-sans font-bold uppercase tracking-wider bg-accent-green text-slate-950 hover:bg-text-primary hover:text-page-bg active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(0,255,102,0.2)]"
           >
             <MessageSquare size={12} />

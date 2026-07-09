@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Zap } from 'lucide-react';
-import { trackServiceCardClick } from '../lib/analytics';
 
 /* ─── Premium Technical Widgets ─── */
 
@@ -274,7 +273,6 @@ export default function Services() {
               >
                 <Link
                   to={s.href}
-                  onClick={() => trackServiceCardClick(s.title)}
                   className={`relative bg-card-bg backdrop-blur-md border ${s.borderColor} rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full`}
                 >
                   {/* Service Card Image */}

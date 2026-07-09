@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, ArrowUpRight, Send, Check, ShieldCheck, Clock, MapPin, Sparkles } from 'lucide-react';
 import apiClient from '../api/client';
-import { trackFormSubmit, trackPhoneClick, trackEmailClick, trackPricingClick, trackWhatsAppClick } from '../lib/analytics';
 
 const WhatsAppIcon = ({ size = 16, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -39,7 +38,6 @@ export default function ContactPage() {
         message: `Business Name: ${formState.business || 'N/A'}\nWebsite: ${formState.website || 'N/A'}\n\nProject Goals: ${formState.message || 'N/A'}`
       });
       setIsSubmitted(true);
-      trackFormSubmit('Contact Page Discovery Form', 'success');
       setFormState({
         name: '',
         phone: '',
@@ -53,7 +51,6 @@ export default function ContactPage() {
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error('Failed to submit contact page lead:', error);
-      trackFormSubmit('Contact Page Discovery Form', 'fail');
       alert('Failed to submit request. Please try again or connect via WhatsApp.');
     } finally {
       setIsSubmitting(false);
@@ -214,10 +211,7 @@ export default function ContactPage() {
                         <button
                           key={range}
                           type="button"
-                          onClick={() => {
-                            setFormState({ ...formState, budget: range });
-                            trackPricingClick(range);
-                          }}
+                          onClick={() => setFormState({ ...formState, budget: range })}
                           className={`py-3 rounded-xl text-[10px] font-sans font-bold transition-all border-2 cursor-pointer ${
                             isSelected 
                               ? 'bg-accent-orange text-white border-accent-emerald shadow-sm' 
@@ -309,7 +303,6 @@ export default function ContactPage() {
                   href="https://wa.me/916230078396?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20digital%20growth%20strategy." 
                   target="_blank" 
                   rel="noreferrer"
-                  onClick={() => trackWhatsAppClick('Contact Page Desk')}
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
                   <div className="w-7 h-7 rounded bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
@@ -321,7 +314,6 @@ export default function ContactPage() {
 
                 <a 
                   href="tel:6230078396"
-                  onClick={() => trackPhoneClick('6230078396', 'Contact Page Desk')}
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
                   <div className="w-7 h-7 rounded bg-accent-orange/10 flex items-center justify-center text-accent-orange">
@@ -333,7 +325,6 @@ export default function ContactPage() {
 
                 <a 
                   href="tel:8210077633"
-                  onClick={() => trackPhoneClick('8210077633', 'Contact Page Desk')}
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
                   <div className="w-7 h-7 rounded bg-accent-orange/10 flex items-center justify-center text-accent-orange">
@@ -345,7 +336,6 @@ export default function ContactPage() {
 
                 <a 
                   href="mailto:bandana.k.official@gmail.com" 
-                  onClick={() => trackEmailClick('bandana.k.official@gmail.com', 'Contact Page Desk')}
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
                   <div className="w-7 h-7 rounded bg-accent-green/10 flex items-center justify-center text-accent-green">
@@ -357,7 +347,6 @@ export default function ContactPage() {
 
                 <a 
                   href="mailto:info@kiwiclicks.in" 
-                  onClick={() => trackEmailClick('info@kiwiclicks.in', 'Contact Page Desk')}
                   className="flex items-center gap-3 text-xs font-sans tracking-wide text-text-primary hover:text-accent-orange transition-colors w-max group font-semibold"
                 >
                   <div className="w-7 h-7 rounded bg-accent-green/10 flex items-center justify-center text-accent-green">

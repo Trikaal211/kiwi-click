@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, ArrowUpRight, CheckCircle, Copy, Check } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { trackBlogOpened } from '../lib/analytics';
 import apiClient from '../api/client';
 
 interface ArticleContent {
@@ -302,11 +301,6 @@ export default function BlogArticlePage() {
     article = articleData[slug];
   }
 
-  useEffect(() => {
-    if (article?.title) {
-      trackBlogOpened(article.title);
-    }
-  }, [article?.title]);
 
   // Heading and parsed content calculations for TOC
   const parsedArticleHtml = useMemo(() => {
