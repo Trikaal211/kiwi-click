@@ -281,7 +281,7 @@ export default function Services() {
                       src={s.image}
                       alt={s.imageAlt}
                       loading="lazy"
-                      className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-102 transition-all duration-700 ease-in-out"
+                      className="w-full h-full object-cover group-hover:scale-102 transition-all duration-700 ease-in-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-page-bg via-page-bg/20 to-transparent transition-all" />
                     <span className={`absolute top-4.5 left-4.5 text-[9px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-page-bg border border-border-color shadow-sm transition-theme ${s.tagColor}`}>

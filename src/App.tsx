@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
-import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import WhatsAppButton from './components/WhatsAppButton';
 import Chatbot from './components/Chatbot';
@@ -49,7 +48,6 @@ export default function App() {
 
   return (
     <div className={`relative min-h-screen bg-page-bg text-text-primary overflow-x-hidden transition-theme${isAdmin ? ' admin-panel' : ''}`}>
-      {!isAdmin && <CustomCursor />}
       <ScrollToTop />
       {!isAdmin && <Navbar />}
       {!isAdmin && <WhatsAppButton />}

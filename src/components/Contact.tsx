@@ -78,7 +78,7 @@ export default function Contact() {
               src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" 
               alt="KiwiClicks Enterprise Operations Center" 
               loading="lazy"
-              className="w-full h-full object-cover object-center grayscale opacity-30 hover:grayscale-0 hover:opacity-100 transition-all duration-700 ease-in-out"
+              className="w-full h-full object-cover object-center transition-all duration-700 ease-in-out"
             />
           </div>
 

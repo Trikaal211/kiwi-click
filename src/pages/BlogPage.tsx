@@ -277,7 +277,7 @@ export default function BlogPage() {
                   className={`group bg-card-bg border-2 ${borders[idx % 3]} rounded-3xl overflow-hidden ${shadows[idx % 3]} hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-300 flex flex-col`}
                 >
                   <div className="h-48 overflow-hidden relative">
-                    <img src={art.image} alt={art.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                    <img src={art.image} alt={art.title} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" />
                     <span className="absolute bottom-3 left-3 bg-card-bg text-text-primary text-[9px] font-mono font-bold px-2.5 py-1 rounded-md border border-border-color shadow-sm transition-theme">
                       {art.category}
                     </span>

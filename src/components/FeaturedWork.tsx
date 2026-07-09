@@ -106,7 +106,7 @@ export default function FeaturedWork() {
                         src={c.image} 
                         alt={`${c.client} case study`} 
                         loading="lazy"
-                        className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-in-out"
+                        className="w-full h-full object-cover group-hover:scale-[1.02] transition-all duration-700 ease-in-out"
                       />
                     </div>
                     <div className="text-left">
