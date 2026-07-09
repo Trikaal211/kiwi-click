@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { servicesData } from '../data/servicesData';
 import type { ServiceData } from '../data/servicesData';
+import { trackGetStartedClick, trackWhatsAppClick } from '../lib/analytics';
 import { 
   ArrowUpRight, 
   CheckCircle2, 
@@ -337,6 +338,7 @@ export default function ServiceDetailPage() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link
                 to="/contact"
+                onClick={() => trackGetStartedClick('Service Detail Page Hero')}
                 className={`px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider transition-all cursor-pointer border-2 flex items-center justify-center gap-2 ${accentClasses.btn}`}
               >
                 Book Growth Audit <ArrowUpRight size={14} />
@@ -345,6 +347,7 @@ export default function ServiceDetailPage() {
                 href="https://wa.me/916230078396?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20growth%20options."
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackWhatsAppClick('Service Detail Page Hero')}
                 className="px-8 py-4 bg-page-bg-sec border-2 border-border-color hover:border-accent-orange hover:text-accent-orange rounded-xl text-xs font-sans font-bold uppercase tracking-wider text-text-primary transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 Connect via WhatsApp <Phone size={13} />
@@ -553,6 +556,7 @@ export default function ServiceDetailPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Link
               to="/contact"
+              onClick={() => trackGetStartedClick('Service Detail Page Bottom')}
               className="px-8 py-4 bg-accent-orange text-white border-2 border-white rounded-xl text-xs font-sans font-bold uppercase tracking-wider hover:bg-white hover:text-accent-emerald transition-all shadow-offset flex items-center justify-center gap-1.5"
             >
               Request Free Audit <ArrowRight size={14} />
@@ -574,12 +578,14 @@ export default function ServiceDetailPage() {
             href="https://wa.me/916230078396?text=Hi%20KiwiClicks,%20I'd%20like%20to%20discuss%20our%20growth%20options."
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackWhatsAppClick('Service Detail Page Sticky Footer')}
             className="px-4 py-2 bg-[#25D366] text-white rounded-lg text-[10px] font-sans font-bold uppercase tracking-wider hover:opacity-90 transition-all flex items-center gap-1 cursor-pointer"
           >
             WhatsApp <Phone size={10} />
           </a>
           <Link
             to="/contact"
+            onClick={() => trackGetStartedClick('Service Detail Page Sticky Footer')}
             className="px-4 py-2 bg-accent-orange text-white border border-accent-emerald rounded-lg text-[10px] font-sans font-bold uppercase tracking-wider hover:bg-accent-emerald transition-all cursor-pointer"
           >
             Book Session <ArrowUpRight size={10} />

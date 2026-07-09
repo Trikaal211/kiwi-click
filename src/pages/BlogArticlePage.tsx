@@ -1,6 +1,8 @@
+import { useState, useEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Clock, Calendar, ArrowUpRight, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, ArrowUpRight, CheckCircle, Copy, Check } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { trackBlogOpened } from '../lib/analytics';
 import apiClient from '../api/client';
 
 interface ArticleContent {
@@ -208,6 +210,28 @@ const allArticles = [
 export default function BlogArticlePage() {
   const { slug } = useParams<{ slug: string }>();
 
+  // Interactive reader states
+  const [textSize, setTextSize] = useState<'sm' | 'base' | 'lg'>('base');
+  const [copied, setCopied] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const sizeMap = {
+    sm: '0.92rem',
+    base: '1.05rem',
+    lg: '1.2rem',
+  };
+
   // 1) Fetch single blog by slug with console logging at fetch layer
   const { data: apiBlog, isLoading: isBlogLoading } = useQuery({
     queryKey: ['publicBlog', slug],
@@ -278,6 +302,50 @@ export default function BlogArticlePage() {
     article = articleData[slug];
   }
 
+  useEffect(() => {
+    if (article?.title) {
+      trackBlogOpened(article.title);
+    }
+  }, [article?.title]);
+
+  // Heading and parsed content calculations for TOC
+  const parsedArticleHtml = useMemo(() => {
+    if (!isDynamic || !article?.content) return { headings: [], html: '' };
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(article.content, 'text/html');
+    const h2Elements = doc.querySelectorAll('h2');
+    const headingsList: { id: string; text: string }[] = [];
+    h2Elements.forEach((h2, idx) => {
+      const id = `sec-${idx}`;
+      h2.setAttribute('id', id);
+      h2.className = (h2.className || '') + ' scroll-mt-24';
+      headingsList.push({
+        id,
+        text: h2.textContent || '',
+      });
+    });
+    return {
+      headings: headingsList,
+      html: doc.body.innerHTML,
+    };
+  }, [isDynamic, article?.content, article?.slug]);
+
+  const staticHeadings = useMemo(() => {
+    if (isDynamic || !article?.sections) return [];
+    return article.sections.map((sec: any, idx: number) => ({
+      id: `sec-${idx}`,
+      text: sec.heading,
+    }));
+  }, [isDynamic, article?.sections]);
+
+  const headings = isDynamic ? parsedArticleHtml.headings : staticHeadings;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   // Log state transition
   console.log('[State] Active article details:', article, 'Is dynamic backend article:', isDynamic);
 
@@ -342,7 +410,15 @@ export default function BlogArticlePage() {
   console.log('[Render] Rendering BlogArticlePage for article:', article.title, 'Related articles count:', related.length);
 
   return (
-    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme">
+    <div className="min-h-screen bg-page-bg text-text-primary pt-32 md:pt-36 lg:pt-40 transition-theme relative">
+      
+      {/* Reading Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-1 z-[100] bg-border-color/10">
+        <div
+          className="h-full bg-gradient-to-r from-accent-green to-accent-orange transition-all duration-75"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
 
       {/* Hero Image */}
       <div className="w-full h-72 md:h-[440px] overflow-hidden relative">
@@ -363,51 +439,161 @@ export default function BlogArticlePage() {
         <div className="py-12 grid grid-cols-1 lg:grid-cols-12 gap-16">
 
           {/* Article Body */}
-          <article className="lg:col-span-8">
+          <article 
+            className="lg:col-span-8 transition-all duration-200"
+            style={{ '--prose-size': sizeMap[textSize] } as React.CSSProperties}
+          >
             {/* Meta */}
             <div className="mb-6">
               <span className="text-[9px] font-mono bg-accent-green/10 text-accent-green border border-accent-green/20 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
                 {article.category}
               </span>
             </div>
+            
             <h1 className="font-serif text-3xl md:text-5xl text-text-primary leading-tight mb-4">
               {article.title}
             </h1>
+            
             <p className="text-lg font-sans font-medium text-text-secondary leading-relaxed mb-8">
               {article.subtitle}
             </p>
-            <div className="flex flex-wrap items-center gap-5 pb-8 border-b border-border-color mb-10">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-sm">
-                  {article.author.split(' ').map((n: string) => n[0]).join('')}
+            
+            <div className="flex flex-wrap items-center justify-between gap-5 pb-8 border-b border-border-color mb-10">
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-sm">
+                    {article.author.split(' ').map((n: string) => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="text-sm font-sans font-bold text-text-primary">{article.author}</p>
+                    <p className="text-xs font-sans text-accent-green">{article.authorRole}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-sans font-bold text-text-primary">{article.author}</p>
-                  <p className="text-xs font-sans text-accent-green">{article.authorRole}</p>
+                
+                <div className="flex items-center gap-4 text-xs font-sans text-text-secondary">
+                  <span className="flex items-center gap-1.5"><Calendar size={12} /> {article.date}</span>
+                  <span className="flex items-center gap-1.5"><Clock size={12} /> {article.readTime}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-4 text-xs font-sans text-text-secondary">
-                <span className="flex items-center gap-1.5"><Calendar size={12} /> {article.date}</span>
-                <span className="flex items-center gap-1.5"><Clock size={12} /> {article.readTime}</span>
+
+              {/* Reader Adjusters & Share */}
+              <div className="flex items-center gap-4 flex-wrap">
+                {/* Font Size Adjuster */}
+                <div className="flex bg-card-bg border border-border-color rounded-xl overflow-hidden shadow-sm p-0.5">
+                  {(['sm', 'base', 'lg'] as const).map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setTextSize(size)}
+                      className={`px-3 py-1 text-[10px] font-sans font-bold uppercase transition-all rounded-lg cursor-pointer ${
+                        textSize === size
+                          ? 'bg-accent-orange text-white'
+                          : 'hover:bg-hover-highlight text-text-secondary'
+                      }`}
+                      title={size === 'sm' ? 'Smaller Text' : size === 'base' ? 'Default Text' : 'Larger Text'}
+                    >
+                      {size === 'sm' ? 'A-' : size === 'base' ? 'A' : 'A+'}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Share Actions Grid */}
+                <div className="flex items-center gap-2 bg-card-bg border border-border-color rounded-xl px-2.5 py-1 shadow-sm">
+                  {/* WhatsApp Share */}
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + ' - ' + window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 text-text-secondary hover:text-[#25D366] transition-colors rounded-lg"
+                    title="Share on WhatsApp"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.464L0 24zm6.09-4.704c1.652.98 3.271 1.497 4.965 1.5c5.385.002 9.765-4.379 9.768-9.768.002-2.61-1.01-5.064-2.855-6.912-1.846-1.848-4.296-2.865-6.917-2.866-5.39 0-9.774 4.381-9.778 9.77.001 1.785.467 3.524 1.35 5.074l-.991 3.62 3.702-.97.016.01zM17.47 14.39c-.3-.149-1.772-.874-2.045-.973-.272-.1-.471-.149-.669.149-.198.3-.769.973-.943 1.173-.173.198-.347.223-.647.074-.3-.149-1.265-.466-2.41-1.487-.893-.797-1.495-1.783-1.67-2.08-.173-.3-.018-.462.13-.61.135-.133.3-.347.45-.52.149-.174.199-.3.3-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.772-.724 2.02-1.424.248-.699.248-1.299.174-1.424-.075-.124-.272-.198-.57-.347z"/>
+                    </svg>
+                  </a>
+                  
+                  {/* Twitter Share */}
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 text-text-secondary hover:text-[#1DA1F2] transition-colors rounded-lg"
+                    title="Share on X"
+                  >
+                    <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </a>
+
+                  {/* Copy Link */}
+                  <div className="relative flex items-center">
+                    <button
+                      onClick={copyToClipboard}
+                      className={`p-1.5 hover:scale-105 transition-all rounded-lg cursor-pointer ${
+                        copied ? 'text-accent-green' : 'text-text-secondary hover:text-accent-orange'
+                      }`}
+                      title="Copy Link"
+                    >
+                      {copied ? <Check size={14} /> : <Copy size={14} />}
+                    </button>
+                    {copied && (
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-0.5 bg-text-primary text-page-bg text-[9px] font-sans font-bold rounded shadow-md whitespace-nowrap animate-fadeIn">
+                        Link Copied!
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Mobile/Tablet Inline Table of Contents */}
+            {headings.length > 0 && (
+              <div className="lg:hidden bg-card-bg border border-border-color/80 rounded-2xl p-5 mb-8 transition-theme">
+                <details className="group">
+                  <summary className="font-sans font-bold text-xs text-text-primary tracking-widest uppercase flex items-center justify-between cursor-pointer select-none">
+                    <span className="flex items-center gap-2">
+                      <span className="w-1.5 h-3 bg-accent-orange rounded-full"></span>
+                      Table of Contents
+                    </span>
+                    <span className="text-text-secondary group-open:rotate-180 transition-transform duration-200">▼</span>
+                  </summary>
+                  <ul className="mt-4 space-y-2.5 font-sans text-xs border-t border-border-color/20 pt-3">
+                    {headings.map((h: any) => (
+                      <li key={h.id}>
+                        <button
+                          onClick={() => {
+                            const el = document.getElementById(h.id);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }}
+                          className="text-left text-text-secondary hover:text-accent-orange transition-colors duration-200 flex items-start gap-1.5 group cursor-pointer w-full"
+                        >
+                          <span className="text-accent-green group-hover:translate-x-0.5 transition-transform">→</span>
+                          <span className="font-medium leading-relaxed">{h.text}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+            )}
+
             {/* Article Sections / Dynamic Content HTML */}
-            <div className="space-y-10">
+            <div className="prose dark:prose-invert max-w-none">
               {isDynamic ? (
                 <div 
-                  className="prose dark:prose-invert max-w-none text-base font-sans leading-relaxed pt-4 text-text-secondary"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
+                  className="transition-all duration-200"
+                  dangerouslySetInnerHTML={{ __html: parsedArticleHtml.html }}
                 />
               ) : (
                 article.sections.map((section: any, idx: number) => (
-                  <div key={idx}>
-                    <h2 className="font-serif text-2xl text-text-primary mb-4 leading-snug">{section.heading}</h2>
+                  <div key={idx} className="mb-10 last:mb-0 scroll-mt-24">
+                    <h2 id={`sec-${idx}`} className="scroll-mt-24">{section.heading}</h2>
                     {section.content.split('\n\n').map((para: string, pIdx: number) => (
-                      <p key={pIdx} className="text-base font-sans font-medium text-text-secondary leading-relaxed mb-4">{para}</p>
+                      <p key={pIdx} className={idx === 0 && pIdx === 0 ? 'prose-drop-cap' : ''}>
+                        {para}
+                      </p>
                     ))}
                     {section.bullets && (
-                      <ul className="mt-4 space-y-3 bg-card-bg border-2 border-accent-emerald rounded-2xl p-6 shadow-offset-sm">
+                      <ul className="mt-4 space-y-3 bg-card-bg/50 border-2 border-accent-emerald rounded-2xl p-6 shadow-offset-sm not-prose">
                         {section.bullets.map((b: string, bIdx: number) => (
                           <li key={bIdx} className="flex items-start gap-3 text-sm font-sans font-medium text-text-secondary">
                             <CheckCircle size={16} className="text-accent-green mt-0.5 shrink-0" />
@@ -422,8 +608,8 @@ export default function BlogArticlePage() {
             </div>
 
             {/* Author Box */}
-            <div className="mt-12 p-6 bg-card-bg border-2 border-accent-emerald rounded-2xl shadow-offset flex items-start gap-5">
-              <div className="w-14 h-14 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-lg shrink-0">
+            <div className="mt-16 p-6 bg-card-bg border border-border-color rounded-2xl shadow-offset-sm flex items-start gap-5">
+              <div className="w-14 h-14 rounded-full bg-accent-emerald flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm border border-border-color/10">
                 {article.author.split(' ').map((n: string) => n[0]).join('')}
               </div>
               <div>
@@ -434,10 +620,11 @@ export default function BlogArticlePage() {
             </div>
 
             {/* CTA */}
-            <div className="mt-10 p-8 bg-accent-emerald rounded-2xl text-white text-center">
-              <h3 className="font-serif italic text-2xl mb-3">Ready to implement this for your business?</h3>
-              <p className="text-sm font-medium text-white/80 mb-6">Book a free discovery call. We will audit your current setup and give you a clear action plan.</p>
-              <Link to="/#contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-orange text-white text-xs font-bold uppercase tracking-wider border-2 border-white hover:bg-white hover:text-accent-emerald transition-all">
+            <div className="mt-12 p-8 bg-accent-emerald rounded-2xl text-white text-center shadow-offset-green relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl -translate-y-12 translate-x-12"></div>
+              <h3 className="font-serif italic text-2xl mb-3 relative z-10">Ready to implement this for your business?</h3>
+              <p className="text-sm font-medium text-white/80 mb-6 relative z-10 max-w-lg mx-auto">Book a free discovery call. We will audit your current setup and give you a clear action plan.</p>
+              <Link to="/#contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-orange text-white text-xs font-bold uppercase tracking-wider border-2 border-white hover:bg-white hover:text-accent-emerald hover:border-accent-emerald transition-all shadow-sm relative z-10 hover:translate-y-[-1px]">
                 Book Free Call <ArrowUpRight size={13} />
               </Link>
             </div>
@@ -446,6 +633,33 @@ export default function BlogArticlePage() {
           {/* Sidebar */}
           <aside className="lg:col-span-4">
             <div className="sticky top-28 space-y-8">
+              
+              {/* Desktop Sticky Table of Contents */}
+              {headings.length > 0 && (
+                <div className="hidden lg:block bg-card-bg border border-border-color rounded-2xl p-5 shadow-offset-sm transition-theme">
+                  <h3 className="font-sans font-bold text-xs text-text-primary mb-4 tracking-widest uppercase flex items-center gap-2">
+                    <span className="w-1.5 h-3 bg-accent-orange rounded-full"></span>
+                    Table of Contents
+                  </h3>
+                  <ul className="space-y-2.5 font-sans text-xs">
+                    {headings.map((h: any) => (
+                      <li key={h.id}>
+                        <button
+                          onClick={() => {
+                            const el = document.getElementById(h.id);
+                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }}
+                          className="text-left text-text-secondary hover:text-accent-orange transition-colors duration-200 flex items-start gap-1.5 group cursor-pointer w-full"
+                        >
+                          <span className="text-accent-green group-hover:translate-x-0.5 transition-transform">→</span>
+                          <span className="font-medium leading-relaxed">{h.text}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Related Articles */}
               <div>
                 <h3 className="font-sans font-bold text-sm text-text-primary mb-4 tracking-widest uppercase">Related Articles</h3>

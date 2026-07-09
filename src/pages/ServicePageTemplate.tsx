@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { CheckCircle, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackGetStartedClick } from '../lib/analytics';
 
 interface ServicePageProps {
   title: string;
@@ -44,7 +45,11 @@ export default function ServicePageTemplate({ props }: { props: ServicePageProps
               {props.description}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/#contact" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald transition-all shadow-offset">
+              <Link 
+                to="/#contact" 
+                onClick={() => trackGetStartedClick('Service Page Hero')}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-accent-emerald hover:bg-accent-emerald transition-all shadow-offset"
+              >
                 Get Started <ArrowUpRight size={13} />
               </Link>
               <Link to="/results" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:border-accent-orange transition-all shadow-offset-sm">
@@ -182,7 +187,11 @@ export default function ServicePageTemplate({ props }: { props: ServicePageProps
           <p className="text-base font-medium text-white/80 mb-8 max-w-xl mx-auto">
             Book a free 30-minute discovery call. We will audit your current setup and map a clear growth roadmap specific to your business.
           </p>
-          <Link to="/#contact" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-sans font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-white hover:bg-white hover:text-accent-emerald transition-all shadow-offset">
+          <Link 
+            to="/#contact" 
+            onClick={() => trackGetStartedClick('Service Page Bottom')}
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-sans font-bold uppercase tracking-wider bg-accent-orange text-white border-2 border-white hover:bg-white hover:text-accent-emerald transition-all shadow-offset"
+          >
             Book Your Free Call <ArrowUpRight size={16} />
           </Link>
         </div>
