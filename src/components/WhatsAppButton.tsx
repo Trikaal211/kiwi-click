@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trackWhatsAppClick } from '../lib/analytics';
 
 export default function WhatsAppButton() {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -51,7 +52,10 @@ export default function WhatsAppButton() {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => setShowTooltip(false)}
+        onClick={() => {
+          setShowTooltip(false);
+          trackWhatsAppClick('Floating Widget');
+        }}
         className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#128C7E] to-[#25D366] hover:to-[#22c35e] text-white flex items-center justify-center shadow-[0_4px_15px_rgba(37,211,102,0.4)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.6)] hover:scale-108 active:scale-95 transition-all duration-300 relative group cursor-pointer"
         aria-label="Chat on WhatsApp"
       >

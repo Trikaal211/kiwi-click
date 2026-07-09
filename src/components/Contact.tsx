@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Send, Check, Mail, Phone, MapPin } from 'lucide-react';
 import apiClient from '../api/client';
+import { trackFormSubmit, trackPhoneClick, trackEmailClick } from '../lib/analytics';
 
 export default function Contact() {
   const [formState, setFormState] = useState({
@@ -32,11 +33,13 @@ export default function Contact() {
       if (response.data.success) {
         setIsSubmitted(true);
         setStatusMsg('Your request has been received! We will contact you within 4 hours.');
+        trackFormSubmit('Home Section Lead Form', 'success');
         // Reset form
         setFormState({ name: '', business: '', email: '', phone: '', details: '' });
       } else {
         setIsSubmitted(false);
         setStatusMsg('Submission failed. Please try again or contact us directly.');
+        trackFormSubmit('Home Section Lead Form', 'fail');
       }
     } catch (err: any) {
       console.error('[Lead Sync Error] Submission failed:', err);
@@ -44,6 +47,7 @@ export default function Contact() {
       // Show user-friendly network error (NOT a fake success)
       const errMsg = err?.response?.data?.message;
       setStatusMsg(errMsg || 'Network error. Please try again or WhatsApp us directly.');
+      trackFormSubmit('Home Section Lead Form', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -89,7 +93,11 @@ export default function Contact() {
             </h4>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left font-sans text-xs">
-              <a href="mailto:bandana.k.official@gmail.com" className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group">
+              <a 
+                href="mailto:bandana.k.official@gmail.com" 
+                onClick={() => trackEmailClick('bandana.k.official@gmail.com', 'Home Contact Section')}
+                className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group"
+              >
                 <div className="w-8 h-8 rounded-xl bg-page-bg-sec border border-border-color flex items-center justify-center text-text-secondary group-hover:text-accent-green transition-theme">
                   <Mail size={13} />
                 </div>
@@ -99,7 +107,11 @@ export default function Contact() {
                 </div>
               </a>
 
-              <a href="tel:+916230078396" className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group">
+              <a 
+                href="tel:+916230078396" 
+                onClick={() => trackPhoneClick('+916230078396', 'Home Contact Section')}
+                className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group"
+              >
                 <div className="w-8 h-8 rounded-xl bg-page-bg-sec border border-border-color flex items-center justify-center text-text-secondary group-hover:text-accent-green transition-theme">
                   <Phone size={13} />
                 </div>
@@ -109,7 +121,11 @@ export default function Contact() {
                 </div>
               </a>
 
-              <a href="mailto:info@kiwiclicks.in" className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group">
+              <a 
+                href="mailto:info@kiwiclicks.in" 
+                onClick={() => trackEmailClick('info@kiwiclicks.in', 'Home Contact Section')}
+                className="flex items-center gap-3 p-3 rounded-2xl bg-card-bg border border-border-color hover:border-accent-green transition-all group"
+              >
                 <div className="w-8 h-8 rounded-xl bg-page-bg-sec border border-border-color flex items-center justify-center text-text-secondary group-hover:text-accent-green transition-theme">
                   <Mail size={13} />
                 </div>

@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { trackButtonClick } from '../lib/analytics';
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -95,6 +96,7 @@ export default function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-4 md:gap-6 relative">
             <Link
               to="/results"
+              onClick={() => trackButtonClick('View Results', 'Hero')}
               className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-accent-emerald text-white border-2 border-accent-emerald hover:bg-accent-green hover:border-accent-green transition-theme shadow-offset cursor-pointer flex items-center gap-1.5"
             >
               View Results
@@ -102,6 +104,7 @@ export default function Hero() {
             </Link>
             <a
               href="#contact"
+              onClick={() => trackButtonClick('Lets Talk', 'Hero')}
               className="px-8 py-4 rounded-xl text-xs font-sans font-bold uppercase tracking-wider bg-card-bg text-text-primary border-2 border-border-color hover:bg-hover-highlight transition-theme shadow-offset-orange cursor-pointer"
             >
               Let's Talk

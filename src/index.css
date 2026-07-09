@@ -53,31 +53,6 @@
   --font-handwriting: var(--font-handwriting);
 }
 
-/* ─── Hide native cursor on desktop — custom cursor replaces it ─── */
-@media (pointer: fine) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
-
-  /* ─── Admin panel: restore normal cursor ─── */
-  .admin-panel, .admin-panel *, .admin-panel *::before, .admin-panel *::after {
-    cursor: auto !important;
-  }
-
-  /* Specific interactive elements in admin get proper cursors */
-  .admin-panel a, .admin-panel button, .admin-panel [role="button"],
-  .admin-panel select, .admin-panel label[for] {
-    cursor: pointer !important;
-  }
-
-  .admin-panel input, .admin-panel textarea {
-    cursor: text !important;
-  }
-
-  .admin-panel input[type="range"] {
-    cursor: ew-resize !important;
-  }
-}
 
 @utility shadow-offset {
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
